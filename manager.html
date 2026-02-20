@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLUB MANAGER | PSL Pro League</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --pure-black: #000000;
+            --deep-black: #0a0a0a;
+            --soft-black: #111111;
+            --charcoal: #1a1a1a;
+            --graphite: #2a2a2a;
+            
+            --pure-white: #ffffff;
+            --soft-white: rgba(255, 255, 255, 0.9);
+            --mist-white: rgba(255, 255, 255, 0.6);
+            --frost-white: rgba(255, 255, 255, 0.1);
+            --ghost-white: rgba(255, 255, 255, 0.05);
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            
+            --liquid-glow: rgba(255, 255, 255, 0.3);
+            --liquid-sheen: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', sans-serif;
+            
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--deep-black);
+            font-family: var(--font-body);
+            color: var(--soft-white);
+            padding-bottom: 120px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: ambientMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes ambientMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, 2%) scale(1.1); }
+        }
+
+        /* Liquid Glass Navigation */
+        .navbar { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 24px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            display:flex; 
+            justify-content:space-between; 
+            align-items:center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        
+        .brand { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.6rem; 
+            color: var(--pure-white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .brand span { 
+            color: var(--mist-white);
+            font-weight: 400;
+        }
+        
+        .btn-profile-nav {
+            background: var(--ghost-white);
+            color: var(--soft-white);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-sm);
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .btn-profile-nav:hover { 
+            background: var(--glass-bg);
+            color: var(--pure-white);
+            border-color: var(--glass-highlight);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        
+        .container { max-width: 800px; margin: 30px auto; padding: 0 24px; }
+
+        /* Liquid Glass Mode Switcher */
+        .mode-switcher {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 32px;
+            background: var(--ghost-white);
+            padding: 6px;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .mode-btn {
+            padding: 14px;
+            border: none;
+            background: transparent;
+            border-radius: var(--border-radius-sm);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--mist-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .mode-btn.active {
+            background: var(--pure-white);
+            color: var(--pure-black);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+        }
+        
+        .mode-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.08);
+            color: var(--soft-white);
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--pure-white);
+            letter-spacing: 1px;
+        }
+        
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--mist-white);
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* Liquid Glass Cards */
+        .team-card, .club-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card::before, .club-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--liquid-sheen);
+            transition: left 0.7s;
+            pointer-events: none;
+        }
+        
+        .team-card:hover::before, .club-card:hover::before {
+            left: 100%;
+        }
+        
+        .team-card:hover, .club-card:hover { 
+            transform: translateY(-4px);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
+        }
+        
+        .tc-img { 
+            width: 64px; 
+            height: 64px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid var(--glass-border);
+            background: var(--charcoal);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .club-img { 
+            width: 64px; 
+            height: 64px; 
+            border-radius: var(--border-radius-sm); 
+            object-fit: cover; 
+            border: 2px solid var(--glass-border);
+            background: var(--charcoal);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .tc-info { flex: 1; }
+        
+        .tc-name { 
+            font-weight: 700; 
+            font-size: 1.1rem;
+            color: var(--pure-white);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .tc-meta { 
+            font-size: 0.8rem; 
+            color: var(--mist-white); 
+            display: flex; 
+            gap: 10px; 
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .club-badge {
+            background: var(--pure-white);
+            color: var(--pure-black);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+        }
+        
+        .btn-add {
+            background: var(--pure-white);
+            color: var(--pure-black);
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: var(--border-radius-md);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-add::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-add:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+        
+        .btn-add:hover::before {
+            left: 100%;
+        }
+
+        /* Editor Sections */
+        .editor-section, .club-editor-section { display: none; }
+        
+        .card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 28px; 
+            border-radius: var(--border-radius-lg); 
+            border: 1px solid var(--glass-border);
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .form-label { 
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            color: var(--soft-white); 
+            margin-bottom: 8px; 
+            display: block;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .form-input, .form-textarea { 
+            width: 100%; 
+            padding: 14px 18px; 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            border-radius: var(--border-radius-md);
+            font-family: var(--font-body);
+            color: var(--pure-white);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--mist-white);
+        }
+        
+        .form-input:focus, .form-textarea:focus { 
+            outline: none; 
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+        }
+        
+        .form-textarea { 
+            min-height: 100px; 
+            resize: vertical; 
+        }
+        
+        .badge { 
+            display: inline-block; 
+            padding: 4px 12px; 
+            border-radius: 6px; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+        }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .btn-save { 
+            width: 100%; 
+            background: var(--pure-white); 
+            color: var(--pure-black); 
+            border: none; 
+            padding: 16px; 
+            border-radius: var(--border-radius-md);
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-save::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-save:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+        
+        .btn-save:hover::before {
+            left: 100%;
+        }
+        
+        .btn-del { 
+            width: 100%; 
+            background: transparent;
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 16px; 
+            border-radius: var(--border-radius-md);
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 12px;
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-del:hover { 
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            transform: translateY(-2px);
+        }
+        
+        /* Preview Logo */
+        .logo-preview-box { 
+            width: 100px; 
+            height: 100px; 
+            border-radius: 50%; 
+            border: 2px dashed var(--glass-border);
+            margin: 16px auto; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            overflow: hidden; 
+            background: var(--ghost-white);
+            transition: all 0.3s ease;
+        }
+        
+        .logo-preview-box:hover {
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .club-logo-preview { border-radius: var(--border-radius-sm) !important; }
+        
+        .logo-preview-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .logo-placeholder { color: var(--mist-white); font-size: 2rem; }
+
+        /* Empty State */
+        .empty-state { 
+            text-align: center; 
+            color: var(--mist-white);
+            margin-top: 60px;
+            padding: 40px;
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .empty-state i { 
+            font-size: 3rem; 
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-state p {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Bottom Nav - Floating Glass */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-xl); 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 14px 8px;
+            z-index: 999; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: var(--mist-white); 
+            font-size: 0.65rem; 
+            font-weight: 600; 
+            text-decoration: none; 
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: var(--border-radius-md);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .nav-item i { 
+            font-size: 1.4rem; 
+            margin-bottom: 6px; 
+            transition: all 0.3s ease; 
+        }
+        
+        .nav-item.active { 
+            color: var(--pure-white);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .nav-item.active i { 
+            transform: translateY(-4px);
+            text-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+        
+        .nav-item:hover:not(.active) {
+            color: var(--soft-white);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--deep-black); }
+        ::-webkit-scrollbar-thumb { background: var(--graphite); border-radius: 4px; border: 1px solid var(--glass-border); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--charcoal); }
+
+
+        /* ═══════════════════════════════════════════════════════
+           CUSTOM SELECT DROPDOWN — Liquid Glass Style
+        ═══════════════════════════════════════════════════════ */
+        .cs-wrap { position: relative; user-select: none; }
+        .cs-selected {
+            width: 100%; padding: 14px 18px;
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-md);
+            color: var(--pure-white); font-size: 0.95rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.3s; font-family: var(--font-body);
+        }
+        .cs-selected:hover, .cs-wrap.open .cs-selected {
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.04);
+        }
+        .cs-selected .cs-icon { font-size: 1.4rem; width: 26px; text-align: center; transition: transform 0.3s; }
+        .cs-selected .cs-label { flex: 1; padding: 0 10px; font-weight: 600; }
+        .cs-selected .cs-arrow { color: var(--mist-white); font-size: 0.8rem; transition: transform 0.3s; }
+        .cs-wrap.open .cs-arrow { transform: rotate(180deg); }
+
+        .cs-dropdown {
+            position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 200;
+            background: rgba(14,14,14,0.97);
+            border: 1px solid var(--glass-highlight);
+            border-radius: var(--border-radius-md);
+            backdrop-filter: blur(24px) saturate(200%);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.03);
+            overflow: hidden; max-height: 320px; overflow-y: auto;
+            opacity: 0; pointer-events: none;
+            transform: translateY(-10px) scale(0.98);
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+        .cs-wrap.open .cs-dropdown {
+            opacity: 1; pointer-events: all; transform: translateY(0) scale(1);
+        }
+        .cs-option {
+            padding: 14px 18px; display: flex; align-items: center; gap: 14px;
+            cursor: pointer; transition: background 0.15s;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .cs-option:last-child { border-bottom: none; }
+        .cs-option:hover { background: rgba(255,255,255,0.07); }
+        .cs-option.selected { background: rgba(255,255,255,0.1); }
+        .cs-opt-icon { font-size: 1.5rem; width: 30px; text-align: center; flex-shrink: 0; }
+        .cs-opt-content { flex: 1; }
+        .cs-opt-label { font-weight: 600; font-size: 0.95rem; color: var(--soft-white); }
+        .cs-opt-sub   { font-size: 0.75rem; color: var(--mist-white); margin-top: 2px; }
+        .cs-opt-check { color: var(--pure-white); font-size: 0.85rem; opacity: 0; flex-shrink: 0; }
+        .cs-option.selected .cs-opt-label { color: var(--pure-white); font-weight: 700; }
+        .cs-option.selected .cs-opt-check { opacity: 1; }
+
+        /* ═══════════════════════════════════════════════════════
+           FREE FIRE MODE
+        ═══════════════════════════════════════════════════════ */
+        .ff-banner {
+            background: linear-gradient(135deg, rgba(255,107,0,0.12), rgba(255,51,0,0.06));
+            border: 1px solid rgba(255,107,0,0.35);
+            border-radius: var(--border-radius-md);
+            padding: 16px 20px; margin-bottom: 24px;
+            display: none; align-items: center; gap: 14px;
+        }
+        .ff-banner.show { display: flex; }
+        .ff-banner-icon { font-size: 2rem; flex-shrink: 0; }
+        .ff-banner-title {
+            font-family: var(--font-display); font-weight: 800;
+            color: #ff6b00; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 3px;
+        }
+        .ff-banner-sub { font-size: 0.82rem; color: var(--mist-white); line-height: 1.4; }
+
+        /* Player Slot Cards */
+        .player-slots { display: flex; flex-direction: column; gap: 12px; }
+        .player-slot {
+            background: var(--ghost-white); border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-md); padding: 16px; transition: all 0.3s;
+        }
+        .player-slot:hover { border-color: var(--glass-highlight); }
+        .player-slot-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .slot-badge {
+            padding: 4px 10px; border-radius: 6px; font-size: 0.7rem;
+            font-weight: 800; font-family: var(--font-display);
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .badge-captain  { background: var(--pure-white); color: var(--pure-black); }
+        .badge-member   { background: rgba(255,255,255,0.1); color: var(--soft-white); border: 1px solid var(--glass-border); }
+        .badge-sub      { background: rgba(255,255,255,0.05); color: var(--mist-white); border: 1px solid rgba(255,255,255,0.08); }
+        .badge-ff-cap   { background: linear-gradient(135deg,#ff6b00,#ff3300); color: white; box-shadow: 0 0 10px rgba(255,107,0,0.3); }
+        .badge-ff-sub   { background: rgba(255,107,0,0.1); color: #ff6b00; border: 1px solid rgba(255,107,0,0.3); }
+        .badge-ff-mem   { background: rgba(255,107,0,0.06); color: rgba(255,107,0,0.9); border: 1px solid rgba(255,107,0,0.2); }
+        .slot-inputs    { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        @media(max-width:480px) { .slot-inputs { grid-template-columns: 1fr; } }
+
+        /* FF Save button override */
+        body.ff-mode .btn-save {
+            background: linear-gradient(135deg, #ff6b00, #ff3300);
+            color: white;
+            box-shadow: 0 6px 24px rgba(255,107,0,0.35);
+        }
+        body.ff-mode .btn-save:hover {
+            box-shadow: 0 10px 32px rgba(255,107,0,0.5);
+        }
+        body.ff-mode .card { border-color: rgba(255,107,0,0.15); }
+        body.ff-mode .cs-selected:hover,
+        body.ff-mode .cs-wrap.open .cs-selected {
+            border-color: rgba(255,107,0,0.5);
+            box-shadow: 0 0 0 3px rgba(255,107,0,0.1);
+        }
+        body.ff-mode .cs-wrap.open .cs-dropdown { border-color: rgba(255,107,0,0.4); }
+
+        /* Recruiting select custom */
+        .recruiting-wrap .cs-selected {
+            gap: 10px;
+        }
+        .recruiting-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .dot-open   { background: #10b981; box-shadow: 0 0 6px #10b981; }
+        .dot-closed { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+        .dot-full   { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .bottom-nav { width: calc(100% - 24px); bottom: 12px; }
+            .section-title { font-size: 1.2rem; }
+            .mode-btn { font-size: 0.75rem; padding: 12px 8px; }
+            .tc-img, .club-img { width: 56px; height: 56px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">CLUB <span>MANAGER</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <a href="profile.html" class="btn-profile-nav">
+                <i class="fa-solid fa-user-circle"></i> Profile
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- MODE SWITCHER -->
+        <div class="mode-switcher">
+            <button class="mode-btn active" onclick="switchMode('team')" id="btnTeamMode">
+                <i class="fa-solid fa-users"></i> My Teams
+            </button>
+            <button class="mode-btn" onclick="switchMode('club')" id="btnClubMode">
+                <i class="fa-solid fa-building"></i> My Clubs
+            </button>
+        </div>
+
+        <!-- TEAM VIEW -->
+        <div id="teamView">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">MY TEAMS</div>
+                    <div class="section-subtitle">Manage your competitive teams</div>
+                </div>
+            </div>
+            
+            <button class="btn-add" onclick="openEditor()">
+                <i class="fa-solid fa-plus"></i> Create New Team
+            </button>
+
+            <div id="teamListContainer">
+                <div style="text-align:center; padding:40px; color:var(--mist-white);">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Loading...
+                </div>
+            </div>
+        </div>
+
+        <!-- CLUB VIEW -->
+        <div id="clubView" style="display:none;">
+            <div class="section-header">
+                <div>
+                    <div class="section-title">MY CLUBS</div>
+                    <div class="section-subtitle">Manage your organization/affiliation</div>
+                </div>
+            </div>
+            
+            <button class="btn-add" onclick="openClubEditor()">
+                <i class="fa-solid fa-plus"></i> Create New Club
+            </button>
+
+            <div id="clubListContainer">
+                <div style="text-align:center; padding:40px; color:var(--mist-white);">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Loading...
+                </div>
+            </div>
+        </div>
+
+        <!-- TEAM EDITOR -->
+        <div id="editorView" class="editor-section animate__animated animate__fadeInRight">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                <h2 style="font-family:var(--font-display); font-weight:800; color:var(--pure-white); letter-spacing:1px;" id="editorTitle">CREATE TEAM</h2>
+                <button onclick="closeEditor()" style="background:none; border:none; font-size:1rem; cursor:pointer; color:var(--mist-white); transition:all 0.3s;">CANCEL</button>
+            </div>
+            
+            <input type="hidden" id="editDocId"> 
+            
+            <div class="card">
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="form-label">Game Title</label>
+                    <div class="cs-wrap" id="csGameWrap">
+                        <div class="cs-selected" onclick="toggleCsDropdown('csGameWrap')">
+                            <span class="cs-icon" id="csGameIcon">🎮</span>
+                            <span class="cs-label" id="csGameLabel">Arena of Valor (RoV)</span>
+                            <i class="fa-solid fa-chevron-down cs-arrow"></i>
+                        </div>
+                        <div class="cs-dropdown" id="csGameDropdown">
+                            <div class="cs-option selected" data-value="RoV" data-icon="⚔️" onclick="selectGame(this)">
+                                <span class="cs-opt-icon">⚔️</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Arena of Valor (RoV)</div><div class="cs-opt-sub">5v5 MOBA • 10 players</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="MLBB" data-icon="🗡️" onclick="selectGame(this)">
+                                <span class="cs-opt-icon">🗡️</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Mobile Legends (MLBB)</div><div class="cs-opt-sub">5v5 MOBA • 10 players</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="PUBG" data-icon="🎯" onclick="selectGame(this)">
+                                <span class="cs-opt-icon">🎯</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">PUBG Mobile</div><div class="cs-opt-sub">Battle Royale • 4 players</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="FreeFire" data-icon="🔥" onclick="selectGame(this)">
+                                <span class="cs-opt-icon">🔥</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Free Fire</div><div class="cs-opt-sub">Battle Royale • 4 main + 2 sub</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="VALORANT" data-icon="💥" onclick="selectGame(this)">
+                                <span class="cs-opt-icon">💥</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">VALORANT</div><div class="cs-opt-sub">5v5 Tactical Shooter • 10 players</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="teamGame" value="RoV">
+                </div>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Team Name</label>
+                        <input type="text" id="teamName" class="form-input" placeholder="Ex. Bacon Time">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tag</label>
+                        <input type="text" id="teamTag" class="form-input" placeholder="Ex. BAC">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top:20px;">
+                    <label class="form-label">Logo URL <span style="color:var(--mist-white); font-weight:400;">(Leave empty for default)</span></label>
+                    <input type="text" id="teamLogo" class="form-input" placeholder="https://..." oninput="updateLogoPreview()">
+                    
+                    <div class="logo-preview-box" id="logoPreviewBox">
+                        <i class="fa-solid fa-image logo-placeholder" id="logoPlaceholder"></i>
+                        <img id="logoPreviewImg" style="display:none;" onerror="this.style.display='none'; document.getElementById('logoPlaceholder').style.display='block';">
+                    </div>
+                    <div style="text-align:center; font-size:0.75rem; color:var(--mist-white); margin-top:8px;">Preview</div>
+                </div>
+            </div>
+
+            <!-- FF banner (shows only for Free Fire) -->
+            <div class="ff-banner" id="ffBanner">
+                <div class="ff-banner-icon">🔥</div>
+                <div>
+                    <div class="ff-banner-title">FREE FIRE TEAM MODE</div>
+                    <div class="ff-banner-sub">Roster จำกัด 6 คน — ตัวจริง 4 คน (Captain + P2-P4) และสำรอง 2 คน เท่านั้น</div>
+                </div>
+            </div>
+
+            <div class="card" id="lineupCard">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--glass-border);">
+                    <h4 style="font-family:var(--font-display); font-weight:800; color:var(--pure-white); letter-spacing:1px;" id="lineupCardTitle">STARTING LINEUP</h4>
+                    <span id="rosterCountBadge" style="font-size:0.75rem; color:var(--mist-white); background:var(--ghost-white); padding:4px 12px; border-radius:20px; border:1px solid var(--glass-border); font-family:var(--font-display);">5 + 3 Subs</span>
+                </div>
+
+                <div class="player-slots" id="playerSlots">
+                    <!-- rendered by JS -->
+                </div>
+
+                <!-- Hidden inputs (for legacy compatibility & saveTeam fn) -->
+                <div style="display:none;">
+                    <input id="p1_ign"><input id="p1_uid">
+                    <input id="p2_ign"><input id="p2_uid">
+                    <input id="p3_ign"><input id="p3_uid">
+                    <input id="p4_ign"><input id="p4_uid">
+                    <input id="p5_ign"><input id="p5_uid">
+                    <input id="s1_ign"><input id="s1_uid">
+                    <input id="s2_ign"><input id="s2_uid">
+                    <input id="s3_ign"><input id="s3_uid">
+                </div>
+            </div>
+
+            <button id="btnSave" class="btn-save" onclick="saveTeam()">SAVE TEAM</button>
+            <button id="btnDel" class="btn-del" onclick="deleteMyTeam()" style="display:none;">DELETE TEAM</button>
+        </div>
+
+        <!-- CLUB EDITOR -->
+        <div id="clubEditorView" class="club-editor-section animate__animated animate__fadeInRight">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+                <h2 style="font-family:var(--font-display); font-weight:800; color:var(--pure-white); letter-spacing:1px;" id="clubEditorTitle">CREATE CLUB</h2>
+                <button onclick="closeClubEditor()" style="background:none; border:none; font-size:1rem; cursor:pointer; color:var(--mist-white); transition:all 0.3s;">CANCEL</button>
+            </div>
+            
+            <input type="hidden" id="editClubDocId"> 
+            
+            <div class="card">
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="form-label">Club Name <span style="color:#ef4444;">*</span></label>
+                    <input type="text" id="clubName" class="form-input" placeholder="Club Name">
+                </div>
+                
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="form-label">Club Tag <span style="color:var(--mist-white); font-size:0.8rem;">(Short 2-5 characters)</span></label>
+                    <input type="text" id="clubTag" class="form-input" placeholder="Ex. PSL">
+                </div>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="form-label">Primary Game</label>
+                    <div class="cs-wrap" id="csClubGameWrap">
+                        <div class="cs-selected" onclick="toggleCsDropdown('csClubGameWrap')">
+                            <span class="cs-icon" id="csClubGameIcon">🏆</span>
+                            <span class="cs-label" id="csClubGameLabel">Multi-Games</span>
+                            <i class="fa-solid fa-chevron-down cs-arrow"></i>
+                        </div>
+                        <div class="cs-dropdown" id="csClubGameDropdown">
+                            <div class="cs-option selected" data-value="Multi" data-icon="🏆" onclick="selectClubGame(this)">
+                                <span class="cs-opt-icon">🏆</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Multi-Games</div><div class="cs-opt-sub">Club for all games</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="RoV" data-icon="⚔️" onclick="selectClubGame(this)">
+                                <span class="cs-opt-icon">⚔️</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Arena of Valor (RoV)</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="MLBB" data-icon="🗡️" onclick="selectClubGame(this)">
+                                <span class="cs-opt-icon">🗡️</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Mobile Legends (MLBB)</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="PUBG" data-icon="🎯" onclick="selectClubGame(this)">
+                                <span class="cs-opt-icon">🎯</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">PUBG Mobile</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="FreeFire" data-icon="🔥" onclick="selectClubGame(this)">
+                                <span class="cs-opt-icon">🔥</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Free Fire</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="VALORANT" data-icon="💥" onclick="selectClubGame(this)">
+                                <span class="cs-opt-icon">💥</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">VALORANT</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="FC25" data-icon="⚽" onclick="selectClubGame(this)">
+                                <span class="cs-opt-icon">⚽</span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">EA FC 25</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="clubGame" value="Multi">
+                </div>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="form-label">Club Logo <span style="color:var(--mist-white); font-weight:400;">(Leave empty for default)</span></label>
+                    <input type="text" id="clubLogo" class="form-input" placeholder="https://..." oninput="updateClubLogoPreview()">
+                    
+                    <div class="logo-preview-box club-logo-preview" id="clubLogoPreviewBox">
+                        <i class="fa-solid fa-building logo-placeholder" id="clubLogoPlaceholder"></i>
+                        <img id="clubLogoPreviewImg" style="display:none;" onerror="this.style.display='none'; document.getElementById('clubLogoPlaceholder').style.display='block';">
+                    </div>
+                    <div style="text-align:center; font-size:0.75rem; color:var(--mist-white); margin-top:8px;">Preview</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Description <span style="color:var(--mist-white); font-size:0.8rem;">(Short introduction)</span></label>
+                    <textarea id="clubDesc" class="form-textarea" placeholder="Describe your club..."></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4 style="margin-bottom:20px; color:var(--pure-white); border-bottom:1px solid var(--glass-border); padding-bottom:12px; font-family:var(--font-display); letter-spacing:1px;">CONTACT & SOCIAL</h4>
+                
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label class="form-label"><i class="fa-brands fa-discord" style="color:#5865F2; margin-right:8px;"></i> Discord</label>
+                    <input type="text" id="clubDiscord" class="form-input" placeholder="https://discord.gg/... or username">
+                </div>
+                
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label class="form-label"><i class="fa-brands fa-facebook" style="color:#1877F2; margin-right:8px;"></i> Facebook Page/Group</label>
+                    <input type="text" id="clubFacebook" class="form-input" placeholder="https://facebook.com/...">
+                </div>
+                
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label class="form-label"><i class="fa-brands fa-line" style="color:#00C300; margin-right:8px;"></i> Line OA/Group</label>
+                    <input type="text" id="clubLine" class="form-input" placeholder="Line ID or link">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-globe" style="color:var(--mist-white); margin-right:8px;"></i> Website/Link</label>
+                    <input type="text" id="clubWebsite" class="form-input" placeholder="https://...">
+                </div>
+            </div>
+
+            <div class="card">
+                <h4 style="margin-bottom:20px; color:var(--mist-white); border-bottom:1px solid var(--glass-border); padding-bottom:12px; font-family:var(--font-display); letter-spacing:1px;">CLUB SETTINGS</h4>
+                
+                <div class="form-group" style="margin-bottom:16px;">
+                    <label class="form-label">Recruiting Status</label>
+                    <div class="cs-wrap recruiting-wrap" id="csRecWrap">
+                        <div class="cs-selected" onclick="toggleCsDropdown('csRecWrap')">
+                            <span class="recruiting-dot dot-open" id="csRecDot"></span>
+                            <span class="cs-label" id="csRecLabel">Open — Accepting Members</span>
+                            <i class="fa-solid fa-chevron-down cs-arrow"></i>
+                        </div>
+                        <div class="cs-dropdown" id="csRecDropdown">
+                            <div class="cs-option selected" data-value="open" onclick="selectRecruiting(this)">
+                                <span class="cs-opt-icon"><span class="recruiting-dot dot-open" style="display:inline-block;width:10px;height:10px;border-radius:50%;"></span></span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Open</div><div class="cs-opt-sub">Accepting new members</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="closed" onclick="selectRecruiting(this)">
+                                <span class="cs-opt-icon"><span class="recruiting-dot dot-closed" style="display:inline-block;width:10px;height:10px;border-radius:50%;"></span></span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Closed</div><div class="cs-opt-sub">Not accepting applications</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                            <div class="cs-option" data-value="full" onclick="selectRecruiting(this)">
+                                <span class="cs-opt-icon"><span class="recruiting-dot dot-full" style="display:inline-block;width:10px;height:10px;border-radius:50%;"></span></span>
+                                <div class="cs-opt-content"><div class="cs-opt-label">Full</div><div class="cs-opt-sub">Member limit reached</div></div>
+                                <i class="fa-solid fa-check cs-opt-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="clubRecruiting" value="open">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Requirements <span style="color:var(--mist-white); font-size:0.8rem;">(Member requirements)</span></label>
+                    <input type="text" id="clubReq" class="form-input" placeholder="Ex. Diamond+ Rank, Age 16+, Has Mic">
+                </div>
+            </div>
+
+            <button id="btnSaveClub" class="btn-save" onclick="saveClub()">SAVE CLUB</button>
+            <button id="btnDelClub" class="btn-del" onclick="deleteMyClub()" style="display:none;">DELETE CLUB</button>
+        </div>
+
+    </div>
+
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="scrims.html" class="nav-item"><i class="fa-solid fa-handshake-simple"></i><span>Scrims</span></a>
+        <a href="tournaments.html" class="nav-item"><i class="fa-solid fa-trophy"></i><span>Tourneys</span></a>
+        <a href="#" class="nav-item active"><i class="fa-solid fa-user-gear"></i><span>Manage</span></a>
+    </div>
+
+    <script type="module">
+        import { db, auth } from './firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { collection, addDoc, query, where, getDocs, doc, getDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        let currentUser = null;
+        let myTeams = [];
+        let myClubs = [];
+        let currentMode = 'team';
+
+        // Default Logos
+        const DEFAULT_LOGOS = {
+            'RoV': 'https://placehold.co/60/111/fff?text=RoV',
+            'MLBB': 'https://placehold.co/60/111/fff?text=MLBB',
+            'PUBG': 'https://placehold.co/60/111/fff?text=PUBG',
+            'FreeFire': 'https://placehold.co/60/111/fff?text=FF',
+            'VALORANT': 'https://placehold.co/60/111/fff?text=VAL',
+            'FC25': 'https://placehold.co/60/111/fff?text=FC25',
+            'Multi': 'https://placehold.co/60/111/fff?text=CLUB',
+            'default': 'https://placehold.co/60/111/fff?text=TEAM'
+        };
+
+        const DEFAULT_CLUB_LOGO = 'https://placehold.co/60/111/fff?text=CLUB';
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadMyTeams();
+                loadMyClubs();
+                // Apply URL params after auth
+                setTimeout(applyUrlParams, 300);
+            } else {
+                alert("Please login first");
+                window.location.href = "index.html";
+            }
+        });
+
+        // SWITCH MODE
+        window.switchMode = (mode) => {
+            currentMode = mode;
+            document.getElementById('btnTeamMode').classList.toggle('active', mode === 'team');
+            document.getElementById('btnClubMode').classList.toggle('active', mode === 'club');
+            
+            document.getElementById('teamView').style.display = mode === 'team' ? 'block' : 'none';
+            document.getElementById('clubView').style.display = mode === 'club' ? 'block' : 'none';
+            
+            if (mode === 'team') loadMyTeams();
+            else loadMyClubs();
+        };
+
+        // ==================== TEAM FUNCTIONS ====================
+        async function loadMyTeams() {
+            const list = document.getElementById('teamListContainer');
+            try {
+                const q = query(collection(db, "teams"), where("managerId", "==", currentUser.uid));
+                const snapshot = await getDocs(q);
+                
+                myTeams = [];
+                list.innerHTML = '';
+
+                if (snapshot.empty) {
+                    list.innerHTML = `<div class="empty-state">
+                        <i class="fa-solid fa-users"></i>
+                        <p>You haven't created any teams yet</p>
+                    </div>`;
+                    return;
+                }
+
+                snapshot.forEach(docSnap => {
+                    const t = docSnap.data();
+                    const tId = docSnap.id;
+                    myTeams.push({id: tId, ...t});
+                    const logoUrl = t.logo || DEFAULT_LOGOS[t.game] || DEFAULT_LOGOS['default'];
+
+                    list.innerHTML += `
+                        <div class="team-card animate__animated animate__fadeInUp" onclick="openEditor('${tId}')">
+                            <img src="${logoUrl}" class="tc-img" onerror="this.src='${DEFAULT_LOGOS['default']}'">
+                            <div class="tc-info">
+                                <div class="tc-name">${t.teamName}</div>
+                                <div class="tc-meta">
+                                    <span>${t.tag}</span>
+                                    <span style="opacity:0.5;">•</span>
+                                    <span>${t.game || 'RoV'}</span>
+                                </div>
+                            </div>
+                            <div style="color:var(--mist-white);"><i class="fa-solid fa-chevron-right"></i></div>
+                        </div>
+                    `;
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        window.updateLogoPreview = () => {
+            const url = document.getElementById('teamLogo').value.trim();
+            const game = document.getElementById('teamGame').value;
+            const previewImg = document.getElementById('logoPreviewImg');
+            const placeholder = document.getElementById('logoPlaceholder');
+            
+            if (url) {
+                previewImg.src = url;
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                previewImg.src = DEFAULT_LOGOS[game] || DEFAULT_LOGOS['default'];
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+        };
+
+        window.openEditor = (tId = null) => {
+            document.getElementById('teamView').style.display = 'none';
+            document.getElementById('editorView').style.display = 'block';
+            
+            document.querySelectorAll('#editorView input[type="text"]').forEach(i => i.value = '');
+            document.getElementById('teamGame').value = 'RoV';
+            updateLogoPreview();
+            
+            if (tId) {
+                document.getElementById('editorTitle').innerText = "EDIT TEAM";
+                document.getElementById('btnSave').innerText = "UPDATE TEAM";
+                document.getElementById('btnDel').style.display = 'block';
+                document.getElementById('editDocId').value = tId;
+                const team = myTeams.find(t => t.id === tId);
+                if (team) fillForm(team);
+            } else {
+                document.getElementById('editorTitle').innerText = "CREATE TEAM";
+                document.getElementById('btnSave').innerText = "CREATE TEAM";
+                document.getElementById('btnDel').style.display = 'none';
+                document.getElementById('editDocId').value = '';
+            }
+        };
+
+        window.closeEditor = () => {
+            document.getElementById('teamView').style.display = 'block';
+            document.getElementById('editorView').style.display = 'none';
+            document.body.classList.remove('ff-mode');
+        };
+
+        function fillForm(t) {
+            document.getElementById('teamName').value = t.teamName || '';
+            document.getElementById('teamTag').value  = t.tag      || '';
+            document.getElementById('teamLogo').value = t.logo     || '';
+
+            // Set game via custom select
+            const game = t.game || 'RoV';
+            const gameOpt = document.querySelector(`#csGameDropdown .cs-option[data-value="${game}"]`);
+            if (gameOpt) selectGame(gameOpt);
+            else {
+                document.getElementById('teamGame').value = game;
+                applyGameMode(game);
+            }
+            updateLogoPreview();
+
+            const ffMode = game === 'FreeFire';
+            const slots  = ffMode ? FF_SLOTS : NORMAL_SLOTS;
+
+            if (t.roster) {
+                const mainP = t.roster.filter(p => p.role !== 'Sub');
+                const subP  = t.roster.filter(p => p.role === 'Sub');
+                let mi = 0, si = 0;
+                slots.forEach(slot => {
+                    if (!slot.isSub && mi < mainP.length) {
+                        const p = mainP[mi++];
+                        const ignEl = document.getElementById(slot.id + '_ign_vis') || document.getElementById(slot.id + '_ign');
+                        const uidEl = document.getElementById(slot.id + '_uid_vis') || document.getElementById(slot.id + '_uid');
+                        if (ignEl) ignEl.value = p.ign || '';
+                        if (uidEl) uidEl.value = p.uid || '';
+                        const ignH = document.getElementById(slot.id + '_ign');
+                        const uidH = document.getElementById(slot.id + '_uid');
+                        if (ignH) ignH.value = p.ign || '';
+                        if (uidH) uidH.value = p.uid || '';
+                    }
+                    if (slot.isSub && si < subP.length) {
+                        const p = subP[si++];
+                        const ignEl = document.getElementById(slot.id + '_ign_vis') || document.getElementById(slot.id + '_ign');
+                        const uidEl = document.getElementById(slot.id + '_uid_vis') || document.getElementById(slot.id + '_uid');
+                        if (ignEl) ignEl.value = p.ign || '';
+                        if (uidEl) uidEl.value = p.uid || '';
+                        const ignH = document.getElementById(slot.id + '_ign');
+                        const uidH = document.getElementById(slot.id + '_uid');
+                        if (ignH) ignH.value = p.ign || '';
+                        if (uidH) uidH.value = p.uid || '';
+                    }
+                });
+            }
+        }
+
+        window.saveTeam = async () => {
+            const btn = document.getElementById('btnSave');
+            const docId = document.getElementById('editDocId').value;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SAVING...';
+            btn.disabled = true;
+
+            // Sync visible inputs → hidden inputs before reading
+            const _activeSlots = isFFMode ? FF_SLOTS : NORMAL_SLOTS;
+            _activeSlots.forEach(s => syncSlotFromVis(s.id));
+
+            let roster = [];
+            const _mainSlots = _activeSlots.filter(s => !s.isSub);
+            const _subSlots  = _activeSlots.filter(s => s.isSub);
+            _mainSlots.forEach((slot, i) => {
+                const ign = (document.getElementById(slot.id + '_ign')?.value || '').trim();
+                const uid = (document.getElementById(slot.id + '_uid')?.value || '').trim();
+                if (ign) roster.push({ ign, uid, role: slot.role, position: 'Main' });
+            });
+            _subSlots.forEach((slot, i) => {
+                const ign = (document.getElementById(slot.id + '_ign')?.value || '').trim();
+                const uid = (document.getElementById(slot.id + '_uid')?.value || '').trim();
+                if (ign) roster.push({ ign, uid, role: 'Sub', position: `Sub ${i+1}` });
+            });
+
+            // FF validation
+            if (isFFMode) {
+                const mainCount = roster.filter(p => p.role !== 'Sub').length;
+                if (mainCount < 4) { alert('Free Fire team requires at least 4 main players (Captain + 3)'); btn.disabled = false; btn.innerHTML = docId ? 'UPDATE TEAM' : 'CREATE TEAM'; return; }
+                if (roster.length > 6) { alert('Free Fire team maximum is 6 players (4 main + 2 sub)'); btn.disabled = false; btn.innerHTML = docId ? 'UPDATE TEAM' : 'CREATE TEAM'; return; }
+            }
+
+            const game = document.getElementById('teamGame').value;
+            let logo = document.getElementById('teamLogo').value.trim();
+            if (!logo) logo = DEFAULT_LOGOS[game] || DEFAULT_LOGOS['default'];
+
+            const teamData = {
+                teamName: document.getElementById('teamName').value.trim(),
+                tag: document.getElementById('teamTag').value.trim(),
+                logo: logo,
+                game: game,
+                roster: roster,
+                managerId: currentUser.uid,
+                updatedAt: new Date().toISOString()
+            };
+
+            if(!teamData.teamName) {
+                alert("Please enter team name");
+                btn.disabled = false;
+                btn.innerHTML = docId ? 'UPDATE TEAM' : 'CREATE TEAM';
+                return;
+            }
+
+            try {
+                if (docId) {
+                    await updateDoc(doc(db, "teams", docId), teamData);
+                } else {
+                    teamData.createdAt = new Date().toISOString();
+                    teamData.username = currentUser.email.split('@')[0];
+                    await addDoc(collection(db, "teams"), teamData);
+                }
+                
+                alert("Team saved successfully!");
+                closeEditor();
+                loadMyTeams();
+            } catch (e) {
+                alert("Error: " + e.message);
+                console.error(e);
+            } finally {
+                btn.innerHTML = docId ? 'UPDATE TEAM' : 'CREATE TEAM';
+                btn.disabled = false;
+            }
+        };
+
+        window.deleteMyTeam = async () => {
+            const docId = document.getElementById('editDocId').value;
+            if(!docId) return;
+            
+            if(confirm("Confirm deletion? (This cannot be undone)")) {
+                try {
+                    await deleteDoc(doc(db, "teams", docId));
+                    alert("Team deleted");
+                    closeEditor();
+                    loadMyTeams();
+                } catch (e) {
+                    alert("Error: " + e.message);
+                }
+            }
+        };
+
+        // ==================== CLUB FUNCTIONS ====================
+        async function loadMyClubs() {
+            const list = document.getElementById('clubListContainer');
+            try {
+                const q = query(collection(db, "clubs"), where("managerId", "==", currentUser.uid));
+                const snapshot = await getDocs(q);
+                
+                myClubs = [];
+                list.innerHTML = '';
+
+                if (snapshot.empty) {
+                    list.innerHTML = `<div class="empty-state">
+                        <i class="fa-solid fa-building"></i>
+                        <p>You haven't created any clubs yet</p>
+                    </div>`;
+                    return;
+                }
+
+                snapshot.forEach(docSnap => {
+                    const c = docSnap.data();
+                    const cId = docSnap.id;
+                    myClubs.push({id: cId, ...c});
+                    const logoUrl = c.logo || DEFAULT_CLUB_LOGO;
+                    const recruitingStatus = c.recruiting || 'open';
+                    const statusIcon = recruitingStatus === 'open' ? '🟢' : (recruitingStatus === 'closed' ? '🔴' : '🟡');
+
+                    list.innerHTML += `
+                        <div class="club-card animate__animated animate__fadeInUp" onclick="openClubEditor('${cId}')">
+                            <img src="${logoUrl}" class="club-img" onerror="this.src='${DEFAULT_CLUB_LOGO}'">
+                            <div class="tc-info">
+                                <div class="tc-name">${c.clubName}</div>
+                                <div class="tc-meta">
+                                    <span class="club-badge">${c.tag}</span>
+                                    <span>${statusIcon} ${c.game || 'Multi'}</span>
+                                </div>
+                            </div>
+                            <div style="color:var(--mist-white);"><i class="fa-solid fa-chevron-right"></i></div>
+                        </div>
+                    `;
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        window.updateClubLogoPreview = () => {
+            const url = document.getElementById('clubLogo').value.trim();
+            const game = document.getElementById('clubGame').value;
+            const previewImg = document.getElementById('clubLogoPreviewImg');
+            const placeholder = document.getElementById('clubLogoPlaceholder');
+            
+            if (url) {
+                previewImg.src = url;
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                previewImg.src = DEFAULT_LOGOS[game] || DEFAULT_CLUB_LOGO;
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+        };
+
+        window.openClubEditor = (cId = null) => {
+            document.getElementById('clubView').style.display = 'none';
+            document.getElementById('clubEditorView').style.display = 'block';
+            
+            // Reset form
+            document.getElementById('clubName').value = '';
+            document.getElementById('clubTag').value = '';
+            document.getElementById('clubLogo').value = '';
+            document.getElementById('clubGame').value = 'Multi';
+            document.getElementById('clubDesc').value = '';
+            document.getElementById('clubDiscord').value = '';
+            document.getElementById('clubFacebook').value = '';
+            document.getElementById('clubLine').value = '';
+            document.getElementById('clubWebsite').value = '';
+            document.getElementById('clubRecruiting').value = 'open';
+            document.getElementById('clubReq').value = '';
+            
+            updateClubLogoPreview();
+            
+            if (cId) {
+                document.getElementById('clubEditorTitle').innerText = "EDIT CLUB";
+                document.getElementById('btnSaveClub').innerText = "UPDATE CLUB";
+                document.getElementById('btnDelClub').style.display = 'block';
+                document.getElementById('editClubDocId').value = cId;
+                const club = myClubs.find(c => c.id === cId);
+                if (club) fillClubForm(club);
+            } else {
+                document.getElementById('clubEditorTitle').innerText = "CREATE CLUB";
+                document.getElementById('btnSaveClub').innerText = "CREATE CLUB";
+                document.getElementById('btnDelClub').style.display = 'none';
+                document.getElementById('editClubDocId').value = '';
+            }
+        };
+
+        window.closeClubEditor = () => {
+            document.getElementById('clubView').style.display = 'block';
+            document.getElementById('clubEditorView').style.display = 'none';
+        };
+
+        function fillClubForm(c) {
+            document.getElementById('clubName').value = c.clubName || '';
+            document.getElementById('clubTag').value = c.tag || '';
+            document.getElementById('clubLogo').value = c.logo || '';
+            document.getElementById('clubGame').value = c.game || 'Multi';
+            document.getElementById('clubDesc').value = c.description || '';
+            document.getElementById('clubDiscord').value = c.discord || '';
+            document.getElementById('clubFacebook').value = c.facebook || '';
+            document.getElementById('clubLine').value = c.line || '';
+            document.getElementById('clubWebsite').value = c.website || '';
+            document.getElementById('clubRecruiting').value = c.recruiting || 'open';
+            document.getElementById('clubReq').value = c.requirements || '';
+            updateClubLogoPreview();
+        }
+
+        window.saveClub = async () => {
+            const btn = document.getElementById('btnSaveClub');
+            const docId = document.getElementById('editClubDocId').value;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> SAVING...';
+            btn.disabled = true;
+
+            const game = document.getElementById('clubGame').value;
+            let logo = document.getElementById('clubLogo').value.trim();
+            if (!logo) logo = DEFAULT_LOGOS[game] || DEFAULT_CLUB_LOGO;
+
+            const clubData = {
+                clubName: document.getElementById('clubName').value.trim(),
+                tag: document.getElementById('clubTag').value.trim(),
+                logo: logo,
+                game: game,
+                description: document.getElementById('clubDesc').value.trim(),
+                discord: document.getElementById('clubDiscord').value.trim(),
+                facebook: document.getElementById('clubFacebook').value.trim(),
+                line: document.getElementById('clubLine').value.trim(),
+                website: document.getElementById('clubWebsite').value.trim(),
+                recruiting: document.getElementById('clubRecruiting').value,
+                requirements: document.getElementById('clubReq').value.trim(),
+                managerId: currentUser.uid,
+                updatedAt: new Date().toISOString()
+            };
+
+            if(!clubData.clubName) {
+                alert("Please enter club name");
+                btn.disabled = false;
+                btn.innerHTML = docId ? 'UPDATE CLUB' : 'CREATE CLUB';
+                return;
+            }
+
+            try {
+                if (docId) {
+                    await updateDoc(doc(db, "clubs", docId), clubData);
+                } else {
+                    clubData.createdAt = new Date().toISOString();
+                    clubData.username = currentUser.email.split('@')[0];
+                    await addDoc(collection(db, "clubs"), clubData);
+                }
+                
+                alert("Club saved successfully!");
+                closeClubEditor();
+                loadMyClubs();
+            } catch (e) {
+                alert("Error: " + e.message);
+                console.error(e);
+            } finally {
+                btn.innerHTML = docId ? 'UPDATE CLUB' : 'CREATE CLUB';
+                btn.disabled = false;
+            }
+        };
+
+        window.deleteMyClub = async () => {
+            const docId = document.getElementById('editClubDocId').value;
+            if(!docId) return;
+            
+            if(confirm("Confirm deletion? (This cannot be undone)")) {
+                try {
+                    await deleteDoc(doc(db, "clubs", docId));
+                    alert("Club deleted");
+                    closeClubEditor();
+                    loadMyClubs();
+                } catch (e) {
+                    alert("Error: " + e.message);
+                }
+            }
+        };
+
+        // ══════════════════════════════════════════════════════════════
+        //  CUSTOM SELECT DROPDOWN
+        // ══════════════════════════════════════════════════════════════
+        window.toggleCsDropdown = (wrapId) => {
+            const wrap = document.getElementById(wrapId);
+            const isOpen = wrap.classList.contains('open');
+            // close all
+            document.querySelectorAll('.cs-wrap.open').forEach(w => {
+                if (w.id !== wrapId) w.classList.remove('open');
+            });
+            wrap.classList.toggle('open', !isOpen);
+        };
+
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.cs-wrap')) {
+                document.querySelectorAll('.cs-wrap.open').forEach(w => w.classList.remove('open'));
+            }
+        });
+
+        window.selectGame = (el) => {
+            const val   = el.dataset.value;
+            const icon  = el.dataset.icon;
+            const label = el.querySelector('.cs-opt-label').textContent;
+            document.getElementById('csGameDropdown').querySelectorAll('.cs-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('csGameIcon').textContent  = icon;
+            document.getElementById('csGameLabel').textContent = label;
+            document.getElementById('teamGame').value = val;
+            document.getElementById('csGameWrap').classList.remove('open');
+            updateLogoPreview();
+            applyGameMode(val);
+        };
+
+        window.selectClubGame = (el) => {
+            const val   = el.dataset.value;
+            const icon  = el.dataset.icon || '🏆';
+            const label = el.querySelector('.cs-opt-label').textContent;
+            document.getElementById('csClubGameDropdown').querySelectorAll('.cs-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('csClubGameIcon').textContent  = icon;
+            document.getElementById('csClubGameLabel').textContent = label;
+            document.getElementById('clubGame').value = val;
+            document.getElementById('csClubGameWrap').classList.remove('open');
+            updateClubLogoPreview();
+        };
+
+        window.selectRecruiting = (el) => {
+            const val = el.dataset.value;
+            const label = el.querySelector('.cs-opt-label').textContent;
+            const dotClass = { open:'dot-open', closed:'dot-closed', full:'dot-full' }[val];
+            document.getElementById('csRecDropdown').querySelectorAll('.cs-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            const dot = document.getElementById('csRecDot');
+            dot.className = 'recruiting-dot ' + dotClass;
+            document.getElementById('csRecLabel').textContent = label + (val==='open' ? ' — Accepting Members' : val==='closed' ? ' — Not Accepting' : ' — Member Limit Reached');
+            document.getElementById('clubRecruiting').value = val;
+            document.getElementById('csRecWrap').classList.remove('open');
+        };
+
+        // ══════════════════════════════════════════════════════════════
+        //  FREE FIRE MODE — Roster Logic
+        // ══════════════════════════════════════════════════════════════
+        let isFFMode = false;
+
+        // Slot definitions: normal (5 main + 3 sub) vs FF (4 main + 2 sub)
+        const NORMAL_SLOTS = [
+            { id:'p1', label:'Captain', badgeClass:'badge-captain', phIgn:'Captain IGN', phUid:'Player UID', role:'Captain' },
+            { id:'p2', label:'Player 2', badgeClass:'badge-member', phIgn:'IGN', phUid:'Player UID', role:'Member' },
+            { id:'p3', label:'Player 3', badgeClass:'badge-member', phIgn:'IGN', phUid:'Player UID', role:'Member' },
+            { id:'p4', label:'Player 4', badgeClass:'badge-member', phIgn:'IGN', phUid:'Player UID', role:'Member' },
+            { id:'p5', label:'Player 5', badgeClass:'badge-member', phIgn:'IGN', phUid:'Player UID', role:'Member' },
+            { id:'s1', label:'Sub 1',    badgeClass:'badge-sub',    phIgn:'Sub IGN', phUid:'Player UID', role:'Sub', isSub:true },
+            { id:'s2', label:'Sub 2',    badgeClass:'badge-sub',    phIgn:'Sub IGN', phUid:'Player UID', role:'Sub', isSub:true },
+            { id:'s3', label:'Sub 3',    badgeClass:'badge-sub',    phIgn:'Sub IGN', phUid:'Player UID', role:'Sub', isSub:true },
+        ];
+        const FF_SLOTS = [
+            { id:'p1', label:'Captain',  badgeClass:'badge-ff-cap', phIgn:'Captain IGN', phUid:'Player UID', role:'Captain' },
+            { id:'p2', label:'Player 2', badgeClass:'badge-ff-mem', phIgn:'IGN', phUid:'Player UID', role:'Member' },
+            { id:'p3', label:'Player 3', badgeClass:'badge-ff-mem', phIgn:'IGN', phUid:'Player UID', role:'Member' },
+            { id:'p4', label:'Player 4', badgeClass:'badge-ff-mem', phIgn:'IGN', phUid:'Player UID', role:'Member' },
+            { id:'s1', label:'Sub 1',    badgeClass:'badge-ff-sub', phIgn:'Sub IGN', phUid:'Player UID', role:'Sub', isSub:true },
+            { id:'s2', label:'Sub 2',    badgeClass:'badge-ff-sub', phIgn:'Sub IGN', phUid:'Player UID', role:'Sub', isSub:true },
+        ];
+
+        function renderPlayerSlots(slots) {
+            const container = document.getElementById('playerSlots');
+            if (!container) return;
+
+            // Save current values before re-render
+            const saved = {};
+            [...NORMAL_SLOTS, ...FF_SLOTS].forEach(s => {
+                const ign = document.getElementById(s.id + '_ign');
+                const uid = document.getElementById(s.id + '_uid');
+                if (ign) saved[s.id] = { ign: ign.value, uid: uid ? uid.value : '' };
+            });
+
+            let html = '';
+            let mainCount = 0; let subCount = 0;
+            slots.forEach(slot => {
+                if (slot.isSub) subCount++;
+                else mainCount++;
+                const sep = slot.isSub && subCount === 1 ?
+                    `<div style="display:flex;align-items:center;gap:12px;margin:8px 0;"><span style="font-family:var(--font-display);font-size:0.75rem;color:var(--mist-white);letter-spacing:1px;text-transform:uppercase;">SUBSTITUTES</span><div style="flex:1;height:1px;background:var(--glass-border);"></div></span></div>` : '';
+                html += sep + `
+                    <div class="player-slot ${slot.isSub ? 'sub-slot' : ''}">
+                        <div class="player-slot-header">
+                            <span class="slot-badge ${slot.badgeClass}">${slot.label}</span>
+                            ${slot.isSub ? '<span style="font-size:0.75rem;color:var(--mist-white);">Optional</span>' : ''}
+                        </div>
+                        <div class="slot-inputs">
+                            <input id="${slot.id}_ign_vis" class="form-input" placeholder="${slot.phIgn}"
+                                   oninput="syncSlot('${slot.id}','ign')" value="${saved[slot.id]?.ign || ''}">
+                            <input id="${slot.id}_uid_vis" class="form-input" placeholder="${slot.phUid}"
+                                   oninput="syncSlot('${slot.id}','uid')" value="${saved[slot.id]?.uid || ''}">
+                        </div>
+                    </div>`;
+            });
+            container.innerHTML = html;
+
+            // Restore to hidden fields
+            slots.forEach(s => {
+                syncSlotFromVis(s.id);
+            });
+        }
+
+        window.syncSlot = (id, field) => {
+            const vis = document.getElementById(id + '_' + field + '_vis');
+            const hid = document.getElementById(id + '_' + field);
+            if (vis && hid) hid.value = vis.value;
+        };
+
+        function syncSlotFromVis(id) {
+            ['ign','uid'].forEach(f => {
+                const vis = document.getElementById(id + '_' + f + '_vis');
+                const hid = document.getElementById(id + '_' + f);
+                if (vis && hid) hid.value = vis.value;
+            });
+        }
+
+        function applyGameMode(game) {
+            const ffMode = game === 'FreeFire';
+            isFFMode = ffMode;
+            document.body.classList.toggle('ff-mode', ffMode);
+
+            const banner = document.getElementById('ffBanner');
+            if (banner) banner.classList.toggle('show', ffMode);
+
+            const countBadge = document.getElementById('rosterCountBadge');
+            if (countBadge) countBadge.textContent = ffMode ? '4 Main + 2 Subs' : '5 Main + 3 Subs';
+
+            renderPlayerSlots(ffMode ? FF_SLOTS : NORMAL_SLOTS);
+        }
+
+        // ── Read URL params for FF mode ──────────────────────────────────────
+        const _urlParams = new URLSearchParams(location.search);
+        const _gameParam  = _urlParams.get('game');
+        const _fromParam  = _urlParams.get('from');
+        const _tourParam  = _urlParams.get('tourId');
+
+        // After auth, if game=FreeFire from URL, auto-select it
+        function applyUrlParams() {
+            if (_gameParam === 'FreeFire') {
+                // Set custom select
+                const ffOpt = document.querySelector('#csGameDropdown .cs-option[data-value="FreeFire"]');
+                if (ffOpt) selectGame(ffOpt);
+                // Open editor if coming from FF tournament
+                if (_fromParam === 'ff-tournament') {
+                    openEditor();
+                    // Show back link
+                    if (_tourParam) {
+                        const editorHead = document.getElementById('editorTitle')?.parentElement;
+                        if (editorHead) {
+                            const backBtn = document.createElement('a');
+                            backBtn.href = `Tournament-FreeFire.html?id=${_tourParam}`;
+                            backBtn.style.cssText = 'color:rgba(255,107,0,0.8);font-size:0.82rem;display:flex;align-items:center;gap:6px;text-decoration:none;';
+                            backBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back to Tournament';
+                            editorHead.appendChild(backBtn);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Init slots on first render (normal mode default)
+        renderPlayerSlots(NORMAL_SLOTS);
+
+        // ── Patch fillForm to sync visible inputs ────────────────────────────
+        const _origFillForm = typeof fillForm !== 'undefined' ? fillForm : null;
+        // fillForm is defined after this block so we hook it via override below
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Free Fire Tournament | PSL</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --ff-orange:   #ff6b00;
+            --ff-amber:    #ffb347;
+            --ff-red:      #ff3300;
+            --ff-glow:     rgba(255, 107, 0, 0.35);
+            --ff-glow-sm:  rgba(255, 107, 0, 0.15);
+
+            --pure-black:  #000000;
+            --deep-black:  #0a0a0a;
+            --soft-black:  #111111;
+            --charcoal:    #1a1a1a;
+
+            --pure-white:  #ffffff;
+            --soft-white:  rgba(255,255,255,0.9);
+            --mist-white:  rgba(255,255,255,0.6);
+            --ghost-white: rgba(255,255,255,0.05);
+
+            --glass-bg:        rgba(255,255,255,0.03);
+            --glass-border:    rgba(255,255,255,0.08);
+            --glass-highlight: rgba(255,255,255,0.12);
+            --ff-border:       rgba(255,107,0,0.3);
+            --ff-glass:        rgba(255,107,0,0.07);
+
+            --font-display: 'Orbitron', sans-serif;
+            --font-body:    'Space Grotesk','Kanit',sans-serif;
+
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background: var(--deep-black);
+            font-family: var(--font-body);
+            color: var(--soft-white);
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
+
+        /* ── Ambient BG ── */
+        body::before {
+            content: '';
+            position: fixed; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background:
+                radial-gradient(circle at 15% 85%, rgba(255,107,0,0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 15%, rgba(255,51,0,0.05) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(255,107,0,0.03) 0%, transparent 60%);
+            pointer-events: none; z-index: 0;
+            animation: ambientPulse 8s ease-in-out infinite;
+        }
+        @keyframes ambientPulse {
+            0%,100% { opacity: 1; }
+            50%      { opacity: 0.7; }
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(10,10,10,0.92);
+            backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid var(--ff-border);
+            padding: 14px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 20px var(--ff-glow-sm);
+        }
+        .nav-back {
+            display: flex; align-items: center; gap: 10px;
+            color: var(--mist-white); font-size: 0.9rem; cursor: pointer;
+            text-decoration: none; transition: color 0.2s;
+        }
+        .nav-back:hover { color: var(--ff-orange); }
+        .nav-brand {
+            font-family: var(--font-display); font-weight: 800; font-size: 1.1rem;
+            color: var(--pure-white); letter-spacing: 2px;
+        }
+        .nav-brand .ff-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+            color: white; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.65rem; letter-spacing: 1px; margin-left: 8px;
+            box-shadow: 0 0 12px var(--ff-glow);
+        }
+
+        /* ── HERO BANNER ── */
+        .hero {
+            position: relative; width: 100%; aspect-ratio: 16/6; overflow: hidden;
+            min-height: 200px; max-height: 400px;
+        }
+        .hero-img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: brightness(0.4) saturate(1.2);
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom,
+                rgba(10,10,10,0.1) 0%,
+                rgba(10,10,10,0.3) 40%,
+                rgba(10,10,10,0.95) 100%);
+        }
+        .hero-content {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 24px 20px 0;
+        }
+        .hero-game-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+            color: white; padding: 6px 16px; border-radius: 30px;
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+            font-family: var(--font-display);
+            box-shadow: 0 0 20px var(--ff-glow);
+            margin-bottom: 12px;
+        }
+        .hero-title {
+            font-family: var(--font-display); font-weight: 900;
+            font-size: clamp(1.4rem, 4vw, 2.4rem);
+            color: var(--pure-white); letter-spacing: 1px;
+            line-height: 1.2; margin-bottom: 4px;
+            text-shadow: 0 0 30px var(--ff-glow);
+        }
+        .hero-organizer {
+            font-size: 0.85rem; color: var(--mist-white);
+        }
+
+        /* ── MAIN LAYOUT ── */
+        .main { position: relative; z-index: 1; padding: 20px 16px; max-width: 900px; margin: 0 auto; }
+
+        /* ── STATS ROW ── */
+        .stats-row {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 10px; margin-bottom: 20px;
+        }
+        @media(max-width:560px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+
+        .stat-glass {
+            background: var(--ff-glass);
+            border: 1px solid var(--ff-border);
+            border-radius: var(--radius-md);
+            padding: 16px 12px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .stat-glass:hover {
+            background: rgba(255,107,0,0.12);
+            box-shadow: 0 0 20px var(--ff-glow-sm);
+            transform: translateY(-3px);
+        }
+        .stat-icon {
+            font-size: 1.3rem; color: var(--ff-orange);
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-family: var(--font-display); font-weight: 800;
+            font-size: 1.4rem; color: var(--pure-white);
+        }
+        .stat-label {
+            font-size: 0.72rem; color: var(--mist-white);
+            text-transform: uppercase; letter-spacing: 1px; margin-top: 2px;
+        }
+
+        /* ── PROGRESS BAR ── */
+        .slot-progress-wrap {
+            background: var(--glass-bg); border: 1px solid var(--ff-border);
+            border-radius: var(--radius-md); padding: 18px 20px; margin-bottom: 20px;
+        }
+        .slot-label-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px;
+        }
+        .slot-title {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 0.85rem; color: var(--pure-white); letter-spacing: 1px;
+        }
+        .slot-count {
+            font-family: var(--font-display); font-weight: 800;
+            font-size: 1.1rem;
+        }
+        .slot-count .current { color: var(--ff-orange); }
+        .slot-count .sep    { color: var(--mist-white); margin: 0 4px; }
+        .slot-count .max    { color: var(--soft-white); }
+        .progress-track {
+            height: 10px; background: rgba(255,255,255,0.08);
+            border-radius: 10px; overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ff-orange), var(--ff-amber));
+            border-radius: 10px;
+            transition: width 1s ease;
+            box-shadow: 0 0 10px var(--ff-glow);
+        }
+        .slot-warn {
+            font-size: 0.78rem; color: var(--ff-amber); margin-top: 8px;
+            display: none;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg); padding: 22px 18px;
+            margin-bottom: 18px;
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s;
+        }
+        .card:hover { border-color: var(--ff-border); }
+        .card-title {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 0.9rem; color: var(--ff-orange);
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .card-title::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(90deg, var(--ff-border), transparent);
+        }
+
+        /* ── DETAIL GRID ── */
+        .detail-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        @media(max-width:480px) { .detail-grid { grid-template-columns: 1fr; } }
+
+        .detail-item { display: flex; flex-direction: column; gap: 4px; }
+        .detail-key {
+            font-size: 0.72rem; color: var(--mist-white);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .detail-val {
+            font-size: 0.95rem; font-weight: 600; color: var(--soft-white);
+        }
+        .detail-val.prize {
+            color: var(--ff-amber);
+            font-family: var(--font-display); font-size: 1.1rem;
+        }
+        .detail-val.free {
+            color: #10b981; font-weight: 700;
+        }
+
+        /* ── TABS ── */
+        .tab-row {
+            display: flex; gap: 8px; margin-bottom: 16px;
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md); padding: 5px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px; border: none; cursor: pointer;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-display); font-size: 0.72rem;
+            font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+            background: transparent; color: var(--mist-white);
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+            color: white;
+            box-shadow: 0 4px 15px var(--ff-glow);
+        }
+
+        /* ── TEAMS TABLE ── */
+        .teams-table { width: 100%; border-collapse: collapse; }
+        .teams-table th {
+            text-align: left; padding: 10px 12px;
+            font-size: 0.7rem; color: var(--mist-white);
+            font-family: var(--font-display); letter-spacing: 1px;
+            text-transform: uppercase; border-bottom: 1px solid var(--glass-border);
+        }
+        .teams-table td {
+            padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.9rem; vertical-align: middle;
+        }
+        .teams-table tr:hover td { background: var(--ghost-white); }
+
+        .team-row-info { display: flex; align-items: center; gap: 10px; }
+        .team-logo-sm {
+            width: 36px; height: 36px; border-radius: 8px;
+            object-fit: cover; border: 1px solid var(--ff-border);
+        }
+        .team-row-name {
+            font-weight: 700; color: var(--pure-white); font-size: 0.9rem;
+        }
+        .team-row-tag {
+            font-size: 0.72rem; color: var(--ff-orange);
+            font-family: var(--font-display); letter-spacing: 1px;
+        }
+        .rank-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 50%;
+            font-family: var(--font-display); font-weight: 800; font-size: 0.75rem;
+        }
+        .rank-badge.gold   { background: rgba(255,215,0,0.15); color: gold; border: 1px solid rgba(255,215,0,0.3); }
+        .rank-badge.silver { background: rgba(192,192,192,0.1); color: silver; border: 1px solid rgba(192,192,192,0.3); }
+        .rank-badge.bronze { background: rgba(205,127,50,0.1); color: #cd7f32; border: 1px solid rgba(205,127,50,0.3); }
+        .rank-badge.other  { background: var(--ghost-white); color: var(--mist-white); border: 1px solid var(--glass-border); }
+
+        /* ── LINEUP EXPAND ── */
+        .lineup-toggle {
+            background: var(--ghost-white); border: 1px solid var(--glass-border);
+            border-radius: 8px; padding: 6px 12px; color: var(--mist-white);
+            font-size: 0.78rem; cursor: pointer; transition: all 0.2s;
+            font-family: var(--font-display); letter-spacing: 1px;
+        }
+        .lineup-toggle:hover {
+            border-color: var(--ff-border); color: var(--ff-orange);
+        }
+        .lineup-panel {
+            background: rgba(255,107,0,0.05); border: 1px solid var(--ff-border);
+            border-radius: var(--radius-sm); padding: 14px;
+            margin-top: 8px; display: none;
+        }
+        .lineup-panel.open { display: block; animation: fadeInDown 0.2s ease; }
+        @keyframes fadeInDown {
+            from { opacity:0; transform:translateY(-6px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .lineup-player {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .lineup-player:last-child { border-bottom: none; }
+        .player-role-tag {
+            font-size: 0.65rem; font-weight: 800; padding: 3px 8px;
+            border-radius: 6px; font-family: var(--font-display);
+            letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
+        }
+        .role-captain { background: rgba(255,107,0,0.2); color: var(--ff-orange); border: 1px solid var(--ff-border); }
+        .role-member  { background: var(--ghost-white); color: var(--soft-white); border: 1px solid var(--glass-border); }
+        .role-sub     { background: rgba(255,255,255,0.03); color: var(--mist-white); border: 1px solid rgba(255,255,255,0.06); }
+        .player-name  { font-weight: 600; color: var(--soft-white); font-size: 0.9rem; flex: 1; }
+        .player-uid   { font-size: 0.75rem; color: var(--mist-white); font-family: monospace; }
+
+        /* ── RULES ── */
+        .rule-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.9rem; color: var(--soft-white);
+        }
+        .rule-item:last-child { border-bottom: none; }
+        .rule-num {
+            min-width: 26px; height: 26px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-size: 0.72rem; font-weight: 800; font-family: var(--font-display);
+            box-shadow: 0 0 10px var(--ff-glow-sm); flex-shrink: 0; margin-top: 1px;
+        }
+
+        /* ── EMPTY STATE ── */
+        .empty-state {
+            text-align: center; padding: 40px 20px; color: var(--mist-white);
+        }
+        .empty-state i {
+            font-size: 3rem; color: rgba(255,107,0,0.3);
+            margin-bottom: 12px; display: block;
+        }
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* ── LOADING ── */
+        .loader {
+            text-align: center; padding: 50px 20px; color: var(--mist-white);
+        }
+        .loader i { font-size: 2rem; color: var(--ff-orange); display: block; margin-bottom: 12px; }
+
+        /* ── STATUS BADGE ── */
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700;
+            font-family: var(--font-display); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .status-open     { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .status-closed   { background: rgba(239,68,68,0.15);  color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .status-ongoing  { background: rgba(255,107,0,0.15);  color: var(--ff-orange); border: 1px solid var(--ff-border); }
+        .status-finished { background: rgba(255,255,255,0.05); color: var(--mist-white); border: 1px solid var(--glass-border); }
+
+        .dot-pulse {
+            width: 7px; height: 7px; border-radius: 50%; background: currentColor;
+            animation: dotPulse 1.4s ease-in-out infinite;
+        }
+        @keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+        /* ── STICKY BOTTOM CTA ── */
+        .bottom-cta {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+            padding: 14px 16px 20px;
+            background: linear-gradient(to top, rgba(10,10,10,0.98) 60%, transparent);
+            backdrop-filter: blur(12px);
+        }
+        .cta-inner { max-width: 900px; margin: 0 auto; display: flex; gap: 10px; }
+
+        .btn-create-ff {
+            flex: 1; padding: 15px;
+            background: var(--ghost-white);
+            border: 1px solid var(--ff-border);
+            border-radius: var(--radius-md);
+            color: var(--ff-orange); font-weight: 700; cursor: pointer;
+            font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 1px;
+            text-transform: uppercase; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-create-ff:hover {
+            background: rgba(255,107,0,0.15);
+            box-shadow: 0 0 20px var(--ff-glow-sm);
+            transform: translateY(-2px);
+        }
+
+        .btn-register-ff {
+            flex: 2; padding: 15px;
+            background: linear-gradient(135deg, var(--ff-orange) 0%, var(--ff-red) 100%);
+            border: none; border-radius: var(--radius-md);
+            color: white; font-weight: 800; cursor: pointer;
+            font-family: var(--font-display); font-size: 0.9rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 6px 24px var(--ff-glow), 0 2px 8px rgba(0,0,0,0.4);
+            position: relative; overflow: hidden;
+        }
+        .btn-register-ff::before {
+            content: '';
+            position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.6s;
+        }
+        .btn-register-ff:hover::before { left: 100%; }
+        .btn-register-ff:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 32px var(--ff-glow), 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .btn-register-ff:disabled {
+            background: var(--ghost-white); color: var(--mist-white);
+            box-shadow: none; cursor: not-allowed; transform: none;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* ── REGISTER MODAL ── */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 200;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(16px);
+            display: none; align-items: flex-end; justify-content: center;
+            padding: 0;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-sheet {
+            background: rgba(12,12,12,0.98);
+            border: 1px solid var(--ff-border);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            padding: 24px 20px 36px;
+            width: 100%; max-width: 600px;
+            max-height: 90vh; overflow-y: auto;
+            animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 -10px 40px var(--ff-glow-sm);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+        .modal-handle {
+            width: 40px; height: 4px; border-radius: 4px;
+            background: var(--glass-border); margin: 0 auto 20px;
+        }
+        .modal-title {
+            font-family: var(--font-display); font-weight: 800;
+            font-size: 1.2rem; color: var(--pure-white); letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .modal-subtitle { font-size: 0.85rem; color: var(--mist-white); margin-bottom: 24px; }
+
+        .custom-select-wrap { position: relative; margin-bottom: 18px; }
+        .custom-select-wrap label {
+            display: block; font-size: 0.8rem; color: var(--mist-white);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+            font-family: var(--font-display);
+        }
+        .custom-select {
+            width: 100%; padding: 14px 16px;
+            background: var(--ghost-white); border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm); color: var(--soft-white);
+            font-family: var(--font-body); font-size: 0.95rem;
+            appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(255,107,0,0.8)' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 14px center;
+            transition: all 0.3s;
+        }
+        .custom-select:focus {
+            outline: none; border-color: var(--ff-border);
+            background-color: rgba(255,107,0,0.07);
+            box-shadow: 0 0 0 3px var(--ff-glow-sm);
+        }
+        .custom-select option { background: #111; }
+
+        .fee-info-box {
+            background: rgba(255,107,0,0.08); border: 1px solid var(--ff-border);
+            border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 18px;
+        }
+        .fee-info-label { font-size: 0.75rem; color: var(--ff-orange); margin-bottom: 4px; font-weight: 600; }
+        .fee-info-val { font-family: var(--font-display); font-size: 1.4rem; color: var(--pure-white); font-weight: 800; }
+        .fee-info-sub { font-size: 0.78rem; color: var(--mist-white); margin-top: 4px; }
+
+        .btn-modal-confirm {
+            width: 100%; padding: 16px;
+            background: linear-gradient(135deg, var(--ff-orange), var(--ff-red));
+            border: none; border-radius: var(--radius-md);
+            color: white; font-weight: 800; cursor: pointer;
+            font-family: var(--font-display); font-size: 0.95rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            box-shadow: 0 6px 24px var(--ff-glow);
+            transition: all 0.3s;
+        }
+        .btn-modal-confirm:hover { transform: translateY(-2px); box-shadow: 0 10px 30px var(--ff-glow); }
+        .btn-modal-cancel {
+            width: 100%; padding: 13px;
+            background: transparent; border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md); color: var(--mist-white);
+            font-weight: 600; cursor: pointer; font-family: var(--font-body);
+            margin-top: 10px; transition: all 0.3s; font-size: 0.9rem;
+        }
+        .btn-modal-cancel:hover { border-color: rgba(239,68,68,0.4); color: #ef4444; }
+
+        /* ── BOTTOM NAV ── */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(10,10,10,0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--ff-border);
+            display: flex; z-index: 40;
+            padding: 0 0 env(safe-area-inset-bottom,0);
+        }
+        .nav-item {
+            flex: 1; padding: 12px 8px 10px;
+            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            color: var(--mist-white); text-decoration: none; font-size: 0.65rem;
+            font-family: var(--font-display); letter-spacing: 1px; text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .nav-item i { font-size: 1.2rem; }
+        .nav-item.active, .nav-item:hover { color: var(--ff-orange); }
+
+        /* Responsive */
+        @media(max-width:480px) {
+            .cta-inner { flex-direction: column; }
+            .btn-create-ff, .btn-register-ff { flex: unset; width: 100%; }
+            .btn-create-ff { order: 2; }
+            .btn-register-ff { order: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="tournaments.html" class="nav-back">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+        <div class="nav-brand">
+            PSL <span class="ff-badge"><i class="fa-solid fa-fire"></i> FREE FIRE</span>
+        </div>
+        <div id="statusBadge"></div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero" id="heroSection">
+        <img id="heroImg" src="https://placehold.co/1920x1080/1a0800/ff6b00?text=FREE+FIRE+TOURNAMENT" class="hero-img" alt="Tournament Banner">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-game-badge">
+                <i class="fa-solid fa-fire"></i> FREE FIRE
+            </div>
+            <div class="hero-title" id="heroTitle">Loading...</div>
+            <div class="hero-organizer" id="heroOrganizer">PSL · Professional Sport League</div>
+        </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main" id="mainContent">
+        <div class="loader">
+            <i class="fa-solid fa-fire fa-spin"></i>
+            <div>Loading tournament data...</div>
+        </div>
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <div class="bottom-cta" id="bottomCta" style="display:none;">
+        <div class="cta-inner">
+            <button class="btn-create-ff" onclick="goCreateTeam()">
+                <i class="fa-solid fa-plus"></i> Create FF Team
+            </button>
+            <button class="btn-register-ff" id="btnRegister" onclick="openRegisterModal()">
+                <i class="fa-solid fa-fire"></i>
+                <span id="btnRegisterText">Register Now</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div class="modal-overlay" id="registerModal" onclick="closeModalIfOutside(event)">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-title">🔥 Register for Tournament</div>
+            <div class="modal-subtitle" id="modalTourName">Select your Free Fire team</div>
+
+            <div class="fee-info-box">
+                <div class="fee-info-label">Registration Fee</div>
+                <div class="fee-info-val" id="modalFeeVal">Free</div>
+                <div class="fee-info-sub" id="modalFeeNote">No payment required</div>
+            </div>
+
+            <div class="custom-select-wrap">
+                <label>Select Your Free Fire Team</label>
+                <select id="modalTeamSelect" class="custom-select">
+                    <option value="">-- Choose Team --</option>
+                </select>
+            </div>
+
+            <div id="selectedTeamPreview" style="display:none; background:var(--ff-glass); border:1px solid var(--ff-border); border-radius:var(--radius-sm); padding:14px; margin-bottom:18px;">
+                <div style="font-size:0.78rem; color:var(--ff-orange); margin-bottom:8px; font-family:var(--font-display); letter-spacing:1px;">SELECTED TEAM</div>
+                <div id="previewTeamName" style="font-weight:700; font-size:1rem; color:var(--pure-white);"></div>
+                <div id="previewTeamPlayers" style="font-size:0.8rem; color:var(--mist-white); margin-top:4px;"></div>
+            </div>
+
+            <button class="btn-modal-confirm" onclick="confirmRegister()">
+                <i class="fa-solid fa-fire"></i> &nbsp;Confirm Registration
+            </button>
+            <button class="btn-modal-cancel" onclick="closeRegisterModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="scrims.html" class="nav-item"><i class="fa-solid fa-handshake-simple"></i><span>Scrims</span></a>
+        <a href="tournaments.html" class="nav-item active"><i class="fa-solid fa-trophy"></i><span>Tourneys</span></a>
+        <a href="manager.html" class="nav-item"><i class="fa-solid fa-user-gear"></i><span>Manage</span></a>
+    </nav>
+
+    <script type="module">
+        import { db, auth } from './firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import {
+            doc, getDoc, collection, query, where, getDocs, addDoc, updateDoc
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // ── State ──────────────────────────────────────────────────────────────
+        const params  = new URLSearchParams(location.search);
+        const tourId  = params.get('id');
+        let tourData  = null;
+        let currentUser  = null;
+        let registrations = [];
+        let myFFTeams = [];
+        let activeTab = 'teams';
+
+        // ── Auth ───────────────────────────────────────────────────────────────
+        onAuthStateChanged(auth, user => { currentUser = user; });
+
+        // ── Boot ───────────────────────────────────────────────────────────────
+        if (!tourId) {
+            document.getElementById('mainContent').innerHTML =
+                '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Tournament not found. <a href="tournaments.html" style="color:var(--ff-orange);">Go back</a></p></div>';
+        } else {
+            loadTournament();
+        }
+
+        // ── Load Tournament ────────────────────────────────────────────────────
+        async function loadTournament() {
+            try {
+                const snap = await getDoc(doc(db, 'tournaments', tourId));
+                if (!snap.exists()) throw new Error('Not found');
+                tourData = snap.data();
+                renderPage(tourData);
+                loadRegistrations();
+            } catch (e) {
+                document.getElementById('mainContent').innerHTML =
+                    `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><p>Error: ${e.message}</p></div>`;
+            }
+        }
+
+        // ── Render Page ────────────────────────────────────────────────────────
+        function renderPage(t) {
+            // Hero
+            if (t.img) document.getElementById('heroImg').src = t.img;
+            document.getElementById('heroTitle').textContent = t.title || 'Free Fire Tournament';
+            document.getElementById('heroOrganizer').textContent = `PSL · ${t.date || 'Coming Soon'}`;
+
+            // Status badge
+            const statusMap = {
+                open: `<span class="status-badge status-open"><span class="dot-pulse"></span>Open</span>`,
+                ongoing: `<span class="status-badge status-ongoing"><span class="dot-pulse"></span>Live</span>`,
+                closed: `<span class="status-badge status-closed">Closed</span>`,
+                finished: `<span class="status-badge status-finished">Finished</span>`,
+            };
+            document.getElementById('statusBadge').innerHTML = statusMap[t.status] || statusMap.open;
+
+            // Stats
+            const isFree = !t.fee || t.fee == '0' || String(t.fee).toLowerCase().includes('free');
+            const stats = `
+                <div class="stats-row">
+                    <div class="stat-glass">
+                        <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="stat-value">${t.prize ? String(t.prize).replace(/\B(?=(\d{3})+(?!\d))/g,',') : 'TBA'}</div>
+                        <div class="stat-label">Prize Pool</div>
+                    </div>
+                    <div class="stat-glass">
+                        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-value" id="teamCountStat">${t.currentTeams || 0}</div>
+                        <div class="stat-label">Teams Joined</div>
+                    </div>
+                    <div class="stat-glass">
+                        <div class="stat-icon"><i class="fa-solid fa-ticket"></i></div>
+                        <div class="stat-value">${isFree ? 'Free' : t.fee}</div>
+                        <div class="stat-label">Entry Fee</div>
+                    </div>
+                    <div class="stat-glass">
+                        <div class="stat-icon"><i class="fa-solid fa-sitemap"></i></div>
+                        <div class="stat-value">${t.format ? t.format.replace(' Elimination','') : 'SE'}</div>
+                        <div class="stat-label">Format</div>
+                    </div>
+                </div>`;
+
+            // Slot Progress
+            const cur = t.currentTeams || 0;
+            const max = t.maxTeams || 32;
+            const pct = Math.min((cur / max) * 100, 100);
+            const almostFull = pct >= 80;
+            const progress = `
+                <div class="slot-progress-wrap">
+                    <div class="slot-label-row">
+                        <div class="slot-title"><i class="fa-solid fa-users" style="color:var(--ff-orange);"></i> &nbsp;Tournament Slots</div>
+                        <div class="slot-count">
+                            <span class="current">${cur}</span>
+                            <span class="sep">/</span>
+                            <span class="max">${max} Teams</span>
+                        </div>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                    </div>
+                    ${almostFull ? `<div class="slot-warn" style="display:block"><i class="fa-solid fa-triangle-exclamation"></i> Almost full! ${max - cur} slots remaining</div>` : ''}
+                </div>`;
+
+            // Details Card
+            const details = `
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-circle-info"></i> Tournament Details</div>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <span class="detail-key"><i class="fa-solid fa-calendar"></i> Date</span>
+                            <span class="detail-val">${t.date || 'TBA'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-key"><i class="fa-solid fa-clock"></i> Time</span>
+                            <span class="detail-val">${t.time || 'TBA'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-key"><i class="fa-solid fa-sitemap"></i> Format</span>
+                            <span class="detail-val">${t.format || 'Single Elimination'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-key"><i class="fa-solid fa-gamepad"></i> Mode</span>
+                            <span class="detail-val">${t.mode || 'BO1'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-key"><i class="fa-solid fa-users"></i> Max Teams</span>
+                            <span class="detail-val">${max}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-key"><i class="fa-solid fa-ticket"></i> Entry Fee</span>
+                            <span class="detail-val ${isFree ? 'free' : 'prize'}">${isFree ? '✓ Free' : t.fee}</span>
+                        </div>
+                        <div class="detail-item" style="grid-column:1/-1;">
+                            <span class="detail-key"><i class="fa-solid fa-layer-group"></i> Team Size</span>
+                            <span class="detail-val">6 Players &nbsp;(4 Main + 2 Substitutes)</span>
+                        </div>
+                        ${t.description ? `
+                        <div class="detail-item" style="grid-column:1/-1;">
+                            <span class="detail-key"><i class="fa-solid fa-align-left"></i> Description</span>
+                            <span class="detail-val" style="color:var(--mist-white); line-height:1.6;">${t.description}</span>
+                        </div>` : ''}
+                    </div>
+                </div>`;
+
+            // Tabs + Teams/Rules
+            const tabs = `
+                <div class="tab-row">
+                    <button class="tab-btn active" id="tabTeams" onclick="switchTab('teams')">
+                        <i class="fa-solid fa-users"></i> &nbsp;Registered Teams
+                    </button>
+                    <button class="tab-btn" id="tabRules" onclick="switchTab('rules')">
+                        <i class="fa-solid fa-scroll"></i> &nbsp;Rules
+                    </button>
+                </div>
+                <div id="tabContent">
+                    <div class="loader"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:1.5rem;"></i></div>
+                </div>`;
+
+            document.getElementById('mainContent').innerHTML = stats + progress + details + tabs;
+
+            // animate progress
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    const fill = document.getElementById('progressFill');
+                    if (fill) fill.style.width = pct + '%';
+                }, 100);
+            });
+
+            // CTA button
+            const isOpen = t.status === 'open' || t.status === 'ongoing';
+            const full   = cur >= max;
+            const btn = document.getElementById('btnRegister');
+            const btnText = document.getElementById('btnRegisterText');
+            if (!isOpen) {
+                btn.disabled = true;
+                btnText.textContent = t.status === 'finished' ? 'Tournament Ended' : 'Registration Closed';
+            } else if (full) {
+                btn.disabled = true;
+                btnText.textContent = 'Slots Full';
+            }
+
+            // Fee for modal
+            document.getElementById('modalTourName').textContent = t.title;
+            if (isFree) {
+                document.getElementById('modalFeeVal').textContent = 'Free';
+                document.getElementById('modalFeeNote').textContent = 'No payment required — register instantly';
+            } else {
+                document.getElementById('modalFeeVal').textContent = t.fee;
+                document.getElementById('modalFeeNote').textContent = 'Entry fee required to complete registration';
+            }
+
+            document.getElementById('bottomCta').style.display = 'block';
+        }
+
+        // ── Load Registrations ─────────────────────────────────────────────────
+        async function loadRegistrations() {
+            try {
+                const q = query(collection(db,'registrations'), where('tournamentId','==', tourId));
+                const snap = await getDocs(q);
+                registrations = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderTab(activeTab);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // ── Tabs ───────────────────────────────────────────────────────────────
+        window.switchTab = (tab) => {
+            activeTab = tab;
+            document.getElementById('tabTeams').classList.toggle('active', tab === 'teams');
+            document.getElementById('tabRules').classList.toggle('active', tab === 'rules');
+            renderTab(tab);
+        };
+
+        function renderTab(tab) {
+            const container = document.getElementById('tabContent');
+            if (tab === 'teams') renderTeams(container);
+            else renderRules(container);
+        }
+
+        function renderTeams(container) {
+            const approved = registrations.filter(r => r.status === 'approved' || r.status === 'pending');
+            if (approved.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-users"></i>
+                        <p>No teams registered yet.<br>Be the first to join!</p>
+                    </div>`;
+                return;
+            }
+
+            let rows = approved.map((r, i) => {
+                const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'other';
+                const logo = r.teamLogo || `https://placehold.co/36/1a0800/ff6b00?text=${(r.teamTag||'FF').charAt(0)}`;
+                const statusBadge = r.status === 'approved'
+                    ? `<span style="color:#10b981;font-size:0.72rem;"><i class="fa-solid fa-circle-check"></i> Confirmed</span>`
+                    : `<span style="color:var(--ff-amber);font-size:0.72rem;"><i class="fa-solid fa-clock"></i> Pending</span>`;
+                const roster = r.roster || [];
+                const lineupHtml = roster.length > 0 ? `
+                    <div class="lineup-panel" id="lineup_${r.id}">
+                        ${roster.map(p => `
+                            <div class="lineup-player">
+                                <span class="player-role-tag ${p.role === 'Captain' ? 'role-captain' : p.role === 'Sub' ? 'role-sub' : 'role-member'}">${p.role}</span>
+                                <span class="player-name">${p.ign || 'Unknown'}</span>
+                                <span class="player-uid">${p.uid ? '#'+p.uid : ''}</span>
+                            </div>`).join('')}
+                    </div>` : '';
+
+                return `
+                    <tr>
+                        <td><div class="rank-badge ${rankClass}">${i+1}</div></td>
+                        <td>
+                            <div class="team-row-info">
+                                <img src="${logo}" class="team-logo-sm" onerror="this.src='https://placehold.co/36/1a0800/ff6b00?text=FF'">
+                                <div>
+                                    <div class="team-row-name">${r.teamName || 'Unknown'}</div>
+                                    <div class="team-row-tag">${r.teamTag ? '['+r.teamTag+']' : ''}</div>
+                                </div>
+                            </div>
+                            ${lineupHtml}
+                        </td>
+                        <td>${statusBadge}</td>
+                        <td>
+                            ${roster.length > 0 ? `<button class="lineup-toggle" onclick="toggleLineup('${r.id}')">
+                                <i class="fa-solid fa-list-ul"></i> Lineup
+                            </button>` : '<span style="color:var(--mist-white);font-size:0.8rem;">-</span>'}
+                        </td>
+                    </tr>`;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="card" style="padding:0; overflow:hidden;">
+                    <table class="teams-table">
+                        <thead>
+                            <tr>
+                                <th style="width:48px;">#</th>
+                                <th>Team</th>
+                                <th>Status</th>
+                                <th>Lineup</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>`;
+        }
+
+        function renderRules(container) {
+            const rules = [
+                'ทีมละ 6 คน เท่านั้น (ตัวจริง 4 คน, สำรอง 2 คน) ต้องลงทะเบียนครบก่อนแข่ง',
+                'ผู้เล่นทุกคนต้องใช้ IGN และ UID จริงตามที่ลงทะเบียนไว้ในระบบ',
+                'ห้ามใช้โปรแกรมโกงหรือช่องโหว่ใดๆ หากพบจะถูก Disqualify ทันที',
+                'ทีมต้องเช็คอินก่อนเวลาแข่ง 15 นาที หากไม่มาถือว่า Forfeit',
+                'การตัดสินของกรรมการถือเป็นที่สิ้นสุด ไม่มีการอุทธรณ์',
+                'ค่าสมัครที่ชำระแล้วไม่สามารถคืนได้ในทุกกรณี',
+                'PSL ขอสงวนสิทธิ์ในการแก้ไขกฎกติกาโดยแจ้งล่วงหน้า',
+                'การแข่งขันจะดำเนินตามรูปแบบที่กำหนดโดย Admin เท่านั้น',
+            ];
+            const customRules = tourData?.rules || '';
+            container.innerHTML = `
+                <div class="card">
+                    <div class="card-title"><i class="fa-solid fa-scroll"></i> Official Rules</div>
+                    ${rules.map((r,i) => `
+                        <div class="rule-item">
+                            <div class="rule-num">${i+1}</div>
+                            <div>${r}</div>
+                        </div>`).join('')}
+                    ${customRules ? `
+                    <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--ff-border);">
+                        <div class="card-title" style="margin-bottom:12px;"><i class="fa-solid fa-plus"></i> Additional Rules</div>
+                        <div style="color:var(--mist-white); line-height:1.8; font-size:0.9rem; white-space:pre-line;">${customRules}</div>
+                    </div>` : ''}
+                </div>`;
+        }
+
+        // ── Toggle Lineup ──────────────────────────────────────────────────────
+        window.toggleLineup = (id) => {
+            const panel = document.getElementById('lineup_' + id);
+            if (!panel) return;
+            panel.classList.toggle('open');
+        };
+
+        // ── Register Modal ─────────────────────────────────────────────────────
+        window.openRegisterModal = async () => {
+            if (!currentUser) { alert('Please login first'); return; }
+
+            // Load user's FF teams
+            const q = query(collection(db,'teams'),
+                where('managerId','==', currentUser.uid),
+                where('game','==','FreeFire'));
+            const snap = await getDocs(q);
+            myFFTeams = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+            const sel = document.getElementById('modalTeamSelect');
+            sel.innerHTML = '<option value="">-- Choose Team --</option>';
+            myFFTeams.forEach(t => {
+                sel.innerHTML += `<option value="${t.id}">${t.teamName} [${t.tag || 'FF'}]</option>`;
+            });
+
+            if (myFFTeams.length === 0) {
+                sel.innerHTML = '<option value="">No Free Fire teams found — create one first</option>';
+            }
+
+            document.getElementById('selectedTeamPreview').style.display = 'none';
+            document.getElementById('registerModal').classList.add('open');
+        };
+
+        window.closeRegisterModal = () => {
+            document.getElementById('registerModal').classList.remove('open');
+        };
+
+        window.closeModalIfOutside = (e) => {
+            if (e.target === document.getElementById('registerModal')) closeRegisterModal();
+        };
+
+        // Preview when team selected
+        document.getElementById('modalTeamSelect')?.addEventListener('change', function() {
+            const team = myFFTeams.find(t => t.id === this.value);
+            const preview = document.getElementById('selectedTeamPreview');
+            if (team) {
+                document.getElementById('previewTeamName').textContent = `${team.teamName} [${team.tag || ''}]`;
+                const count = (team.roster || []).length;
+                document.getElementById('previewTeamPlayers').textContent = `${count} players registered`;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // ── Confirm Register ───────────────────────────────────────────────────
+        window.confirmRegister = async () => {
+            const teamId = document.getElementById('modalTeamSelect').value;
+            if (!teamId) { alert('Please select a team'); return; }
+
+            const team = myFFTeams.find(t => t.id === teamId);
+            if (!team) return;
+
+            // Check already registered
+            const existing = registrations.find(r =>
+                r.teamId === teamId && r.tournamentId === tourId
+            );
+            if (existing) {
+                alert('This team is already registered for this tournament');
+                return;
+            }
+
+            // Check team has min 4 players
+            const mainPlayers = (team.roster || []).filter(p => p.role !== 'Sub');
+            if (mainPlayers.length < 4) {
+                alert('Your team needs at least 4 main players to register');
+                return;
+            }
+
+            try {
+                const btn = document.querySelector('.btn-modal-confirm');
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registering...';
+                btn.disabled = true;
+
+                await addDoc(collection(db,'registrations'), {
+                    tournamentId   : tourId,
+                    teamId         : teamId,
+                    teamName       : team.teamName,
+                    teamTag        : team.tag || '',
+                    teamLogo       : team.logo || '',
+                    roster         : team.roster || [],
+                    managerName    : currentUser.displayName || currentUser.email,
+                    managerId      : currentUser.uid,
+                    status         : 'pending',
+                    game           : 'FreeFire',
+                    registeredAt   : new Date().toISOString(),
+                });
+
+                // Update currentTeams count
+                await updateDoc(doc(db,'tournaments', tourId), {
+                    currentTeams: (tourData.currentTeams || 0) + 1
+                });
+
+                closeRegisterModal();
+                alert('✅ Registration successful! Status: Pending Admin Approval');
+                loadTournament();
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        };
+
+        // ── Go Create Team ─────────────────────────────────────────────────────
+        window.goCreateTeam = () => {
+            location.href = 'manager.html?game=FreeFire&from=ff-tournament&tourId=' + tourId;
+        };
+    </script>
+</body>
+</html>

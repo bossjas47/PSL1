@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSL SUPER ADMIN | Control Center</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --pure-black: #000000;
+            --deep-black: #0a0a0a;
+            --soft-black: #111111;
+            --charcoal: #1a1a1a;
+            --graphite: #2a2a2a;
+            --pure-white: #ffffff;
+            --soft-white: rgba(255,255,255,0.9);
+            --mist-white: rgba(255,255,255,0.6);
+            --frost-white: rgba(255,255,255,0.1);
+            --ghost-white: rgba(255,255,255,0.05);
+            --glass-bg: rgba(255,255,255,0.03);
+            --glass-border: rgba(255,255,255,0.08);
+            --glass-highlight: rgba(255,255,255,0.15);
+            --liquid-sheen: linear-gradient(135deg,rgba(255,255,255,0.1) 0%,rgba(255,255,255,0) 50%,rgba(255,255,255,0.05) 100%);
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk','Kanit',sans-serif;
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+            --sidebar-width: 280px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--deep-black); font-family: var(--font-body); color: var(--soft-white); overflow-x: hidden; }
+        body::before {
+            content: '';
+            position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 20% 80%,rgba(255,255,255,0.03) 0%,transparent 50%),
+                        radial-gradient(circle at 80% 20%,rgba(255,255,255,0.02) 0%,transparent 50%);
+            pointer-events: none; z-index: -1;
+            animation: ambientMove 20s ease-in-out infinite;
+        }
+        @keyframes ambientMove {
+            0%,100% { transform: translate(0,0) scale(1); }
+            50% { transform: translate(-2%,2%) scale(1.1); }
+        }
+
+        /* ===== BOOT LOADER ===== */
+        #bootLoader {
+            position: fixed; inset: 0;
+            background: rgba(10,10,10,0.99);
+            backdrop-filter: blur(30px);
+            z-index: 10000;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 20px;
+        }
+        #bootLoader.hidden { display: none; }
+        .boot-spinner {
+            width: 56px; height: 56px;
+            border: 3px solid var(--glass-border);
+            border-top-color: var(--pure-white);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .boot-text {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: var(--mist-white);
+            text-transform: uppercase;
+        }
+
+        /* ===== FIRST SETUP SCREEN ===== */
+        #setupScreen {
+            position: fixed; inset: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(30px);
+            z-index: 9998;
+            display: none;
+            flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .setup-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(20px);
+        }
+        .setup-icon { font-size: 3rem; margin-bottom: 20px; text-align: center; }
+        .setup-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem; font-weight: 800;
+            letter-spacing: 2px; text-align: center;
+            margin-bottom: 8px; color: var(--pure-white);
+        }
+        .setup-subtitle { color: var(--mist-white); text-align: center; margin-bottom: 30px; font-size: 0.9rem; }
+
+        /* ===== LOCK SCREEN ===== */
+        #lockScreen {
+            position: fixed; inset: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(30px);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            align-items: center; justify-content: center;
+            color: var(--pure-white); text-align: center;
+        }
+        .lock-icon { font-size: 4rem; margin-bottom: 20px; color: var(--pure-white); animation: pulse 2s infinite; text-shadow: 0 0 30px rgba(255,255,255,0.3); }
+        @keyframes pulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        .pin-input {
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            color: var(--pure-white);
+            font-size: 2rem; padding: 15px 25px;
+            border-radius: var(--border-radius-md);
+            width: 220px; text-align: center;
+            font-family: var(--font-display); letter-spacing: 8px;
+            margin-bottom: 20px; outline: none;
+            backdrop-filter: blur(10px); transition: all 0.3s ease;
+        }
+        .pin-input:focus { border-color: var(--glass-highlight); box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .pin-btn {
+            background: var(--pure-white); color: var(--pure-black);
+            border: none; padding: 14px 50px;
+            border-radius: var(--border-radius-md);
+            font-weight: 800; cursor: pointer; font-size: 1rem;
+            transition: all 0.3s ease; font-family: var(--font-display);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .pin-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
+
+        /* ===== LAYOUT ===== */
+        .wrapper { display: flex; min-height: 100vh; display: none; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-right: 1px solid var(--glass-border);
+            padding: 0; display: flex; flex-direction: column;
+            position: fixed; height: 100%; overflow-y: auto;
+            box-shadow: 4px 0 30px rgba(0,0,0,0.3);
+        }
+        .brand {
+            font-family: var(--font-display); font-weight: 800; font-size: 1.6rem;
+            padding: 25px 20px; color: var(--pure-white);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; gap: 10px; letter-spacing: 2px;
+        }
+        .brand i { color: var(--pure-white); font-size: 1.4rem; text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .brand span { color: var(--mist-white); font-weight: 400; }
+        .nav-section { padding: 20px 15px; }
+        .nav-title {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--mist-white); margin-bottom: 12px; padding-left: 10px;
+            font-weight: 700; font-family: var(--font-display);
+        }
+        .menu-item {
+            padding: 12px 15px; border-radius: var(--border-radius-sm);
+            color: var(--mist-white); cursor: pointer; margin-bottom: 4px;
+            display: flex; align-items: center; gap: 12px;
+            font-weight: 500; transition: all 0.3s ease;
+            text-decoration: none; border: 1px solid transparent;
+        }
+        .menu-item:hover,.menu-item.active {
+            background: var(--glass-bg); color: var(--pure-white);
+            border-color: var(--glass-highlight); transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .menu-item i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .sidebar-footer {
+            margin-top: auto; padding: 20px;
+            border-top: 1px solid var(--glass-border);
+            background: var(--ghost-white);
+        }
+        .user-mini { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .user-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--pure-white); color: var(--pure-black);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; border: 1px solid var(--glass-border);
+        }
+        .user-info { flex: 1; }
+        .user-name { font-weight: 700; font-size: 0.9rem; color: var(--pure-white); }
+        .user-role {
+            font-size: 0.75rem; color: var(--mist-white);
+            background: var(--glass-bg); padding: 2px 8px;
+            border-radius: 10px; display: inline-block;
+            border: 1px solid var(--glass-border);
+        }
+        .logout-btn {
+            width: 100%; padding: 10px;
+            background: var(--ghost-white); color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: var(--border-radius-sm);
+            font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none; transition: all 0.3s ease;
+            font-family: var(--font-display); letter-spacing: 1px;
+            text-transform: uppercase; font-size: 0.8rem;
+        }
+        .logout-btn:hover { background: rgba(239,68,68,0.2); transform: translateY(-2px); }
+
+        /* ===== MAIN ===== */
+        .main { flex: 1; padding: 30px; margin-left: var(--sidebar-width); max-width: calc(100% - var(--sidebar-width)); }
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--glass-border);
+        }
+        .page-title {
+            font-family: var(--font-display); font-weight: 800; font-size: 2rem;
+            display: flex; align-items: center; gap: 12px;
+            color: var(--pure-white); letter-spacing: 1px;
+        }
+        .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--mist-white); margin-top: 8px; }
+        .breadcrumb a { color: var(--pure-white); text-decoration: none; font-weight: 600; transition: all 0.2s; }
+        .top-actions { display: flex; gap: 10px; }
+        .btn-top {
+            padding: 10px 18px; border-radius: var(--border-radius-sm);
+            border: 1px solid var(--glass-border); background: var(--glass-bg);
+            color: var(--soft-white); font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            text-decoration: none; transition: all 0.3s ease;
+            font-family: var(--font-display); letter-spacing: 1px;
+            font-size: 0.75rem; text-transform: uppercase;
+            backdrop-filter: blur(10px);
+        }
+        .btn-top:hover { background: var(--pure-white); color: var(--pure-black); border-color: var(--pure-white); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,255,255,0.15); }
+        .btn-top.gold { background: var(--pure-white); color: var(--pure-black); border-color: var(--pure-white); }
+
+        /* ===== SECTION ===== */
+        .section { display: none; animation: fadeIn 0.3s; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: var(--glass-bg); backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); padding: 28px;
+            border: 1px solid var(--glass-border); box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            margin-bottom: 20px; transition: all 0.3s ease;
+        }
+        .card:hover { border-color: var(--glass-highlight); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .card-title { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--pure-white); letter-spacing: 1px; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card {
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg); padding: 20px;
+            border: 1px solid var(--glass-border);
+            display: flex; align-items: center; gap: 15px;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            text-decoration: none; color: inherit; position: relative; overflow: hidden;
+        }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--liquid-sheen); transition: left 0.7s; pointer-events: none; }
+        .stat-card:hover::before { left: 100%; }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--glass-highlight); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+        .stat-icon { width: 50px; height: 50px; border-radius: var(--border-radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; background: var(--ghost-white); color: var(--pure-white); border: 1px solid var(--glass-border); transition: all 0.3s ease; }
+        .stat-card:hover .stat-icon { background: var(--pure-white); color: var(--pure-black); transform: scale(1.1); }
+        .stat-info h3 { font-size: 1.8rem; font-weight: 800; font-family: var(--font-display); margin: 0; color: var(--pure-white); }
+        .stat-info span { font-size: 0.85rem; color: var(--mist-white); }
+
+        .data-table { width: 100%; border-collapse: collapse; color: var(--soft-white); }
+        .data-table th { text-align: left; padding: 15px; color: var(--mist-white); font-size: 0.75rem; border-bottom: 1px solid var(--glass-border); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-display); }
+        .data-table td { padding: 15px; border-bottom: 1px solid var(--glass-border); vertical-align: middle; }
+        .data-table tr:hover td { background: var(--ghost-white); }
+
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); }
+        .bg-green { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .bg-red { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .bg-blue { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+        .bg-gold { background: rgba(255,255,255,0.1); color: var(--pure-white); border: 1px solid var(--glass-highlight); }
+        .bg-purple { background: rgba(168,85,247,0.15); color: #a855f7; border: 1px solid rgba(168,85,247,0.3); }
+
+        .btn-act { padding: 8px 14px; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border); background: var(--ghost-white); color: var(--soft-white); cursor: pointer; transition: all 0.3s ease; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 5px; text-decoration: none; }
+        .btn-act:hover { background: var(--pure-white); color: var(--pure-black); border-color: var(--pure-white); transform: translateY(-2px); }
+        .btn-act.danger { color: #ef4444; border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.1); }
+        .btn-act.danger:hover { background: #ef4444; color: white; }
+        .btn-act.primary { background: var(--pure-white); color: var(--pure-black); border-color: var(--pure-white); }
+
+        .clickable-row { cursor: pointer; transition: 0.2s; }
+        .clickable-row:hover { background: var(--ghost-white) !important; }
+        .clickable-name { color: var(--pure-white); font-weight: 600; text-decoration: none; transition: all 0.2s; }
+        .clickable-name:hover { text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        /* ===== MODAL ===== */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content {
+            background: rgba(10,10,10,0.95); backdrop-filter: blur(30px) saturate(200%);
+            width: 100%; max-width: 700px; padding: 30px;
+            border-radius: var(--border-radius-lg); position: relative;
+            max-height: 90vh; overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--glass-border); }
+        .modal-title { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--pure-white); letter-spacing: 1px; }
+        .close-btn { background: var(--ghost-white); border: 1px solid var(--glass-border); font-size: 1.5rem; cursor: pointer; color: var(--mist-white); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s ease; }
+        .close-btn:hover { background: var(--glass-bg); color: var(--pure-white); transform: rotate(90deg); }
+
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; color: var(--soft-white); letter-spacing: 0.5px; }
+        .form-input {
+            width: 100%; padding: 12px;
+            background: var(--ghost-white); border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-sm); font-family: var(--font-body);
+            color: var(--pure-white); transition: all 0.3s ease; font-size: 0.95rem;
+        }
+        .form-input:focus { outline: none; border-color: var(--glass-highlight); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 3px rgba(255,255,255,0.05); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+        .btn-save {
+            width: 100%; background: var(--pure-white); color: var(--pure-black);
+            border: none; padding: 14px; border-radius: var(--border-radius-md);
+            font-weight: 800; cursor: pointer; font-size: 1rem;
+            transition: all 0.3s ease; font-family: var(--font-display);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
+        .btn-delete { width: 100%; background: transparent; color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 14px; border-radius: var(--border-radius-md); font-weight: 800; cursor: pointer; font-size: 1rem; margin-top: 10px; transition: all 0.3s ease; font-family: var(--font-display); letter-spacing: 2px; text-transform: uppercase; }
+        .btn-delete:hover { background: rgba(239,68,68,0.2); transform: translateY(-2px); }
+
+        .list-row { display: flex; justify-content: space-between; align-items: center; background: var(--ghost-white); padding: 10px 14px; border-radius: var(--border-radius-sm); margin-bottom: 6px; border: 1px solid var(--glass-border); transition: all 0.3s ease; }
+        .list-row:hover { border-color: var(--glass-highlight); background: rgba(255,255,255,0.08); transform: translateX(4px); }
+        .list-info { font-size: 0.9rem; display: flex; align-items: center; gap: 10px; color: var(--soft-white); }
+        .list-del { color: #ef4444; cursor: pointer; padding: 5px; border-radius: 4px; transition: all 0.2s; }
+        .list-del:hover { background: rgba(239,68,68,0.2); }
+        .role-tag { font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; background: var(--glass-bg); color: var(--mist-white); text-transform: uppercase; border: 1px solid var(--glass-border); }
+        .role-tag.Captain { background: var(--pure-white); color: var(--pure-black); }
+
+        .quick-links { display: grid; grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); gap: 15px; margin-top: 20px; }
+        .quick-link { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); padding: 20px; text-align: center; text-decoration: none; color: var(--soft-white); transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; }
+        .quick-link::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--liquid-sheen); transition: left 0.7s; pointer-events: none; }
+        .quick-link:hover::before { left: 100%; }
+        .quick-link:hover { border-color: var(--glass-highlight); transform: translateY(-5px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); color: var(--pure-white); }
+        .quick-link i { font-size: 2rem; color: var(--pure-white); margin-bottom: 10px; display: block; transition: transform 0.3s; }
+        .quick-link:hover i { transform: scale(1.1); }
+        .quick-link span { font-weight: 600; font-size: 0.9rem; font-family: var(--font-display); letter-spacing: 1px; }
+
+        /* ===== SETTINGS SPECIFIC ===== */
+        .settings-section-title {
+            display: flex; align-items: center; gap: 10px;
+            font-family: var(--font-display); font-weight: 700;
+            font-size: 1rem; color: var(--pure-white);
+            letter-spacing: 1px; margin-bottom: 20px;
+            padding-bottom: 12px; border-bottom: 1px solid var(--glass-border);
+        }
+        .settings-section-title i { color: var(--mist-white); }
+
+        .key-status {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.75rem; padding: 4px 10px;
+            border-radius: 20px; font-weight: 600;
+        }
+        .key-status.saved { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .key-status.unsaved { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .key-status.empty { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+        .input-with-btn { display: flex; gap: 8px; }
+        .input-with-btn .form-input { flex: 1; }
+        .input-with-btn .btn-act { white-space: nowrap; }
+
+        .custom-key-row {
+            display: grid; grid-template-columns: 1fr 2fr auto;
+            gap: 10px; align-items: center;
+            background: var(--ghost-white); padding: 12px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 8px; transition: all 0.3s;
+        }
+        .custom-key-row:hover { border-color: var(--glass-highlight); }
+        .custom-key-name { font-size: 0.8rem; font-weight: 700; font-family: var(--font-display); color: var(--mist-white); text-transform: uppercase; letter-spacing: 1px; }
+        .custom-key-val { font-size: 0.85rem; color: var(--soft-white); font-family: monospace; word-break: break-all; }
+        .custom-key-val.masked { letter-spacing: 3px; color: var(--mist-white); }
+
+        .toast {
+            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+            background: rgba(10,10,10,0.95); border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-md); padding: 16px 24px;
+            display: flex; align-items: center; gap: 12px;
+            font-weight: 600; font-size: 0.9rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+            transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { border-color: rgba(16,185,129,0.4); color: #10b981; }
+        .toast.error { border-color: rgba(239,68,68,0.4); color: #ef4444; }
+        .toast.info { border-color: rgba(59,130,246,0.4); color: #3b82f6; }
+
+        .help-text { font-size: 0.75rem; color: var(--mist-white); margin-top: 6px; display: flex; align-items: flex-start; gap: 6px; }
+        .help-text i { margin-top: 2px; flex-shrink: 0; }
+
+        .divider { height: 1px; background: var(--glass-border); margin: 24px 0; }
+
+        @media (max-width: 1024px) {
+            .sidebar { width: 80px; }
+            .sidebar .brand span,.sidebar .nav-title,.sidebar .menu-item span,.sidebar .user-info { display: none; }
+            .sidebar .brand { justify-content: center; padding: 20px 10px; }
+            .sidebar .menu-item { justify-content: center; padding: 15px; }
+            .sidebar-footer { padding: 10px; }
+            .user-mini { justify-content: center; }
+            .main { margin-left: 80px; max-width: calc(100% - 80px); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; max-width: 100%; padding: 20px; }
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .grid-2,.grid-3 { grid-template-columns: 1fr; }
+            .custom-key-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOOT LOADER -->
+    <div id="bootLoader">
+        <div class="boot-spinner"></div>
+        <div class="boot-text">Connecting to Firebase...</div>
+    </div>
+
+    <!-- FIRST TIME SETUP (ถ้าไม่มี config ใน Firebase) -->
+    <div id="setupScreen">
+        <div class="setup-card animate__animated animate__fadeInUp">
+            <div class="setup-icon">🔐</div>
+            <div class="setup-title">FIRST TIME SETUP</div>
+            <div class="setup-subtitle">ไม่พบ config ใน Firebase — กรุณาตั้งค่าครั้งแรก</div>
+            <div class="form-group">
+                <label class="form-label">ตั้ง Admin PIN (4 หลัก)</label>
+                <input type="password" id="setupPin" class="form-input" placeholder="เช่น 1234" maxlength="6" style="letter-spacing:6px; font-size:1.5rem; text-align:center;">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Discord Webhook URL (optional)</label>
+                <input type="text" id="setupWebhook" class="form-input" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Discord Invite Link (optional)</label>
+                <input type="text" id="setupDiscordLink" class="form-input" placeholder="https://discord.gg/...">
+            </div>
+            <button class="btn-save" onclick="submitFirstSetup()">
+                <i class="fa-solid fa-rocket"></i> &nbsp;เริ่มต้นใช้งาน
+            </button>
+        </div>
+    </div>
+
+    <!-- LOCK SCREEN -->
+    <div id="lockScreen">
+        <div class="lock-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h2 style="font-family:var(--font-display);font-weight:800;margin-bottom:10px;font-size:2rem;letter-spacing:3px;">ADMIN ACCESS</h2>
+        <p style="color:var(--mist-white);margin-bottom:30px;">PSL Super Admin Control Center</p>
+        <input type="password" id="pinInput" class="pin-input" placeholder="••••" maxlength="6"
+               onkeydown="if(event.key==='Enter') checkPin()">
+        <br>
+        <button class="pin-btn" onclick="checkPin()">
+            <i class="fa-solid fa-unlock"></i>&nbsp; UNLOCK
+        </button>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast">
+        <i id="toastIcon" class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg"></span>
+    </div>
+
+    <!-- MAIN WRAPPER -->
+    <div class="wrapper" id="adminWrapper">
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-crown"></i>
+                <div>PSL <span>ADMIN</span></div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Main Menu</div>
+                <a href="#" class="menu-item active" onclick="switchTab('dashboard');return false;">
+                    <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+                </a>
+                <a href="tournaments.html" class="menu-item" target="_blank">
+                    <i class="fa-solid fa-trophy"></i><span>View Tournaments</span>
+                </a>
+                <a href="manager.html" class="menu-item" target="_blank">
+                    <i class="fa-solid fa-users-gear"></i><span>Team Manager</span>
+                </a>
+                <a href="lineup-hub.html" class="menu-item" target="_blank">
+                    <i class="fa-solid fa-clipboard-list"></i><span>Lineup Hub</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Management</div>
+                <a href="#" class="menu-item" onclick="switchTab('tournaments');return false;">
+                    <i class="fa-solid fa-calendar-plus"></i><span>Manage Tournaments</span>
+                </a>
+                <a href="#" class="menu-item" onclick="switchTab('teams');return false;">
+                    <i class="fa-solid fa-shield-halved"></i><span>All Teams</span>
+                </a>
+                <a href="#" class="menu-item" onclick="switchTab('users');return false;">
+                    <i class="fa-solid fa-user-shield"></i><span>User Accounts</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">System Config</div>
+                <a href="#" class="menu-item" onclick="switchTab('settings');return false;">
+                    <i class="fa-solid fa-gear"></i><span>Settings & Keys</span>
+                </a>
+                <a href="scrims.html" class="menu-item" target="_blank">
+                    <i class="fa-solid fa-handshake-simple"></i><span>Scrims</span>
+                </a>
+                <a href="market.html" class="menu-item" target="_blank">
+                    <i class="fa-solid fa-store"></i><span>Transfer Market</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-mini">
+                    <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="user-info">
+                        <div class="user-name">Super Admin</div>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+                <a href="index.html" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <main class="main">
+            <div class="top-bar">
+                <div>
+                    <h1 class="page-title" id="pageTitle">
+                        <i class="fa-solid fa-gauge-high" style="color:var(--pure-white);"></i>
+                        Dashboard
+                    </h1>
+                    <div class="breadcrumb">
+                        <a href="index.html">Home</a>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                        <span>Admin Panel</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem;"></i>
+                        <span id="breadcrumbCurrent">Overview</span>
+                    </div>
+                </div>
+                <div class="top-actions">
+                    <a href="tour-form.html" class="btn-top gold">
+                        <i class="fa-solid fa-plus"></i> New Tournament
+                    </a>
+                    <a href="#" id="discordLink" class="btn-top" target="_blank">
+                        <i class="fa-brands fa-discord"></i> Discord
+                    </a>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div id="dashboard" class="section active">
+                <div class="stats-grid">
+                    <a href="#" onclick="switchTab('tournaments');return false;" class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="stat-info"><h3 id="statTourCount">0</h3><span>Active Tournaments</span></div>
+                    </a>
+                    <a href="#" onclick="switchTab('teams');return false;" class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-info"><h3 id="statTeamCount">0</h3><span>Registered Teams</span></div>
+                    </a>
+                    <a href="#" onclick="switchTab('users');return false;" class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-user-group"></i></div>
+                        <div class="stat-info"><h3 id="statUserCount">0</h3><span>Total Users</span></div>
+                    </a>
+                    <a href="market.html" target="_blank" class="stat-card">
+                        <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                        <div class="stat-info"><h3 id="statPrizePool">0</h3><span>Total Prize Pool</span></div>
+                    </a>
+                </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-title">Quick Navigation</div></div>
+                    <div class="quick-links">
+                        <a href="tournaments.html" class="quick-link" target="_blank"><i class="fa-solid fa-eye"></i><span>View Site</span></a>
+                        <a href="tour-form.html" class="quick-link"><i class="fa-solid fa-calendar-plus"></i><span>Create Tour</span></a>
+                        <a href="manager.html" class="quick-link" target="_blank"><i class="fa-solid fa-users-gear"></i><span>Manage Teams</span></a>
+                        <a href="lineup-hub.html" class="quick-link" target="_blank"><i class="fa-solid fa-list-check"></i><span>Lineups</span></a>
+                        <a href="scrims.html" class="quick-link" target="_blank"><i class="fa-solid fa-handshake"></i><span>Scrims</span></a>
+                        <a href="market.html" class="quick-link" target="_blank"><i class="fa-solid fa-people-arrows"></i><span>Market</span></a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Recent Activity</div>
+                        <a href="#" onclick="switchTab('tournaments');return false;" class="btn-act">View All</a>
+                    </div>
+                    <table class="data-table">
+                        <thead><tr><th>TOURNAMENT</th><th>GAME</th><th>STATUS</th><th>TEAMS</th><th>ACTION</th></tr></thead>
+                        <tbody id="recentTourTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TOURNAMENTS -->
+            <div id="tournaments" class="section">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <h2 style="font-family:var(--font-display);font-weight:800;font-size:1.5rem;color:var(--pure-white);letter-spacing:1px;">
+                        <i class="fa-solid fa-calendar-check"></i> Manage Tournaments
+                    </h2>
+                    <button class="btn-act gold" onclick="syncAllCounts()" style="background:var(--pure-white);color:var(--pure-black);border-color:var(--pure-white);">
+                        <i class="fa-solid fa-rotate"></i> Sync Counts
+                    </button>
+                </div>
+                <div class="card">
+                    <table class="data-table">
+                        <thead><tr><th>GAME</th><th>TOURNAMENT NAME</th><th>TEAMS</th><th>STATUS</th><th>ACTIONS</th></tr></thead>
+                        <tbody id="tourTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TEAMS -->
+            <div id="teams" class="section">
+                <h2 style="font-family:var(--font-display);font-weight:800;font-size:1.5rem;margin-bottom:20px;color:var(--pure-white);letter-spacing:1px;">
+                    <i class="fa-solid fa-shield-halved"></i> Team Management
+                </h2>
+                <div class="card">
+                    <table class="data-table">
+                        <thead><tr><th>TEAM</th><th>TAG</th><th>GAME</th><th>MANAGER</th><th>STATUS</th><th>ACTION</th></tr></thead>
+                        <tbody id="teamsTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- USERS -->
+            <div id="users" class="section">
+                <h2 style="font-family:var(--font-display);font-weight:800;font-size:1.5rem;margin-bottom:20px;color:var(--pure-white);letter-spacing:1px;">
+                    <i class="fa-solid fa-users-gear"></i> User Accounts
+                </h2>
+                <div class="card">
+                    <table class="data-table">
+                        <thead><tr><th>USER / TEAM</th><th>ROLE</th><th>POINTS</th><th>EARNINGS</th><th>ACTION</th></tr></thead>
+                        <tbody id="usersTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ==================== SETTINGS ==================== -->
+            <div id="settings" class="section">
+                <h2 style="font-family:var(--font-display);font-weight:800;font-size:1.5rem;margin-bottom:20px;color:var(--pure-white);letter-spacing:1px;">
+                    <i class="fa-solid fa-sliders"></i> Settings & API Keys
+                </h2>
+
+                <!-- 1. ADMIN PIN -->
+                <div class="card">
+                    <div class="settings-section-title">
+                        <i class="fa-solid fa-lock"></i> Admin Authentication
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Admin PIN
+                            <span id="pinStatus" class="key-status" style="margin-left:10px;"></span>
+                        </label>
+                        <div class="input-with-btn">
+                            <input type="password" id="settingsAdminPin" class="form-input" placeholder="กรอก PIN ใหม่" maxlength="8" autocomplete="new-password">
+                            <button class="btn-act" onclick="toggleVisibility('settingsAdminPin')">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="help-text"><i class="fa-solid fa-circle-info"></i> PIN จะถูกเก็บใน Firebase — ไม่มีในซอร์สโค้ด</div>
+                    </div>
+                    <button class="btn-save" onclick="saveSettings('pin')">
+                        <i class="fa-solid fa-floppy-disk"></i> &nbsp;บันทึก PIN
+                    </button>
+                </div>
+
+                <!-- 2. DISCORD CONFIG -->
+                <div class="card">
+                    <div class="settings-section-title">
+                        <i class="fa-brands fa-discord"></i> Discord Configuration
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Discord Webhook URL
+                            <span id="webhookStatus" class="key-status" style="margin-left:10px;"></span>
+                        </label>
+                        <div class="input-with-btn">
+                            <input type="password" id="settingsWebhook" class="form-input" placeholder="https://discord.com/api/webhooks/...">
+                            <button class="btn-act" onclick="toggleVisibility('settingsWebhook')"><i class="fa-solid fa-eye"></i></button>
+                            <button class="btn-act" onclick="testWebhook()"><i class="fa-solid fa-vial"></i> Test</button>
+                        </div>
+                        <div class="help-text"><i class="fa-solid fa-circle-info"></i> ใช้สำหรับส่ง roster และการแจ้งเตือนต่างๆ ไป Discord</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Discord Invite Link</label>
+                        <input type="url" id="settingsDiscordLink" class="form-input" placeholder="https://discord.gg/...">
+                    </div>
+                    <button class="btn-save" onclick="saveSettings('discord')">
+                        <i class="fa-solid fa-floppy-disk"></i> &nbsp;บันทึก Discord Config
+                    </button>
+                </div>
+
+                <!-- 3. EASYSLIP API -->
+                <div class="card">
+                    <div class="settings-section-title">
+                        <i class="fa-solid fa-receipt"></i> EasySlip API Key
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">API Key
+                            <span id="easyslipStatus" class="key-status" style="margin-left:10px;"></span>
+                        </label>
+                        <div class="input-with-btn">
+                            <input type="password" id="settingsEasyslip" class="form-input" placeholder="slip_xxxxxxxxxxxxxxxxxxxx">
+                            <button class="btn-act" onclick="toggleVisibility('settingsEasyslip')"><i class="fa-solid fa-eye"></i></button>
+                            <button class="btn-act" onclick="testEasyslip()"><i class="fa-solid fa-vial"></i> Test</button>
+                        </div>
+                        <div class="help-text"><i class="fa-solid fa-circle-info"></i> ใช้ตรวจสอบสลิปการโอนเงิน — ควรขึ้นต้นด้วย <code style="color:var(--pure-white);">slip_</code></div>
+                    </div>
+                    <button class="btn-save" onclick="saveSettings('easyslip')">
+                        <i class="fa-solid fa-floppy-disk"></i> &nbsp;บันทึก EasySlip Key
+                    </button>
+                </div>
+
+                <!-- 4. ROADMAP -->
+                <div class="card">
+                    <div class="settings-section-title">
+                        <i class="fa-solid fa-image"></i> Roadmap Banner
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Banner Image URL</label>
+                        <input type="url" id="settingsRoadmap" class="form-input" placeholder="https://...">
+                    </div>
+                    <button class="btn-save" onclick="saveSettings('roadmap')">
+                        <i class="fa-solid fa-floppy-disk"></i> &nbsp;บันทึก Roadmap
+                    </button>
+                </div>
+
+                <!-- 5. CUSTOM KEYS -->
+                <div class="card">
+                    <div class="settings-section-title">
+                        <i class="fa-solid fa-key"></i> Custom API Keys / Tokens
+                        <span style="color:var(--mist-white);font-size:0.75rem;font-weight:400;font-family:var(--font-body);letter-spacing:0;margin-left:auto;">
+                            ทุก key จะถูกเก็บใน Firebase เท่านั้น
+                        </span>
+                    </div>
+
+                    <!-- Custom key form -->
+                    <div style="background:var(--ghost-white);padding:16px;border-radius:var(--border-radius-sm);border:1px solid var(--glass-border);margin-bottom:16px;">
+                        <label class="form-label" style="font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">เพิ่ม Key ใหม่</label>
+                        <div class="grid-3" style="margin-bottom:10px;">
+                            <div>
+                                <label class="form-label" style="font-size:0.75rem;">ชื่อ Key (snake_case)</label>
+                                <input type="text" id="newKeyName" class="form-input" placeholder="เช่น line_token">
+                            </div>
+                            <div>
+                                <label class="form-label" style="font-size:0.75rem;">ค่า / Value</label>
+                                <input type="password" id="newKeyValue" class="form-input" placeholder="ค่าของ key">
+                            </div>
+                            <div>
+                                <label class="form-label" style="font-size:0.75rem;">หมวดหมู่ (optional)</label>
+                                <select id="newKeyCategory" class="form-input">
+                                    <option value="api">API Key</option>
+                                    <option value="webhook">Webhook</option>
+                                    <option value="token">Token / Secret</option>
+                                    <option value="url">URL</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-save" style="margin-top:0;" onclick="addCustomKey()">
+                            <i class="fa-solid fa-plus"></i> &nbsp;เพิ่ม Key
+                        </button>
+                    </div>
+
+                    <!-- Custom key list -->
+                    <div id="customKeysList">
+                        <div style="text-align:center;color:var(--mist-white);padding:20px;">
+                            <i class="fa-solid fa-circle-notch fa-spin"></i> Loading keys...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DANGER ZONE -->
+                <div class="card" style="border-color:rgba(239,68,68,0.2);">
+                    <div class="settings-section-title" style="color:#ef4444;">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Danger Zone
+                    </div>
+                    <p style="color:var(--mist-white);font-size:0.9rem;margin-bottom:16px;">
+                        การกระทำเหล่านี้ไม่สามารถย้อนกลับได้ กรุณาระวัง
+                    </p>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <button class="btn-act danger" onclick="clearAllKeys()">
+                            <i class="fa-solid fa-trash-can"></i> ลบ Custom Keys ทั้งหมด
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW REGISTRATIONS MODAL -->
+    <div id="viewRegModal" class="modal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title">Registered Teams</h3>
+                    <span id="viewTourName" style="color:var(--mist-white);font-size:0.9rem;">Loading...</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <button class="btn-act primary" onclick="sendRosterToDiscord()">
+                        <i class="fa-brands fa-discord"></i> Send to Discord
+                    </button>
+                    <button class="close-btn" onclick="document.getElementById('viewRegModal').style.display='none'">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+            <div style="overflow-y:auto;max-height:60vh;">
+                <table class="data-table">
+                    <thead><tr><th>TEAM</th><th>MANAGER</th><th>STATUS</th><th>ACTION</th></tr></thead>
+                    <tbody id="regListTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT TEAM MODAL -->
+    <div class="modal" id="editTeamModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Team & Roster</h3>
+                <button class="close-btn" onclick="document.getElementById('editTeamModal').style.display='none'">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <input type="hidden" id="editTeamId">
+            <div class="form-group"><label class="form-label">Manager UID</label><input type="text" id="editManagerId" class="form-input"></div>
+            <div class="grid-2">
+                <div class="form-group"><label class="form-label">Team Name</label><input type="text" id="editTeamName" class="form-input"></div>
+                <div class="form-group"><label class="form-label">Tag</label><input type="text" id="editTeamTag" class="form-input"></div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Game</label>
+                    <select id="editTeamGame" class="form-input">
+                        <option>RoV</option><option>MLBB</option><option>PUBG</option><option>Valorant</option><option>FC25</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select id="editTeamStatus" class="form-input">
+                        <option value="pending">Pending</option><option value="verified">Verified</option><option value="banned">Banned</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group"><label class="form-label">Logo URL</label><input type="text" id="editTeamLogo" class="form-input"></div>
+            <div style="margin:25px 0;border-top:1px dashed var(--glass-border);padding-top:20px;">
+                <h4 style="margin-bottom:15px;color:var(--pure-white);font-family:var(--font-display);font-weight:700;letter-spacing:1px;">
+                    <i class="fa-solid fa-users"></i> TEAM ROSTER (LINEUP)
+                </h4>
+                <div id="teamRosterList" style="margin-bottom:15px;max-height:200px;overflow-y:auto;"></div>
+                <div style="background:var(--ghost-white);padding:15px;border-radius:var(--border-radius-sm);border:1px solid var(--glass-border);">
+                    <label class="form-label" style="font-size:0.8rem;text-transform:uppercase;">Add Player</label>
+                    <div style="display:flex;gap:8px;margin-bottom:10px;">
+                        <input type="text" id="newPlayerIgn" class="form-input" placeholder="IGN" style="flex:2;">
+                        <input type="text" id="newPlayerUid" class="form-input" placeholder="UID" style="flex:1;">
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <select id="newPlayerRole" class="form-input" style="flex:1;">
+                            <option value="Member">Member</option><option value="Captain">Captain</option><option value="Sub">Sub</option>
+                        </select>
+                        <button class="btn-save" style="width:auto;padding:0 20px;" onclick="addTeamPlayer()"><i class="fa-solid fa-plus"></i> ADD</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-save" onclick="saveTeamChanges()"><i class="fa-solid fa-floppy-disk"></i> SAVE ALL CHANGES</button>
+            <button class="btn-delete" onclick="deleteCurrentTeam()"><i class="fa-solid fa-trash"></i> DELETE TEAM</button>
+        </div>
+    </div>
+
+    <!-- EDIT USER MODAL -->
+    <div class="modal" id="editUserModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit User Data</h3>
+                <button class="close-btn" onclick="document.getElementById('editUserModal').style.display='none'">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <input type="hidden" id="editUserId">
+            <div class="form-group"><label class="form-label">Username</label><input type="text" id="editUserUsername" class="form-input"></div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label class="form-label">Role</label>
+                    <select id="editUserRole" class="form-input">
+                        <option value="user">User</option><option value="player">Player</option>
+                        <option value="manager">Manager</option><option value="team">Team</option>
+                        <option value="club">Club</option><option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">Club/Team Name</label><input type="text" id="editUserClubName" class="form-input"></div>
+            </div>
+            <div style="margin:20px 0;border-top:1px dashed var(--glass-border);padding-top:20px;">
+                <h4 style="margin-bottom:15px;color:var(--pure-white);font-family:var(--font-display);font-weight:700;letter-spacing:1px;">
+                    <i class="fa-solid fa-coins"></i> STATS & REWARDS
+                </h4>
+                <div class="grid-2">
+                    <div class="form-group"><label class="form-label" style="color:var(--pure-white);">Club Points</label><input type="number" id="editUserPoints" class="form-input"></div>
+                    <div class="form-group"><label class="form-label" style="color:#10b981;">Total Earnings (THB)</label><input type="number" id="editUserMoney" class="form-input"></div>
+                </div>
+            </div>
+            <div style="margin:20px 0;border-top:1px dashed var(--glass-border);padding-top:20px;">
+                <h4 style="margin-bottom:15px;color:var(--pure-white);font-family:var(--font-display);font-weight:700;letter-spacing:1px;">
+                    <i class="fa-solid fa-trophy"></i> ACHIEVEMENTS
+                </h4>
+                <div id="trophyList" style="margin-bottom:10px;"></div>
+                <div style="display:flex;gap:10px;">
+                    <input type="text" id="newTrophyTitle" class="form-input" placeholder="Tournament Name" style="flex:2;">
+                    <input type="text" id="newTrophyRank" class="form-input" placeholder="Rank (1st, 2nd...)" style="flex:1;">
+                    <button class="btn-save" style="width:auto;padding:0 15px;" onclick="addTrophy()"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+            <button class="btn-save" onclick="saveUserChanges()"><i class="fa-solid fa-floppy-disk"></i> SAVE ALL CHANGES</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+            getFirestore, collection, getDocs, getDoc, doc,
+            setDoc, updateDoc, deleteDoc, query, orderBy, where
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // ============================================================
+        //  FIREBASE CONFIG เท่านั้น — ไม่มี secrets ใดๆ ใน source
+        // ============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyC450kePwL6FdVXUSVli0bEP3DdnQs0qzU",
+            authDomain: "psl-esport.firebaseapp.com",
+            projectId: "psl-esport",
+            storageBucket: "psl-esport.firebasestorage.app",
+            messagingSenderId: "225108570173",
+            appId: "1:225108570173:web:b6483c02368908f3783a54"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db  = getFirestore(app);
+
+        // ============================================================
+        //  Runtime config — โหลดจาก Firebase เท่านั้น
+        //  ไม่มี hardcode ใดๆ ที่นี่
+        // ============================================================
+        let _cfg = {
+            adminPin      : null,
+            discordWebhook: null,
+            discordLink   : null,
+        };
+
+        let tempAchievements = [];
+        let tempRoster       = [];
+        let currentViewTourId = null;
+
+        // ============================================================
+        //  TOAST HELPER
+        // ============================================================
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon  = document.getElementById('toastIcon');
+            const text  = document.getElementById('toastMsg');
+            toast.className = `toast ${type}`;
+            icon.className  = `fa-solid ${type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info'}`;
+            text.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ============================================================
+        //  BOOT — โหลด settings จาก Firebase ก่อนทุกอย่าง
+        // ============================================================
+        async function boot() {
+            try {
+                const snap = await getDoc(doc(db, 'system', 'settings'));
+                document.getElementById('bootLoader').classList.add('hidden');
+
+                if (!snap.exists() || !snap.data().adminPin) {
+                    // ยังไม่มี config — แสดง setup screen
+                    document.getElementById('setupScreen').style.display = 'flex';
+                } else {
+                    const d = snap.data();
+                    _cfg.adminPin       = d.adminPin;
+                    _cfg.discordWebhook = d.discordWebhook || '';
+                    _cfg.discordLink    = d.discordLink    || '';
+
+                    const discordEl = document.getElementById('discordLink');
+                    if (discordEl && _cfg.discordLink) discordEl.href = _cfg.discordLink;
+
+                    document.getElementById('lockScreen').style.display = 'flex';
+                }
+            } catch (e) {
+                document.getElementById('bootLoader').classList.add('hidden');
+                // ถ้า network error ให้แสดง setup screen เพื่อ safety
+                document.getElementById('setupScreen').style.display = 'flex';
+                console.error('Boot error:', e);
+            }
+        }
+        boot();
+
+        // ============================================================
+        //  FIRST TIME SETUP
+        // ============================================================
+        window.submitFirstSetup = async () => {
+            const pin     = document.getElementById('setupPin').value.trim();
+            const webhook = document.getElementById('setupWebhook').value.trim();
+            const link    = document.getElementById('setupDiscordLink').value.trim();
+
+            if (!pin || pin.length < 4) {
+                showToast('PIN ต้องมีอย่างน้อย 4 ตัวอักษร', 'error');
+                return;
+            }
+
+            try {
+                await setDoc(doc(db, 'system', 'settings'), {
+                    adminPin        : pin,
+                    discordWebhook  : webhook,
+                    discordLink     : link,
+                    createdAt       : new Date().toISOString()
+                });
+
+                _cfg.adminPin       = pin;
+                _cfg.discordWebhook = webhook;
+                _cfg.discordLink    = link;
+
+                const discordEl = document.getElementById('discordLink');
+                if (discordEl && link) discordEl.href = link;
+
+                document.getElementById('setupScreen').style.display = 'none';
+                document.getElementById('lockScreen').style.display  = 'flex';
+                showToast('ตั้งค่าครั้งแรกสำเร็จ! กรุณาใส่ PIN เพื่อเข้าใช้งาน', 'success');
+            } catch (e) {
+                showToast('Error: ' + e.message, 'error');
+            }
+        };
+
+        // ============================================================
+        //  AUTH
+        // ============================================================
+        window.checkPin = () => {
+            const input = document.getElementById('pinInput').value;
+            if (input === _cfg.adminPin) {
+                document.getElementById('lockScreen').style.display = 'none';
+                document.getElementById('adminWrapper').style.display = 'flex';
+                loadAllData();
+            } else {
+                showToast('WRONG PIN — Access Denied', 'error');
+                const el = document.getElementById('pinInput');
+                el.value = '';
+                el.style.borderColor = '#ef4444';
+                setTimeout(() => el.style.borderColor = 'var(--glass-border)', 1200);
+            }
+        };
+
+        // ============================================================
+        //  NAVIGATION
+        // ============================================================
+        window.switchTab = (id) => {
+            document.querySelectorAll('.section').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(e => e.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            const titles = { dashboard:'Overview', tournaments:'Tournaments', teams:'Teams', users:'Users', settings:'Settings & Keys' };
+            document.getElementById('breadcrumbCurrent').innerText = titles[id] || '';
+            document.getElementById('pageTitle').innerHTML =
+                `<i class="fa-solid ${getIconForTab(id)}" style="color:var(--pure-white);"></i> ${titles[id] || 'Dashboard'}`;
+            document.querySelectorAll('.menu-item').forEach(item => {
+                if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(id))
+                    item.classList.add('active');
+            });
+            if (id === 'settings') loadSettingsPage();
+        };
+
+        function getIconForTab(tab) {
+            return { dashboard:'gauge-high', tournaments:'calendar-check', teams:'shield-halved', users:'users-gear', settings:'sliders' }[tab] || 'gauge-high';
+        }
+
+        async function loadAllData() {
+            await loadDashboardStats();
+            loadTournaments();
+            loadTeams();
+            loadUsers();
+        }
+
+        // ============================================================
+        //  SETTINGS PAGE — โหลดค่าจาก Firebase
+        // ============================================================
+        async function loadSettingsPage() {
+            try {
+                const [settingsSnap, configSnap] = await Promise.all([
+                    getDoc(doc(db, 'system', 'settings')),
+                    getDoc(doc(db, 'system', 'config'))
+                ]);
+
+                const s = settingsSnap.exists() ? settingsSnap.data() : {};
+                const c = configSnap.exists()   ? configSnap.data()   : {};
+
+                // PIN
+                setStatus('pinStatus', !!s.adminPin);
+                // Webhook
+                if (s.discordWebhook) document.getElementById('settingsWebhook').value = s.discordWebhook;
+                setStatus('webhookStatus', !!s.discordWebhook);
+                // Discord Link
+                if (s.discordLink)   document.getElementById('settingsDiscordLink').value = s.discordLink;
+                // EasySlip
+                if (c.easyslipApiKey) document.getElementById('settingsEasyslip').value = c.easyslipApiKey;
+                setStatus('easyslipStatus', !!c.easyslipApiKey);
+                // Roadmap
+                if (c.roadmapImgUrl) document.getElementById('settingsRoadmap').value = c.roadmapImgUrl;
+
+                // Custom keys
+                await renderCustomKeys(c);
+
+            } catch (e) {
+                console.error('loadSettingsPage error:', e);
+            }
+        }
+
+        function setStatus(elId, hasSaved) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            if (hasSaved) {
+                el.className = 'key-status saved';
+                el.innerHTML = '<i class="fa-solid fa-circle-check"></i> Saved';
+            } else {
+                el.className = 'key-status empty';
+                el.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Not Set';
+            }
+        }
+
+        async function renderCustomKeys(configData) {
+            const container = document.getElementById('customKeysList');
+            const customKeys = configData.customKeys || {};
+            const entries = Object.entries(customKeys);
+
+            if (entries.length === 0) {
+                container.innerHTML = '<div style="text-align:center;color:var(--mist-white);padding:20px;font-size:0.9rem;"><i class="fa-solid fa-key"></i>&nbsp; ยังไม่มี custom keys</div>';
+                return;
+            }
+
+            container.innerHTML = entries.map(([key, meta]) => `
+                <div class="custom-key-row">
+                    <div>
+                        <div class="custom-key-name">${key}</div>
+                        <span class="badge bg-blue" style="font-size:0.65rem;padding:3px 8px;">${meta.category || 'other'}</span>
+                    </div>
+                    <div class="custom-key-val masked" id="val_${key}">••••••••••••</div>
+                    <div style="display:flex;gap:6px;flex-shrink:0;">
+                        <button class="btn-act" onclick="toggleCustomKeyView('${key}','${escHtml(meta.value)}')" title="Show/Hide">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn-act danger" onclick="deleteCustomKey('${key}')" title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function escHtml(s) { return String(s).replace(/'/g, "\\'"); }
+
+        window.toggleCustomKeyView = (key, val) => {
+            const el = document.getElementById('val_' + key);
+            if (!el) return;
+            if (el.classList.contains('masked')) {
+                el.textContent = val;
+                el.classList.remove('masked');
+            } else {
+                el.textContent = '••••••••••••';
+                el.classList.add('masked');
+            }
+        };
+
+        // ============================================================
+        //  SAVE SETTINGS
+        // ============================================================
+        window.saveSettings = async (section) => {
+            try {
+                if (section === 'pin') {
+                    const pin = document.getElementById('settingsAdminPin').value.trim();
+                    if (!pin || pin.length < 4) { showToast('PIN ต้องมีอย่างน้อย 4 ตัวอักษร', 'error'); return; }
+                    await setDoc(doc(db, 'system', 'settings'), { adminPin: pin, updatedAt: new Date().toISOString() }, { merge: true });
+                    _cfg.adminPin = pin; // อัปเดต runtime
+                    setStatus('pinStatus', true);
+                    showToast('✅ บันทึก PIN สำเร็จ');
+                }
+
+                else if (section === 'discord') {
+                    const webhook = document.getElementById('settingsWebhook').value.trim();
+                    const link    = document.getElementById('settingsDiscordLink').value.trim();
+                    await setDoc(doc(db, 'system', 'settings'), {
+                        discordWebhook: webhook, discordLink: link, updatedAt: new Date().toISOString()
+                    }, { merge: true });
+                    _cfg.discordWebhook = webhook;
+                    _cfg.discordLink    = link;
+                    const discordEl = document.getElementById('discordLink');
+                    if (discordEl && link) discordEl.href = link;
+                    setStatus('webhookStatus', !!webhook);
+                    showToast('✅ บันทึก Discord Config สำเร็จ');
+                }
+
+                else if (section === 'easyslip') {
+                    const key = document.getElementById('settingsEasyslip').value.trim();
+                    if (!key) { showToast('กรุณากรอก API Key', 'error'); return; }
+                    await setDoc(doc(db, 'system', 'config'), { easyslipApiKey: key, updatedAt: new Date().toISOString() }, { merge: true });
+                    setStatus('easyslipStatus', true);
+                    showToast('✅ บันทึก EasySlip API Key สำเร็จ');
+                }
+
+                else if (section === 'roadmap') {
+                    const url = document.getElementById('settingsRoadmap').value.trim();
+                    if (!url) { showToast('กรุณากรอก URL', 'error'); return; }
+                    await setDoc(doc(db, 'system', 'config'), { roadmapImgUrl: url, updatedAt: new Date().toISOString() }, { merge: true });
+                    showToast('✅ บันทึก Roadmap สำเร็จ');
+                }
+            } catch (e) {
+                showToast('❌ Error: ' + e.message, 'error');
+            }
+        };
+
+        // ============================================================
+        //  CUSTOM KEYS CRUD
+        // ============================================================
+        window.addCustomKey = async () => {
+            const name  = document.getElementById('newKeyName').value.trim().toLowerCase().replace(/\s+/g, '_');
+            const value = document.getElementById('newKeyValue').value.trim();
+            const cat   = document.getElementById('newKeyCategory').value;
+
+            if (!name || !value) { showToast('กรุณากรอกชื่อและค่าของ key', 'error'); return; }
+            if (!/^[a-z][a-z0-9_]*$/.test(name)) { showToast('ชื่อ key ต้องเป็น a-z, 0-9, _ เท่านั้น', 'error'); return; }
+
+            try {
+                const ref  = doc(db, 'system', 'config');
+                const snap = await getDoc(ref);
+                const existing = (snap.exists() ? snap.data().customKeys : {}) || {};
+                existing[name] = { value, category: cat, updatedAt: new Date().toISOString() };
+                await setDoc(ref, { customKeys: existing }, { merge: true });
+
+                document.getElementById('newKeyName').value  = '';
+                document.getElementById('newKeyValue').value = '';
+                showToast(`✅ เพิ่ม key "${name}" สำเร็จ`);
+                await renderCustomKeys({ ...(snap.exists() ? snap.data() : {}), customKeys: existing });
+            } catch (e) {
+                showToast('❌ Error: ' + e.message, 'error');
+            }
+        };
+
+        window.deleteCustomKey = async (keyName) => {
+            if (!confirm(`ลบ key "${keyName}" จาก Firebase?`)) return;
+            try {
+                const ref  = doc(db, 'system', 'config');
+                const snap = await getDoc(ref);
+                const existing = (snap.exists() ? snap.data().customKeys : {}) || {};
+                delete existing[keyName];
+                await setDoc(ref, { customKeys: existing }, { merge: true });
+                showToast(`🗑️ ลบ key "${keyName}" แล้ว`, 'info');
+                await renderCustomKeys({ ...(snap.exists() ? snap.data() : {}), customKeys: existing });
+            } catch (e) {
+                showToast('❌ Error: ' + e.message, 'error');
+            }
+        };
+
+        window.clearAllKeys = async () => {
+            if (!confirm('ลบ Custom Keys ทั้งหมดออกจาก Firebase? ไม่สามารถย้อนกลับได้')) return;
+            try {
+                await setDoc(doc(db, 'system', 'config'), { customKeys: {}, updatedAt: new Date().toISOString() }, { merge: true });
+                showToast('🗑️ ลบ Custom Keys ทั้งหมดแล้ว', 'info');
+                document.getElementById('customKeysList').innerHTML =
+                    '<div style="text-align:center;color:var(--mist-white);padding:20px;"><i class="fa-solid fa-key"></i>&nbsp; ยังไม่มี custom keys</div>';
+            } catch (e) {
+                showToast('❌ Error: ' + e.message, 'error');
+            }
+        };
+
+        // ============================================================
+        //  TOGGLE VISIBILITY
+        // ============================================================
+        window.toggleVisibility = (id) => {
+            const el = document.getElementById(id);
+            el.type = el.type === 'password' ? 'text' : 'password';
+        };
+
+        // ============================================================
+        //  TEST FUNCTIONS
+        // ============================================================
+        window.testWebhook = async () => {
+            const webhook = document.getElementById('settingsWebhook').value.trim() || _cfg.discordWebhook;
+            if (!webhook) { showToast('กรุณากรอก Webhook URL ก่อน', 'error'); return; }
+            try {
+                const r = await fetch(webhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: '✅ PSL Admin — Webhook test สำเร็จ!' })
+                });
+                r.ok ? showToast('✅ Webhook ทำงานปกติ') : showToast('❌ Webhook ตอบกลับ ' + r.status, 'error');
+            } catch (e) {
+                showToast('❌ ไม่สามารถเชื่อมต่อได้', 'error');
+            }
+        };
+
+        window.testEasyslip = async () => {
+            const key = document.getElementById('settingsEasyslip').value.trim();
+            if (!key) { showToast('กรุณากรอก API Key ก่อน', 'error'); return; }
+            try {
+                const r = await fetch('https://developer.easyslip.com/api/v1/status', {
+                    method: 'GET', headers: { 'Authorization': 'Bearer ' + key }
+                });
+                if (r.ok) showToast('✅ EasySlip API Key ใช้งานได้');
+                else if (r.status === 401) showToast('❌ API Key ไม่ถูกต้องหรือหมดอายุ', 'error');
+                else showToast('⚠️ Server ตอบกลับ: ' + r.status, 'info');
+            } catch (e) {
+                showToast('❌ ไม่สามารถเชื่อมต่อ EasySlip API ได้', 'error');
+            }
+        };
+
+        // ============================================================
+        //  DASHBOARD STATS
+        // ============================================================
+        async function loadDashboardStats() {
+            try {
+                const tourSnap = await getDocs(collection(db, 'tournaments'));
+                document.getElementById('statTourCount').innerText = tourSnap.size;
+                let totalPrize = 0;
+                tourSnap.forEach(d => {
+                    const v = parseInt((d.data().prize || '0').toString().replace(/[^0-9]/g, ''));
+                    totalPrize += isNaN(v) ? 0 : v;
+                });
+                document.getElementById('statPrizePool').innerText = totalPrize.toLocaleString() + ' THB';
+                const teamSnap = await getDocs(collection(db, 'teams'));
+                document.getElementById('statTeamCount').innerText = teamSnap.size;
+                document.getElementById('statUserCount').innerText = teamSnap.size;
+
+                const recentTable = document.getElementById('recentTourTable');
+                recentTable.innerHTML = '';
+                let count = 0;
+                tourSnap.forEach(docSnap => {
+                    if (count < 5) {
+                        const d = docSnap.data();
+                        const sc = d.status === 'open' ? 'bg-green' : (d.status === 'closed' ? 'bg-red' : 'bg-blue');
+                        recentTable.innerHTML += `
+                            <tr class="clickable-row" onclick="location.href='tour-lineups.html?id=${docSnap.id}'">
+                                <td><strong>${d.title}</strong></td>
+                                <td><span class="badge bg-blue">${d.game}</span></td>
+                                <td><span class="badge ${sc}">${d.status}</span></td>
+                                <td>${d.currentTeams||0}/${d.maxTeams}</td>
+                                <td><a href="tour-form.html?id=${docSnap.id}" class="btn-act" onclick="event.stopPropagation()"><i class="fa-solid fa-pen"></i></a></td>
+                            </tr>`;
+                        count++;
+                    }
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        // ============================================================
+        //  TOURNAMENTS
+        // ============================================================
+        async function loadTournaments() {
+            const tb = document.getElementById('tourTable');
+            tb.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--mist-white);"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>';
+            try {
+                const q = query(collection(db, 'tournaments'), orderBy('timestamp', 'desc'));
+                const snapshot = await getDocs(q);
+                tb.innerHTML = '';
+                snapshot.forEach(docSnap => {
+                    const d = docSnap.data();
+                    const sc = d.status==='open'?'bg-green':(d.status==='closed'?'bg-red':(d.status==='ongoing'?'bg-blue':'bg-gold'));
+                    tb.innerHTML += `
+                        <tr>
+                            <td><span class="badge bg-blue">${d.game}</span></td>
+                            <td><div style="font-weight:700;color:var(--pure-white);">${d.title}</div><div style="font-size:0.8rem;color:var(--mist-white);">${d.prize}</div></td>
+                            <td>${d.currentTeams||0}/${d.maxTeams}</td>
+                            <td><span class="badge ${sc}">${d.status}</span></td>
+                            <td>
+                                <button class="btn-act primary" onclick="openViewTeams('${docSnap.id}','${d.title}')" style="margin-right:5px;"><i class="fa-solid fa-users"></i> Teams</button>
+                                <a href="tour-form.html?id=${docSnap.id}" class="btn-act"><i class="fa-solid fa-pen"></i></a>
+                                <button class="btn-act danger" onclick="delItem('tournaments','${docSnap.id}')" style="margin-left:5px;"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>`;
+                });
+            } catch (e) {
+                tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#ef4444;">Error loading data</td></tr>';
+            }
+        }
+
+        // ============================================================
+        //  TEAMS
+        // ============================================================
+        async function loadTeams() {
+            const tb = document.getElementById('teamsTable');
+            tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--mist-white);"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>';
+            try {
+                const snapshot = await getDocs(collection(db, 'teams'));
+                tb.innerHTML = '';
+                snapshot.forEach(docSnap => {
+                    const d = docSnap.data();
+                    if (d.teamName) {
+                        const status = d.status || 'pending';
+                        const bc = status==='verified'?'bg-green':(status==='banned'?'bg-red':'bg-gold');
+                        tb.innerHTML += `
+                            <tr>
+                                <td><div style="display:flex;align-items:center;gap:10px;">
+                                    <img src="${d.logo||'https://placehold.co/40'}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--glass-border);">
+                                    <a href="team.html?id=${docSnap.id}" target="_blank" class="clickable-name">${d.teamName}</a>
+                                </div></td>
+                                <td style="color:var(--mist-white);">${d.tag||'-'}</td>
+                                <td style="color:var(--mist-white);">${d.game||'-'}</td>
+                                <td style="color:var(--mist-white);">${d.managerId?d.managerId.substring(0,8)+'...':'-'}</td>
+                                <td><span class="badge ${bc}">${status}</span></td>
+                                <td><button class="btn-act" onclick="openEditTeam('${docSnap.id}')"><i class="fa-solid fa-pen"></i> Edit</button></td>
+                            </tr>`;
+                    }
+                });
+            } catch (e) {
+                tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;">Error loading data</td></tr>';
+            }
+        }
+
+        // ============================================================
+        //  USERS
+        // ============================================================
+        async function loadUsers() {
+            const tb = document.getElementById('usersTable');
+            tb.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--mist-white);"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</td></tr>';
+            try {
+                const snapshot = await getDocs(collection(db, 'teams'));
+                tb.innerHTML = '';
+                snapshot.forEach(docSnap => {
+                    const d = docSnap.data();
+                    if (d.username || d.teamName) {
+                        const name = d.username || d.teamName || 'Unknown';
+                        const role = d.role || 'user';
+                        const pts  = d.clubPoints || 0;
+                        const money = d.totalEarnings || 0;
+                        const rb = role==='admin'?'bg-purple':(role==='manager'?'bg-blue':(role==='club'?'bg-gold':'bg-green'));
+                        tb.innerHTML += `
+                            <tr>
+                                <td><div style="display:flex;align-items:center;gap:10px;">
+                                    <img src="${d.avatar||d.logo||'https://placehold.co/40'}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--glass-border);">
+                                    <span style="color:var(--pure-white);font-weight:600;">${name}</span>
+                                </div></td>
+                                <td><span class="badge ${rb}">${role}</span></td>
+                                <td style="color:var(--pure-white);font-weight:700;">${pts.toLocaleString()}</td>
+                                <td style="color:#10b981;font-weight:700;">${money.toLocaleString()} THB</td>
+                                <td><button class="btn-act" onclick="openEditUser('${docSnap.id}','${name}','${role}',${pts},${money})"><i class="fa-solid fa-pen"></i> Edit</button></td>
+                            </tr>`;
+                    }
+                });
+            } catch (e) {
+                tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#ef4444;">Error loading data</td></tr>';
+            }
+        }
+
+        // ============================================================
+        //  DELETE
+        // ============================================================
+        window.delItem = async (coll, id) => {
+            if (!confirm('Delete this item?')) return;
+            try { await deleteDoc(doc(db, coll, id)); showToast('Deleted!'); loadAllData(); }
+            catch (e) { showToast('Error: ' + e.message, 'error'); }
+        };
+
+        // ============================================================
+        //  REGISTRATIONS MODAL
+        // ============================================================
+        window.openViewTeams = async (tourId, tourName) => {
+            currentViewTourId = tourId;
+            document.getElementById('viewTourName').innerText = tourName;
+            document.getElementById('viewRegModal').style.display = 'flex';
+            const tb = document.getElementById('regListTable');
+            tb.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--mist-white);"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr>';
+            try {
+                const q = query(collection(db, 'registrations'), where('tournamentId', '==', tourId));
+                const snap = await getDocs(q);
+                tb.innerHTML = '';
+                if (snap.empty) { tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--mist-white);">No registrations</td></tr>'; return; }
+                snap.forEach(d => {
+                    const data = d.data();
+                    tb.innerHTML += `
+                        <tr>
+                            <td><strong style="color:var(--pure-white);">${data.teamName}</strong></td>
+                            <td style="color:var(--mist-white);">${data.managerName||'Unknown'}</td>
+                            <td><span class="badge ${data.status==='approved'?'bg-green':'bg-gold'}">${data.status}</span></td>
+                            <td><button class="btn-act ${data.status==='approved'?'danger':'primary'}" onclick="toggleRegStatus('${d.id}','${data.status}')">
+                                ${data.status==='approved'?'Reject':'Approve'}
+                            </button></td>
+                        </tr>`;
+                });
+            } catch (e) { tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ef4444;">Error</td></tr>'; }
+        };
+
+        window.toggleRegStatus = async (regId, currentStatus) => {
+            const newStatus = currentStatus === 'approved' ? 'pending' : 'approved';
+            try {
+                await updateDoc(doc(db, 'registrations', regId), { status: newStatus });
+                openViewTeams(currentViewTourId, document.getElementById('viewTourName').innerText);
+            } catch (e) { showToast('Error: ' + e.message, 'error'); }
+        };
+
+        window.sendRosterToDiscord = async () => {
+            if (!_cfg.discordWebhook) { showToast('ยังไม่ได้ตั้งค่า Discord Webhook — ไปที่ Settings', 'error'); return; }
+            try {
+                const q = query(collection(db,'registrations'), where('tournamentId','==',currentViewTourId), where('status','==','approved'));
+                const snap = await getDocs(q);
+                let txt = `**${document.getElementById('viewTourName').innerText} — Approved Teams**\n\n`;
+                snap.forEach(d => { const data = d.data(); txt += `• ${data.teamName} (${data.teamTag||'No Tag'})\n`; });
+                await fetch(_cfg.discordWebhook, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: txt })
+                });
+                showToast('✅ ส่งไป Discord แล้ว!');
+            } catch (e) { showToast('Error: ' + e.message, 'error'); }
+        };
+
+        // ============================================================
+        //  EDIT TEAM
+        // ============================================================
+        window.openEditTeam = async (teamId) => {
+            document.getElementById('editTeamModal').style.display = 'flex';
+            document.getElementById('editTeamId').value = teamId;
+            try {
+                const snap = await getDoc(doc(db, 'teams', teamId));
+                if (snap.exists()) {
+                    const d = snap.data();
+                    document.getElementById('editManagerId').value  = d.managerId || '';
+                    document.getElementById('editTeamName').value   = d.teamName  || '';
+                    document.getElementById('editTeamTag').value    = d.tag       || '';
+                    document.getElementById('editTeamGame').value   = d.game      || 'RoV';
+                    document.getElementById('editTeamStatus').value = d.status    || 'pending';
+                    document.getElementById('editTeamLogo').value   = d.logo      || '';
+                    tempRoster = d.roster || [];
+                    renderRosterList();
+                }
+            } catch (e) { console.error(e); }
+        };
+
+        function renderRosterList() {
+            const container = document.getElementById('teamRosterList');
+            container.innerHTML = tempRoster.length === 0
+                ? '<div style="color:var(--mist-white);text-align:center;padding:10px;">No players</div>'
+                : tempRoster.map((p, idx) => `
+                    <div class="list-row">
+                        <div class="list-info">
+                            <span class="role-tag ${p.role}">${p.role}</span>
+                            <span style="color:var(--pure-white);font-weight:600;">${p.ign}</span>
+                            <span style="color:var(--mist-white);font-size:0.8rem;">UID: ${p.uid}</span>
+                        </div>
+                        <i class="fa-solid fa-trash list-del" onclick="removePlayer(${idx})"></i>
+                    </div>`).join('');
+        }
+
+        window.removePlayer  = (idx) => { tempRoster.splice(idx, 1); renderRosterList(); };
+        window.addTeamPlayer = () => {
+            const ign  = document.getElementById('newPlayerIgn').value.trim();
+            const uid  = document.getElementById('newPlayerUid').value.trim();
+            const role = document.getElementById('newPlayerRole').value;
+            if (!ign) return showToast('Enter IGN', 'error');
+            tempRoster.push({ ign, uid, role });
+            document.getElementById('newPlayerIgn').value = '';
+            document.getElementById('newPlayerUid').value = '';
+            renderRosterList();
+        };
+
+        window.saveTeamChanges = async () => {
+            const teamId = document.getElementById('editTeamId').value;
+            if (!teamId) return;
+            try {
+                await updateDoc(doc(db, 'teams', teamId), {
+                    managerId: document.getElementById('editManagerId').value,
+                    teamName : document.getElementById('editTeamName').value,
+                    tag      : document.getElementById('editTeamTag').value,
+                    game     : document.getElementById('editTeamGame').value,
+                    status   : document.getElementById('editTeamStatus').value,
+                    logo     : document.getElementById('editTeamLogo').value,
+                    roster   : tempRoster
+                });
+                showToast('✅ Team updated!');
+                document.getElementById('editTeamModal').style.display = 'none';
+                loadTeams();
+            } catch (e) { showToast('Error: ' + e.message, 'error'); }
+        };
+
+        window.deleteCurrentTeam = async () => {
+            const teamId = document.getElementById('editTeamId').value;
+            if (!teamId || !confirm('Delete this team?')) return;
+            try {
+                await deleteDoc(doc(db, 'teams', teamId));
+                showToast('Team deleted', 'info');
+                document.getElementById('editTeamModal').style.display = 'none';
+                loadTeams();
+            } catch (e) { showToast('Error: ' + e.message, 'error'); }
+        };
+
+        // ============================================================
+        //  EDIT USER
+        // ============================================================
+        window.openEditUser = async (userId, name, role, pts, money) => {
+            document.getElementById('editUserModal').style.display = 'flex';
+            document.getElementById('editUserId').value       = userId;
+            document.getElementById('editUserUsername').value = name;
+            document.getElementById('editUserRole').value     = role;
+            document.getElementById('editUserPoints').value   = pts;
+            document.getElementById('editUserMoney').value    = money;
+            try {
+                const snap = await getDoc(doc(db, 'teams', userId));
+                if (snap.exists()) { tempAchievements = snap.data().achievements || []; renderTrophyList(); }
+            } catch (e) { console.error(e); }
+        };
+
+        function renderTrophyList() {
+            const container = document.getElementById('trophyList');
+            container.innerHTML = tempAchievements.length === 0
+                ? '<div style="color:var(--mist-white);text-align:center;padding:10px;">No achievements</div>'
+                : tempAchievements.map((a, idx) => `
+                    <div class="list-row">
+                        <div class="list-info"><i class="fa-solid fa-trophy" style="color:var(--pure-white);"></i>
+                            <span style="color:var(--pure-white);font-weight:600;">${a.title}</span>
+                            <span class="badge bg-gold">${a.rank}</span>
+                        </div>
+                        <i class="fa-solid fa-trash list-del" onclick="removeTrophy(${idx})"></i>
+                    </div>`).join('');
+        }
+
+        window.removeTrophy = (idx) => { tempAchievements.splice(idx, 1); renderTrophyList(); };
+        window.addTrophy    = () => {
+            const title = document.getElementById('newTrophyTitle').value.trim();
+            const rank  = document.getElementById('newTrophyRank').value.trim();
+            if (!title || !rank) return showToast('Enter name and rank', 'error');
+            tempAchievements.push({ title, rank, tournament: title, date: new Date().toISOString().split('T')[0] });
+            document.getElementById('newTrophyTitle').value = '';
+            document.getElementById('newTrophyRank').value  = '';
+            renderTrophyList();
+        };
+
+        window.saveUserChanges = async () => {
+            const userId = document.getElementById('editUserId').value;
+            if (!userId) return;
+            try {
+                await updateDoc(doc(db, 'teams', userId), {
+                    username     : document.getElementById('editUserUsername').value,
+                    role         : document.getElementById('editUserRole').value,
+                    clubPoints   : parseInt(document.getElementById('editUserPoints').value) || 0,
+                    totalEarnings: parseInt(document.getElementById('editUserMoney').value)  || 0,
+                    achievements : tempAchievements
+                });
+                showToast('✅ User updated!');
+                document.getElementById('editUserModal').style.display = 'none';
+                loadUsers();
+            } catch (e) { showToast('Error: ' + e.message, 'error'); }
+        };
+
+        // ============================================================
+        //  SYNC COUNTS
+        // ============================================================
+        window.syncAllCounts = async () => {
+            try {
+                const tourSnap = await getDocs(collection(db, 'tournaments'));
+                for (const tourDoc of tourSnap.docs) {
+                    const q = query(collection(db,'registrations'), where('tournamentId','==',tourDoc.id), where('status','==','approved'));
+                    const regSnap = await getDocs(q);
+                    await updateDoc(doc(db,'tournaments',tourDoc.id), { currentTeams: regSnap.size });
+                }
+                showToast('✅ Counts synced!');
+                loadAllData();
+            } catch (e) { showToast('Error: ' + e.message, 'error'); }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCRIMS | PSL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        /* LIQUID GLASS THEME */
+        :root {
+            --pure-black: #000000;
+            --deep-black: #0a0a0a;
+            --soft-black: #111111;
+            --charcoal: #1a1a1a;
+            --graphite: #2a2a2a;
+            
+            --pure-white: #ffffff;
+            --soft-white: rgba(255, 255, 255, 0.9);
+            --mist-white: rgba(255, 255, 255, 0.6);
+            --frost-white: rgba(255, 255, 255, 0.1);
+            --ghost-white: rgba(255, 255, 255, 0.05);
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            
+            --liquid-glow: rgba(255, 255, 255, 0.3);
+            --liquid-sheen: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', 'Kanit', sans-serif;
+            
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--deep-black); 
+            font-family: var(--font-body);
+            color: var(--soft-white);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: ambientMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes ambientMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, 2%) scale(1.1); }
+        }
+
+        /* Liquid Glass Navbar */
+        .navbar { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 16px 24px; 
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        
+        .brand { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.6rem;
+            color: var(--pure-white);
+            letter-spacing: 2px;
+        } 
+        
+        .brand span { 
+            color: var(--mist-white);
+            font-weight: 400;
+        }
+        
+        .nav-links { display: flex; gap: 8px; }
+        
+        .nav-btn { 
+            padding: 10px 18px; 
+            border-radius: var(--border-radius-sm); 
+            border: 1px solid var(--glass-border); 
+            background: var(--ghost-white);
+            color: var(--soft-white);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover { 
+            background: var(--glass-bg);
+            border-color: var(--glass-highlight);
+            color: var(--pure-white);
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn.primary { 
+            background: var(--pure-white); 
+            color: var(--pure-black); 
+            border-color: var(--pure-white); 
+        }
+        
+        .nav-btn.primary:hover { 
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+
+        /* HERO SECTION */
+        .hero { 
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.02) 100%);
+            padding: 50px 20px; 
+            text-align: center; 
+            position: relative; 
+            overflow: hidden;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 2.5rem; 
+            color: var(--pure-white);
+            position: relative; 
+            z-index: 1;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(255,255,255,0.2);
+        }
+        
+        .hero-sub { 
+            color: var(--mist-white); 
+            font-size: 1rem; 
+            margin-top: 12px; 
+            position: relative; 
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .hero-stats { 
+            display: flex; 
+            justify-content: center; 
+            gap: 40px; 
+            margin-top: 30px; 
+            position: relative; 
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stat { 
+            text-align: center; 
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-stat:hover {
+            border-color: var(--glass-highlight);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .hero-stat-value { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 2rem; 
+            color: var(--pure-white);
+            line-height: 1;
+            text-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+        
+        .hero-stat-label { 
+            font-size: 0.7rem; 
+            color: var(--mist-white); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-top: 8px;
+            font-weight: 600;
+            font-family: var(--font-display);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+        /* CUSTOM DROPDOWN - Fixed Z-Index & Stacking Context */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+            max-width: 200px;
+            z-index: 50;
+            isolation: isolate;
+        }
+
+        .custom-dropdown.full-width {
+            max-width: 100%;
+        }
+
+        .dropdown-trigger {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-sm);
+            color: var(--soft-white);
+            font-family: var(--font-body);
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 51;
+        }
+
+        .dropdown-trigger:hover {
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+            color: var(--pure-white);
+        }
+
+        .dropdown-trigger.active {
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+        }
+
+        .dropdown-selected {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 8px;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.8rem;
+            color: var(--mist-white);
+        }
+
+        .dropdown-trigger.active .dropdown-arrow {
+            transform: rotate(180deg);
+            color: var(--pure-white);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(30px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-md);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.98);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999 !important;
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-width: 100%;
+        }
+
+        .dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-track {
+            background: var(--ghost-white);
+            border-radius: 3px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb {
+            background: var(--glass-highlight);
+            border-radius: 3px;
+        }
+
+        .dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: var(--mist-white);
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            color: var(--mist-white);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--ghost-white);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: var(--glass-bg);
+            color: var(--pure-white);
+            padding-left: 20px;
+        }
+
+        .dropdown-item.active {
+            background: rgba(255,255,255,0.1);
+            color: var(--pure-white);
+            font-weight: 600;
+        }
+
+        .dropdown-item i {
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .dropdown-item.active i {
+            opacity: 1;
+        }
+
+        /* FILTER BAR */
+        .filter-bar { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 20px; 
+            border-radius: var(--border-radius-lg); 
+            border: 1px solid var(--glass-border); 
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 40;
+        }
+        
+        .filter-row { 
+            display: flex; 
+            gap: 15px; 
+            flex-wrap: wrap; 
+            align-items: flex-start;
+            position: relative;
+        }
+
+        /* TABS */
+        .tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .tab-btn { 
+            padding: 14px 28px; 
+            border-radius: var(--border-radius-md); 
+            border: 1px solid var(--glass-border); 
+            background: var(--ghost-white);
+            color: var(--mist-white);
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .tab-btn:hover { 
+            background: var(--glass-bg);
+            border-color: var(--glass-highlight);
+            color: var(--soft-white);
+        }
+        
+        .tab-btn.active { 
+            background: var(--pure-white);
+            color: var(--pure-black); 
+            border-color: var(--pure-white);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+        }
+
+        /* SCRIM CARDS */
+        .scrim-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 20px; 
+            position: relative;
+            z-index: 1;
+            min-height: 200px;
+        }
+        
+        .scrim-card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); 
+            border: 1px solid var(--glass-border); 
+            padding: 24px; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative; 
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            z-index: 1;
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .scrim-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--liquid-sheen);
+            transition: left 0.7s;
+            pointer-events: none;
+        }
+        
+        .scrim-card:hover::before {
+            left: 100%;
+        }
+        
+        .scrim-card:hover { 
+            transform: translateY(-8px);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
+        }
+        
+        .scrim-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-start; 
+            margin-bottom: 20px; 
+        }
+        
+        .scrim-team { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        
+        .team-logo { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .team-name { 
+            font-weight: 700; 
+            color: var(--pure-white);
+            font-size: 1rem;
+        }
+        
+        .team-rating { 
+            font-size: 0.8rem; 
+            color: var(--mist-white);
+        }
+        
+        .scrim-status { 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            font-family: var(--font-display);
+        }
+        
+        .scrim-status.open { 
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .scrim-status.closed { 
+            background: var(--ghost-white);
+            color: var(--mist-white);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .scrim-status.matched { 
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .scrim-details { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        
+        .detail-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 0.9rem;
+            color: var(--mist-white);
+        }
+        
+        .detail-item i { color: var(--pure-white); width: 20px; }
+        
+        .scrim-footer { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding-top: 15px; 
+            border-top: 1px solid var(--glass-border); 
+        }
+        
+        .scrim-time { 
+            font-size: 0.85rem; 
+            color: var(--mist-white);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .scrim-time i { color: var(--pure-white); }
+        
+        .btn-join { 
+            padding: 10px 20px; 
+            border-radius: var(--border-radius-sm); 
+            border: none; 
+            background: var(--pure-white);
+            color: var(--pure-black); 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 0.75rem; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .btn-join:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255,255,255,0.2);
+        }
+        
+        .btn-join:disabled {
+            background: var(--ghost-white);
+            color: var(--mist-white);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* MODAL */
+        .modal { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 2000;
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+        }
+        
+        .modal-content { 
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(30px) saturate(200%);
+            width: 100%; 
+            max-width: 500px; 
+            padding: 30px; 
+            border-radius: var(--border-radius-lg); 
+            position: relative; 
+            max-height: 90vh; 
+            overflow-y: visible;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .modal-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid var(--glass-border); 
+        }
+        
+        .modal-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.3rem;
+            color: var(--pure-white);
+            letter-spacing: 1px;
+        }
+        
+        .close-btn { 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            font-size: 1.3rem; 
+            cursor: pointer; 
+            color: var(--mist-white); 
+            width: 40px; 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover { 
+            background: var(--glass-bg);
+            color: var(--pure-white);
+            transform: rotate(90deg);
+            border-color: var(--glass-highlight);
+        }
+        
+        .form-group { 
+            margin-bottom: 20px; 
+            position: relative;
+            z-index: 100;
+        }
+        
+        .form-label { 
+            display: block; 
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            margin-bottom: 8px; 
+            color: var(--soft-white);
+            letter-spacing: 0.5px;
+        }
+
+        .form-input { 
+            width: 100%; 
+            padding: 12px; 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            border-radius: var(--border-radius-sm); 
+            font-family: var(--font-body);
+            color: var(--pure-white);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .form-input:focus { 
+            outline: none; 
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+        }
+
+        .custom-dropdown.modal-dropdown {
+            max-width: 100%;
+            z-index: 3000;
+        }
+
+        .custom-dropdown.modal-dropdown .dropdown-menu {
+            z-index: 3001 !important;
+            background: rgba(20, 20, 20, 0.99);
+        }
+
+        .btn-submit { 
+            width: 100%; 
+            background: var(--pure-white); 
+            color: var(--pure-black);
+            border: none; 
+            padding: 14px; 
+            border-radius: var(--border-radius-md); 
+            font-weight: 800; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-submit:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center; 
+            padding: 60px 20px; 
+            color: var(--mist-white);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg); 
+            border: 1px dashed var(--glass-border);
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i { 
+            font-size: 3rem; 
+            margin-bottom: 15px; 
+            color: var(--frost-white); 
+        }
+        
+        .empty-title { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 1.3rem; 
+            color: var(--pure-white); 
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* LOADING STATE */
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--mist-white);
+            grid-column: 1 / -1;
+        }
+        
+        .loading-state i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* DELETE BUTTON */
+        .btn-delete {
+            background: transparent;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 8px 16px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 1.8rem; }
+            .hero-stats { gap: 15px; }
+            .hero-stat { padding: 15px 20px; }
+            .hero-stat-value { font-size: 1.6rem; }
+            .scrim-grid { grid-template-columns: 1fr; }
+            .tabs { flex-wrap: wrap; }
+            .tab-btn { flex: 1; min-width: 120px; }
+            .custom-dropdown { max-width: 100%; flex: 1; }
+            .filter-row { gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">PSL <span>SCRIMS</span></div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-btn"><i class="fa-solid fa-home"></i></a>
+            <a href="my-team.html" class="nav-btn"><i class="fa-solid fa-users"></i> My Team</a>
+            <button class="nav-btn primary" onclick="openModal('createModal')">
+                <i class="fa-solid fa-plus"></i> Create
+            </button>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-title">SCRIMS</div>
+        <div class="hero-sub">Find practice matches for your team</div>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value" id="statActive">0</div>
+                <div class="hero-stat-label">Active</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value" id="statToday">0</div>
+                <div class="hero-stat-label">Today</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value" id="statTeams">0</div>
+                <div class="hero-stat-label">Teams</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+            <div class="filter-row">
+                <div class="custom-dropdown" id="gameFilterDropdown">
+                    <div class="dropdown-trigger" onclick="toggleDropdown('gameFilterDropdown')">
+                        <span class="dropdown-selected">All Games</span>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item active" onclick="selectOption('gameFilterDropdown', 'all', 'All Games', filterScrims)">
+                            <i class="fa-solid fa-check"></i> All Games
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('gameFilterDropdown', 'ROV', 'RoV', filterScrims)">
+                            <i class="fa-solid fa-check"></i> RoV
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('gameFilterDropdown', 'VALORANT', 'Valorant', filterScrims)">
+                            <i class="fa-solid fa-check"></i> Valorant
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('gameFilterDropdown', 'PUBG', 'PUBG Mobile', filterScrims)">
+                            <i class="fa-solid fa-check"></i> PUBG Mobile
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('gameFilterDropdown', 'FC25', 'FC 25', filterScrims)">
+                            <i class="fa-solid fa-check"></i> FC 25
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('gameFilterDropdown', 'MLBB', 'MLBB', filterScrims)">
+                            <i class="fa-solid fa-check"></i> MLBB
+                        </div>
+                    </div>
+                    <input type="hidden" id="gameFilter" value="all">
+                </div>
+
+                <div class="custom-dropdown" id="modeFilterDropdown">
+                    <div class="dropdown-trigger" onclick="toggleDropdown('modeFilterDropdown')">
+                        <span class="dropdown-selected">All Modes</span>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item active" onclick="selectOption('modeFilterDropdown', 'all', 'All Modes', filterScrims)">
+                            <i class="fa-solid fa-check"></i> All Modes
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('modeFilterDropdown', 'BO1', 'BO1', filterScrims)">
+                            <i class="fa-solid fa-check"></i> BO1
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('modeFilterDropdown', 'BO3', 'BO3', filterScrims)">
+                            <i class="fa-solid fa-check"></i> BO3
+                        </div>
+                        <div class="dropdown-item" onclick="selectOption('modeFilterDropdown', 'BO5', 'BO5', filterScrims)">
+                            <i class="fa-solid fa-check"></i> BO5
+                        </div>
+                    </div>
+                    <input type="hidden" id="modeFilter" value="all">
+                </div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('available', this)">Available</button>
+            <button class="tab-btn" onclick="switchTab('myscrims', this)">My Scrims</button>
+            <button class="tab-btn" onclick="switchTab('history', this)">History</button>
+        </div>
+
+        <!-- CONTENT -->
+        <div id="availableContent" class="tab-content">
+            <div class="scrim-grid" id="availableGrid">
+                <div class="loading-state" id="loadingState">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <div>Loading scrims...</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="myscrimsContent" class="tab-content" style="display: none;">
+            <div class="scrim-grid" id="myScrimsGrid">
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <i class="fa-solid fa-calendar-xmark"></i>
+                    <div class="empty-title">NO SCRIMS</div>
+                    <div>You haven't created any scrims yet</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="historyContent" class="tab-content" style="display: none;">
+            <div class="scrim-grid" id="historyGrid">
+                <div class="empty-state" style="grid-column: 1/-1;">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <div class="empty-title">NO HISTORY</div>
+                    <div>Your completed scrims will appear here</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CREATE SCRIM MODAL -->
+    <div class="modal" id="createModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <div class="modal-title">Create Scrim</div>
+                <button class="close-btn" onclick="closeModal('createModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form id="createScrimForm" onsubmit="event.preventDefault(); createScrim();">
+                <div class="form-group">
+                    <label class="form-label">Game</label>
+                    <div class="custom-dropdown modal-dropdown" id="createGameDropdown">
+                        <div class="dropdown-trigger" onclick="toggleDropdown('createGameDropdown')">
+                            <span class="dropdown-selected">RoV</span>
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item active" onclick="selectOption('createGameDropdown', 'ROV', 'RoV')">
+                                <i class="fa-solid fa-check"></i> RoV
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createGameDropdown', 'VALORANT', 'Valorant')">
+                                <i class="fa-solid fa-check"></i> Valorant
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createGameDropdown', 'PUBG', 'PUBG Mobile')">
+                                <i class="fa-solid fa-check"></i> PUBG Mobile
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createGameDropdown', 'FC25', 'FC 25')">
+                                <i class="fa-solid fa-check"></i> FC 25
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createGameDropdown', 'MLBB', 'MLBB')">
+                                <i class="fa-solid fa-check"></i> MLBB
+                            </div>
+                        </div>
+                        <input type="hidden" id="createGame" value="ROV" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mode</label>
+                    <div class="custom-dropdown modal-dropdown" id="createModeDropdown">
+                        <div class="dropdown-trigger" onclick="toggleDropdown('createModeDropdown')">
+                            <span class="dropdown-selected">BO1</span>
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item active" onclick="selectOption('createModeDropdown', 'BO1', 'BO1')">
+                                <i class="fa-solid fa-check"></i> BO1
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createModeDropdown', 'BO3', 'BO3')">
+                                <i class="fa-solid fa-check"></i> BO3
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createModeDropdown', 'BO5', 'BO5')">
+                                <i class="fa-solid fa-check"></i> BO5
+                            </div>
+                        </div>
+                        <input type="hidden" id="createMode" value="BO1" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Server</label>
+                    <div class="custom-dropdown modal-dropdown" id="createServerDropdown">
+                        <div class="dropdown-trigger" onclick="toggleDropdown('createServerDropdown')">
+                            <span class="dropdown-selected">Thailand</span>
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-item active" onclick="selectOption('createServerDropdown', 'TH', 'Thailand')">
+                                <i class="fa-solid fa-check"></i> Thailand
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createServerDropdown', 'SEA', 'Southeast Asia')">
+                                <i class="fa-solid fa-check"></i> Southeast Asia
+                            </div>
+                            <div class="dropdown-item" onclick="selectOption('createServerDropdown', 'ASIA', 'Asia')">
+                                <i class="fa-solid fa-check"></i> Asia
+                            </div>
+                        </div>
+                        <input type="hidden" id="createServer" value="TH" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date & Time</label>
+                    <input type="datetime-local" class="form-input" id="createTime" required>
+                </div>
+
+                <button type="submit" class="btn-submit" id="createBtn">Create Scrim</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JOIN MODAL -->
+    <div class="modal" id="joinModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <div class="modal-title">Confirm Join</div>
+                <button class="close-btn" onclick="closeModal('joinModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 3rem; margin-bottom: 15px;">
+                    <i class="fa-solid fa-handshake" style="color: var(--pure-white);"></i>
+                </div>
+                <p style="color: var(--mist-white); margin-bottom: 20px;">
+                    Are you sure you want to join this scrim?
+                </p>
+                <button class="btn-submit" onclick="confirmJoin()">Confirm Join</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, auth, app } from './firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { collection, query, where, onSnapshot, addDoc, updateDoc, doc, orderBy, serverTimestamp, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+        let currentUser = null;
+        let currentScrimId = null;
+        let allScrims = [];
+
+        // ตรวจสอบสถานะการล็อกอิน
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+        });
+
+        // Real-time listener สำหรับ scrims
+        function setupScrimsListener() {
+            const scrimsQuery = query(
+                collection(db, "scrims"), 
+                orderBy("createdAt", "desc")
+            );
+            
+            onSnapshot(scrimsQuery, (snapshot) => {
+                allScrims = [];
+                let activeCount = 0;
+                let todayCount = 0;
+                const today = new Date().toDateString();
+                
+                snapshot.forEach((doc) => {
+                    const scrim = { id: doc.id, ...doc.data() };
+                    allScrims.push(scrim);
+                    
+                    if (scrim.status === 'open') activeCount++;
+                    if (scrim.time) {
+                        const scrimDate = new Date(scrim.time).toDateString();
+                        if (scrimDate === today) todayCount++;
+                    }
+                });
+                
+                // อัพเดทสถิติ
+                document.getElementById('statActive').innerText = activeCount;
+                document.getElementById('statToday').innerText = todayCount;
+                document.getElementById('statTeams').innerText = allScrims.length * 2;
+                
+                // แสดงรายการ
+                renderScrims();
+            }, (error) => {
+                console.error("Error loading scrims:", error);
+                document.getElementById('availableGrid').innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div class="empty-title">ERROR</div>
+                        <div>Failed to load scrims. Please try again later.</div>
+                    </div>
+                `;
+            });
+        }
+
+        // ฟังก์ชันแสดงผลรายการ Scrim
+        function renderScrims() {
+            const grid = document.getElementById('availableGrid');
+            const gameFilter = document.getElementById('gameFilter').value;
+            const modeFilter = document.getElementById('modeFilter').value;
+            
+            // กรองข้อมูล
+            let filteredScrims = allScrims.filter(scrim => {
+                const matchGame = gameFilter === 'all' || scrim.game === gameFilter;
+                const matchMode = modeFilter === 'all' || scrim.mode === modeFilter;
+                return matchGame && matchMode && scrim.status === 'open';
+            });
+            
+            if (filteredScrims.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1/-1;">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                        <div class="empty-title">NO SCRIMS AVAILABLE</div>
+                        <div>Be the first to create a scrim!</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = filteredScrims.map((scrim, index) => `
+                <div class="scrim-card" style="animation-delay: ${index * 0.1}s">
+                    <div class="scrim-header">
+                        <div class="scrim-team">
+                            <img src="${scrim.teamLogo || 'https://placehold.co/50/111/fff?text=' + (scrim.teamName ? scrim.teamName.charAt(0) : 'T')}" 
+                                 class="team-logo" 
+                                 onerror="this.src='https://placehold.co/50/111/fff'">
+                            <div class="team-info">
+                                <div class="team-name">${scrim.teamName || 'Unknown Team'}</div>
+                                <div class="team-rating">Rating: ${scrim.teamRating || 'N/A'}</div>
+                            </div>
+                        </div>
+                        <div class="scrim-status ${scrim.status || 'open'}">${scrim.status?.toUpperCase() || 'OPEN'}</div>
+                    </div>
+                    <div class="scrim-details">
+                        <div class="detail-item"><i class="fa-solid fa-gamepad"></i> ${scrim.game}</div>
+                        <div class="detail-item"><i class="fa-solid fa-layer-group"></i> ${scrim.mode}</div>
+                        <div class="detail-item"><i class="fa-solid fa-server"></i> ${scrim.server} Server</div>
+                        <div class="detail-item"><i class="fa-solid fa-users"></i> 5v5</div>
+                    </div>
+                    <div class="scrim-footer">
+                        <div class="scrim-time">
+                            <i class="fa-regular fa-clock"></i> ${formatTime(scrim.time)}
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            ${currentUser && scrim.createdBy === currentUser.uid ? `
+                                <button class="btn-delete" onclick="deleteScrim('${scrim.id}')">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            ` : ''}
+                            <button class="btn-join" onclick="joinScrim('${scrim.id}')" ${scrim.status !== 'open' ? 'disabled' : ''}>
+                                ${scrim.status === 'open' ? 'Join' : 'Full'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ฟอร์แมตเวลา
+        function formatTime(timeString) {
+            if (!timeString) return 'TBD';
+            const date = new Date(timeString);
+            const now = new Date();
+            const isToday = date.toDateString() === now.toDateString();
+            const isTomorrow = new Date(now.setDate(now.getDate() + 1)).toDateString() === date.toDateString();
+            
+            const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+            
+            if (isToday) return `Today, ${timeStr}`;
+            if (isTomorrow) return `Tomorrow, ${timeStr}`;
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Custom Dropdown Functions
+        window.toggleDropdown = function(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            const menu = dropdown.querySelector('.dropdown-menu');
+            const trigger = dropdown.querySelector('.dropdown-trigger');
+            
+            document.querySelectorAll('.custom-dropdown').forEach(d => {
+                if (d.id !== dropdownId) {
+                    d.querySelector('.dropdown-menu').classList.remove('open');
+                    d.querySelector('.dropdown-trigger').classList.remove('active');
+                }
+            });
+            
+            const isOpen = menu.classList.toggle('open');
+            trigger.classList.toggle('active', isOpen);
+            
+            if (isOpen && dropdown.closest('.modal')) {
+                dropdown.style.zIndex = '3000';
+            } else {
+                dropdown.style.zIndex = '';
+            }
+        };
+
+        window.selectOption = function(dropdownId, value, text, callback = null) {
+            const dropdown = document.getElementById(dropdownId);
+            const selected = dropdown.querySelector('.dropdown-selected');
+            const hiddenInput = dropdown.querySelector('input[type="hidden"]');
+            const items = dropdown.querySelectorAll('.dropdown-item');
+            
+            selected.textContent = text;
+            hiddenInput.value = value;
+            
+            items.forEach(item => {
+                item.classList.remove('active');
+                if (item.textContent.trim() === text || item.innerText.trim() === text) {
+                    item.classList.add('active');
+                }
+            });
+            
+            dropdown.querySelector('.dropdown-menu').classList.remove('open');
+            dropdown.querySelector('.dropdown-trigger').classList.remove('active');
+            dropdown.style.zIndex = '';
+            
+            if (callback && typeof callback === 'function') {
+                callback();
+            }
+        };
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('open');
+                });
+                document.querySelectorAll('.dropdown-trigger').forEach(trigger => {
+                    trigger.classList.remove('active');
+                });
+                document.querySelectorAll('.custom-dropdown').forEach(d => {
+                    d.style.zIndex = '';
+                });
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('open');
+                });
+                document.querySelectorAll('.dropdown-trigger').forEach(trigger => {
+                    trigger.classList.remove('active');
+                });
+                document.querySelectorAll('.custom-dropdown').forEach(d => {
+                    d.style.zIndex = '';
+                });
+            }
+        });
+
+        window.filterScrims = function() {
+            renderScrims();
+        };
+
+        window.switchTab = (tab, btn) => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById(tab + 'Content').style.display = 'block';
+            
+            if (tab === 'available') {
+                renderScrims();
+            }
+        };
+
+        window.openModal = (id) => {
+            document.getElementById(id).style.display = 'flex';
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('open');
+            });
+            
+            // Set minimum datetime to now
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('createTime').min = now.toISOString().slice(0,16);
+        };
+
+        window.closeModal = (id) => {
+            document.getElementById(id).style.display = 'none';
+        };
+
+        window.createScrim = async () => {
+            if (!currentUser) {
+                alert('Please login first!');
+                return;
+            }
+            
+            const btn = document.getElementById('createBtn');
+            const game = document.getElementById('createGame').value;
+            const mode = document.getElementById('createMode').value;
+            const server = document.getElementById('createServer').value;
+            const time = document.getElementById('createTime').value;
+            
+            if (!time) {
+                alert('Please select date and time');
+                return;
+            }
+            
+            const selectedDate = new Date(time);
+            const now = new Date();
+            
+            if (selectedDate < now) {
+                alert('Cannot create scrim in the past!');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating...';
+            
+            try {
+                // ดึงข้อมูลทีมจาก user
+                const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+                const userData = userDoc.exists() ? userDoc.data() : {};
+                
+                await addDoc(collection(db, "scrims"), {
+                    game,
+                    mode,
+                    server,
+                    time,
+                    status: 'open',
+                    createdBy: currentUser.uid,
+                    createdAt: serverTimestamp(),
+                    teamName: userData.teamName || userData.username || currentUser.displayName || 'Unknown Team',
+                    teamLogo: userData.logo || userData.photoURL || null,
+                    teamRating: userData.rating || 'N/A',
+                    createdByName: userData.username || currentUser.displayName || 'Anonymous'
+                });
+                
+                // รีเซ็ตฟอร์ม
+                document.getElementById('createScrimForm').reset();
+                selectOption('createGameDropdown', 'ROV', 'RoV');
+                selectOption('createModeDropdown', 'BO1', 'BO1');
+                selectOption('createServerDropdown', 'TH', 'Thailand');
+                
+                closeModal('createModal');
+                alert('Scrim created successfully!');
+                
+            } catch (error) {
+                console.error("Error creating scrim:", error);
+                alert('Error creating scrim: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Create Scrim';
+            }
+        };
+
+        window.deleteScrim = async (id) => {
+            if (!confirm('Are you sure you want to delete this scrim?')) return;
+            
+            try {
+                await deleteDoc(doc(db, "scrims", id));
+                alert('Scrim deleted successfully!');
+            } catch (error) {
+                console.error("Error deleting scrim:", error);
+                alert('Error deleting scrim: ' + error.message);
+            }
+        };
+
+        window.joinScrim = (id) => {
+            currentScrimId = id;
+            openModal('joinModal');
+        };
+
+        window.confirmJoin = async () => {
+            if (!currentUser) {
+                alert('Please login first!');
+                return;
+            }
+            
+            try {
+                await updateDoc(doc(db, "scrims", currentScrimId), {
+                    status: 'matched',
+                    joinedBy: currentUser.uid,
+                    joinedAt: serverTimestamp()
+                });
+                
+                alert('Joined scrim successfully!');
+                closeModal('joinModal');
+            } catch (error) {
+                console.error("Error joining scrim:", error);
+                alert('Error joining scrim: ' + error.message);
+            }
+        };
+
+        document.querySelectorAll('.modal').forEach(m => {
+            m.addEventListener('click', (e) => {
+                if (e.target === m) m.style.display = 'none';
+            });
+        });
+
+        // เริ่มต้นการทำงาน
+        setupScrimsListener();
+    </script>
+</body>
+</html>

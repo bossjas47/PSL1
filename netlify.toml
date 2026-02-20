@@ -1,0 +1,9 @@
+[build]
+  # การตั้งค่าอื่นๆ ของคุณ
+
+[build.environment]
+  # ปิด Smart Detection (ต้องเป็นตัวพิมพ์เล็ก 'false' เท่านั้น)
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+  
+  # หรือถ้าต้องการปิดการสแกนทั้งหมด (รวม secrets ที่คุณกำหนดไว้ด้วย)
+  # SECRETS_SCAN_ENABLED = "false"

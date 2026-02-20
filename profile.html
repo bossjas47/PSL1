@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PROFILE | PSL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        /* LIQUID GLASS THEME */
+        :root {
+            --pure-black: #000000;
+            --deep-black: #0a0a0a;
+            --soft-black: #111111;
+            --charcoal: #1a1a1a;
+            --graphite: #2a2a2a;
+            
+            --pure-white: #ffffff;
+            --soft-white: rgba(255, 255, 255, 0.9);
+            --mist-white: rgba(255, 255, 255, 0.6);
+            --frost-white: rgba(255, 255, 255, 0.1);
+            --ghost-white: rgba(255, 255, 255, 0.05);
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            
+            --liquid-glow: rgba(255, 255, 255, 0.3);
+            --liquid-sheen: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', 'Kanit', sans-serif;
+            
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+            
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--deep-black); 
+            font-family: var(--font-body);
+            color: var(--soft-white);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: ambientMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes ambientMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, 2%) scale(1.1); }
+        }
+
+        /* Liquid Glass Navbar */
+        .navbar { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 16px 24px; 
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        
+        .brand { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.6rem;
+            color: var(--pure-white);
+            letter-spacing: 2px;
+        } 
+        
+        .brand span { 
+            color: var(--mist-white);
+            font-weight: 400;
+        }
+        
+        .nav-links { display: flex; gap: 8px; }
+        
+        .nav-btn { 
+            padding: 10px 18px; 
+            border-radius: var(--border-radius-sm); 
+            border: 1px solid var(--glass-border); 
+            background: var(--ghost-white);
+            color: var(--soft-white);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover { 
+            background: var(--glass-bg);
+            border-color: var(--glass-highlight);
+            color: var(--pure-white);
+            transform: translateY(-2px);
+        }
+
+        /* PROFILE HERO - Liquid Glass */
+        .profile-hero { 
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.02) 100%);
+            padding: 60px 20px 80px; 
+            text-align: center; 
+            position: relative; 
+            overflow: hidden;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .profile-hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .avatar-wrap { 
+            position: relative; 
+            display: inline-block; 
+            margin-bottom: 20px; 
+        }
+        
+        .profile-avatar { 
+            width: 150px; 
+            height: 150px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 4px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-avatar:hover {
+            border-color: var(--glass-highlight);
+            transform: scale(1.02);
+        }
+        
+        .avatar-upload { 
+            position: absolute; 
+            bottom: 5px; 
+            right: 5px; 
+            width: 44px; 
+            height: 44px; 
+            background: var(--pure-white);
+            color: var(--pure-black); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer;
+            border: 3px solid var(--deep-black);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .avatar-upload:hover { 
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+        }
+        
+        .profile-name { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 2rem; 
+            color: var(--pure-white);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        
+        .profile-role { 
+            font-size: 0.9rem; 
+            color: var(--mist-white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-family: var(--font-display);
+        }
+        
+        .profile-badges { 
+            display: flex; 
+            justify-content: center; 
+            gap: 10px; 
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .badge { 
+            padding: 8px 16px; 
+            border-radius: 20px; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px;
+            font-family: var(--font-display);
+        }
+        
+        .badge.verified { 
+            background: var(--pure-white);
+            color: var(--pure-black);
+        }
+        
+        .badge.pro { 
+            background: var(--ghost-white);
+            color: var(--pure-white);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .badge.admin { 
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .container { max-width: 1000px; margin: -40px auto 0; padding: 0 20px 40px; position: relative; z-index: 10; }
+
+        /* STATS ROW */
+        .stats-row { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 15px; 
+            margin-bottom: 30px; 
+        }
+        
+        .stat-card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); 
+            padding: 24px; 
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--liquid-sheen);
+            transition: left 0.7s;
+            pointer-events: none;
+        }
+        
+        .stat-card:hover::before {
+            left: 100%;
+        }
+        
+        .stat-card:hover { 
+            transform: translateY(-5px);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+        }
+        
+        .stat-icon { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: var(--border-radius-sm); 
+            background: var(--ghost-white);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 15px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover .stat-icon {
+            background: var(--pure-white);
+            transform: scale(1.1);
+        }
+        
+        .stat-card:hover .stat-icon i {
+            color: var(--pure-black);
+        }
+        
+        .stat-icon i { 
+            font-size: 1.3rem; 
+            color: var(--pure-white);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-value { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.8rem; 
+            color: var(--pure-white);
+            line-height: 1;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        
+        .stat-label { 
+            font-size: 0.7rem; 
+            color: var(--mist-white); 
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            font-family: var(--font-display);
+        }
+
+        /* TABS */
+        .tabs { 
+            display: flex; 
+            gap: 10px; 
+            margin-bottom: 25px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 8px;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .tab-btn { 
+            flex: 1;
+            padding: 14px; 
+            border-radius: var(--border-radius-sm); 
+            border: none; 
+            background: transparent;
+            color: var(--mist-white);
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 0.75rem; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .tab-btn:hover { 
+            color: var(--soft-white);
+        }
+        
+        .tab-btn.active { 
+            background: var(--pure-white);
+            color: var(--pure-black);
+            box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+        }
+
+        /* CONTENT CARDS - Liquid Glass */
+        .content-card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); 
+            border: 1px solid var(--glass-border); 
+            padding: 30px; 
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .section-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.1rem; 
+            color: var(--pure-white);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i { color: var(--pure-white); }
+
+        /* INFO LIST */
+        .info-list { display: flex; flex-direction: column; gap: 15px; }
+        
+        .info-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 16px; 
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+        .info-item:hover {
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .info-label { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-size: 0.9rem;
+            color: var(--mist-white);
+        }
+        
+        .info-label i { color: var(--pure-white); width: 20px; }
+        
+        .info-value { 
+            font-weight: 700; 
+            color: var(--pure-white);
+            font-family: var(--font-display);
+        }
+
+        /* TOGGLE SWITCH */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-container:hover {
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .toggle-label {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .toggle-title {
+            font-weight: 700;
+            color: var(--pure-white);
+            font-size: 0.95rem;
+        }
+        
+        .toggle-desc {
+            font-size: 0.8rem;
+            color: var(--mist-white);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: var(--graphite);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .toggle-switch.active {
+            background: var(--pure-white);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--pure-white);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .toggle-switch.active::after {
+            left: 26px;
+            background: var(--pure-black);
+        }
+
+        /* ACHIEVEMENTS */
+        .achievements-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .achievement-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            padding: 18px; 
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-item:hover {
+            border-color: var(--glass-highlight);
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .achievement-icon { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            background: var(--pure-white);
+            color: var(--pure-black);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.1rem; 
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .achievement-item:hover .achievement-icon {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+        
+        .achievement-info { flex: 1; }
+        
+        .achievement-title { 
+            font-weight: 700; 
+            color: var(--pure-white);
+            margin-bottom: 4px;
+        }
+        
+        .achievement-date { 
+            font-size: 0.8rem; 
+            color: var(--mist-white);
+        }
+        
+        .achievement-rank { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.1rem; 
+            color: var(--pure-white);
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        /* TOURNAMENT LIST */
+        .tournament-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            padding: 18px; 
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .tournament-item:hover {
+            border-color: var(--glass-highlight);
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.08);
+        }
+        
+        .tournament-img { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: var(--border-radius-sm); 
+            object-fit: cover; 
+            border: 1px solid var(--glass-border);
+        }
+        
+        .tournament-info { flex: 1; }
+        
+        .tournament-name { 
+            font-weight: 700; 
+            color: var(--pure-white);
+            margin-bottom: 4px;
+        }
+        
+        .tournament-meta { 
+            font-size: 0.8rem; 
+            color: var(--mist-white);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .tournament-status { 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            font-family: var(--font-display);
+        }
+        
+        .tournament-status.registered { 
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .tournament-status.pending { 
+            background: var(--ghost-white);
+            color: var(--mist-white);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* MODAL - Deep Glass */
+        .modal { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000; 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+        }
+        
+        .modal-content { 
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(30px) saturate(200%);
+            width: 100%; 
+            max-width: 450px; 
+            padding: 30px; 
+            border-radius: var(--border-radius-lg); 
+            position: relative; 
+            max-height: 90vh; 
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .modal-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid var(--glass-border); 
+        }
+        
+        .modal-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.3rem;
+            color: var(--pure-white);
+            letter-spacing: 1px;
+        }
+        
+        .close-btn { 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            font-size: 1.3rem; 
+            cursor: pointer; 
+            color: var(--mist-white); 
+            width: 40px; 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover { 
+            background: var(--glass-bg);
+            color: var(--pure-white);
+            transform: rotate(90deg);
+            border-color: var(--glass-highlight);
+        }
+        
+        .form-group { margin-bottom: 20px; }
+        
+        .form-label { 
+            display: block; 
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            margin-bottom: 8px; 
+            color: var(--soft-white);
+            letter-spacing: 0.5px;
+        }
+        
+        .form-input { 
+            width: 100%; 
+            padding: 12px; 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            border-radius: var(--border-radius-sm); 
+            font-family: var(--font-body);
+            color: var(--pure-white);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus { 
+            outline: none; 
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+        }
+        
+        .form-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-submit { 
+            width: 100%; 
+            background: var(--pure-white); 
+            color: var(--pure-black);
+            border: none; 
+            padding: 14px; 
+            border-radius: var(--border-radius-md); 
+            font-weight: 800; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+        
+        .btn-submit:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+        
+        .btn-submit.danger {
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-submit.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.2);
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center; 
+            padding: 40px 20px; 
+            color: var(--mist-white);
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-sm); 
+            border: 1px dashed var(--glass-border);
+        }
+        
+        .empty-state i { 
+            font-size: 2.5rem; 
+            margin-bottom: 15px; 
+            color: var(--frost-white); 
+        }
+        
+        .empty-title { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            color: var(--pure-white); 
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        
+        /* LOADING SPINNER */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--ghost-white);
+            border-top-color: var(--pure-white);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* TOAST NOTIFICATION */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-md);
+            padding: 16px 20px;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            animation: slideIn 0.3s ease;
+            transform-origin: top right;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+        
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .toast-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .toast.success .toast-icon {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .toast.error .toast-icon {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+        
+        .toast.warning .toast-icon {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 700;
+            color: var(--pure-white);
+            margin-bottom: 2px;
+        }
+        
+        .toast-message {
+            font-size: 0.85rem;
+            color: var(--mist-white);
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--mist-white);
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.3s;
+        }
+        
+        .toast-close:hover {
+            color: var(--pure-white);
+        }
+
+        @media (max-width: 768px) {
+            .profile-avatar { width: 120px; height: 120px; }
+            .profile-name { font-size: 1.6rem; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .tabs { flex-wrap: wrap; }
+            .tab-btn { flex: 1; min-width: 100px; }
+            .toast-container {
+                left: 20px;
+                right: 20px;
+            }
+            .toast {
+                min-width: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <nav class="navbar">
+        <div class="brand">PSL <span>PROFILE</span></div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-btn"><i class="fa-solid fa-home"></i></a>
+            <a href="my-team.html" class="nav-btn"><i class="fa-solid fa-users"></i> My Team</a>
+            <a href="market.html" class="nav-btn"><i class="fa-solid fa-store"></i> Market</a>
+        </div>
+    </nav>
+
+    <div class="profile-hero">
+        <div class="avatar-wrap">
+            <img src="https://placehold.co/150" class="profile-avatar" id="profileAvatar" onerror="this.src='https://placehold.co/150'">
+            <label class="avatar-upload" for="avatarInput">
+                <i class="fa-solid fa-camera"></i>
+            </label>
+            <input type="file" id="avatarInput" style="display: none;" accept="image/*">
+        </div>
+        <div class="profile-name" id="profileName">Loading...</div>
+        <div class="profile-role" id="profileRole">Player</div>
+        <div class="profile-badges" id="profileBadges">
+            <span class="badge verified"><i class="fa-solid fa-check-circle"></i> Verified</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- STATS -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
+                <div class="stat-value" id="statPoints">0</div>
+                <div class="stat-label">Club Points</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                <div class="stat-value" id="statEarnings">0</div>
+                <div class="stat-label">Earnings (THB)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                <div class="stat-value" id="statTrophies">0</div>
+                <div class="stat-label">Trophies</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                <div class="stat-value" id="statTournaments">0</div>
+                <div class="stat-label">Tournaments</div>
+            </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('info', this)">Info</button>
+            <button class="tab-btn" onclick="switchTab('achievements', this)">Achievements</button>
+            <button class="tab-btn" onclick="switchTab('tournaments', this)">Tournaments</button>
+            <button class="tab-btn" onclick="switchTab('settings', this)">Settings</button>
+        </div>
+
+        <!-- INFO TAB -->
+        <div id="infoTab" class="tab-content">
+            <div class="content-card">
+                <div class="section-title"><i class="fa-solid fa-user-circle"></i> Personal Information</div>
+                <div class="info-list">
+                    <div class="info-item">
+                        <div class="info-label"><i class="fa-solid fa-user"></i> Username</div>
+                        <div class="info-value" id="infoUsername">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fa-solid fa-envelope"></i> Email</div>
+                        <div class="info-value" id="infoEmail">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fa-solid fa-phone"></i> Phone</div>
+                        <div class="info-value" id="infoPhone">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fa-solid fa-shield-halved"></i> Team</div>
+                        <div class="info-value" id="infoTeam">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fa-solid fa-gamepad"></i> Main Game</div>
+                        <div class="info-value" id="infoGame">-</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label"><i class="fa-solid fa-calendar"></i> Member Since</div>
+                        <div class="info-value" id="infoJoined">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENTS TAB -->
+        <div id="achievementsTab" class="tab-content" style="display: none;">
+            <div class="content-card">
+                <div class="section-title"><i class="fa-solid fa-medal"></i> Tournament Achievements</div>
+                <div class="achievements-list" id="achievementsList">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-trophy"></i>
+                        <div class="empty-title">NO ACHIEVEMENTS YET</div>
+                        <div>Your achievements will appear here</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOURNAMENTS TAB -->
+        <div id="tournamentsTab" class="tab-content" style="display: none;">
+            <div class="content-card">
+                <div class="section-title"><i class="fa-solid fa-trophy"></i> Registered Tournaments</div>
+                <div id="tournamentsList">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                        <div class="empty-title">NO TOURNAMENTS</div>
+                        <div>You haven't registered for any tournaments yet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="settingsTab" class="tab-content" style="display: none;">
+            <div class="content-card">
+                <div class="section-title"><i class="fa-solid fa-cog"></i> Account Settings</div>
+                <div class="info-list">
+                    <div class="info-item" style="cursor: pointer;" onclick="openEditModal()">
+                        <div class="info-label"><i class="fa-solid fa-pen"></i> Edit Profile</div>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--mist-white);"></i>
+                    </div>
+                    <div class="info-item" style="cursor: pointer;" onclick="openPasswordModal()">
+                        <div class="info-label"><i class="fa-solid fa-lock"></i> Change Password</div>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--mist-white);"></i>
+                    </div>
+                    <div class="info-item" style="cursor: pointer;" onclick="openNotificationModal()">
+                        <div class="info-label"><i class="fa-solid fa-bell"></i> Notifications</div>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--mist-white);"></i>
+                    </div>
+                    <div class="info-item" style="cursor: pointer;" onclick="openPrivacyModal()">
+                        <div class="info-label"><i class="fa-solid fa-eye"></i> Privacy</div>
+                        <i class="fa-solid fa-chevron-right" style="color: var(--mist-white);"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="content-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                <div class="section-title" style="color: #ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> Danger Zone</div>
+                <button class="btn-submit danger" onclick="deleteAccount()">
+                    <i class="fa-solid fa-trash"></i> Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PROFILE MODAL -->
+    <div class="modal" id="editModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <div class="modal-title">Edit Profile</div>
+                <button class="close-btn" onclick="closeModal('editModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Display Name</label>
+                <input type="text" class="form-input" id="editName" placeholder="Enter your display name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email <small style="color: var(--mist-white); font-weight: 400;">(Requires re-authentication)</small></label>
+                <input type="email" class="form-input" id="editEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-input" id="editPhone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Main Game</label>
+                <select class="form-input" id="editGame">
+                    <option value="RoV">RoV</option>
+                    <option value="MLBB">MLBB</option>
+                    <option value="PUBG">PUBG Mobile</option>
+                    <option value="Valorant">Valorant</option>
+                    <option value="FC25">FC 25</option>
+                </select>
+            </div>
+            <button class="btn-submit" onclick="saveProfile()" id="saveProfileBtn">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- CHANGE PASSWORD MODAL -->
+    <div class="modal" id="passwordModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <div class="modal-title">Change Password</div>
+                <button class="close-btn" onclick="closeModal('passwordModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-input" id="currentPassword" placeholder="Enter current password">
+            </div>
+            <div class="form-group">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-input" id="newPassword" placeholder="Enter new password (min 6 characters)">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Confirm New Password</label>
+                <input type="password" class="form-input" id="confirmPassword" placeholder="Confirm new password">
+            </div>
+            <button class="btn-submit" onclick="changePassword()" id="changePasswordBtn">Update Password</button>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS MODAL -->
+    <div class="modal" id="notificationModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <div class="modal-title">Notification Settings</div>
+                <button class="close-btn" onclick="closeModal('notificationModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('emailNotifications', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Email Notifications</div>
+                    <div class="toggle-desc">Receive updates via email</div>
+                </div>
+                <div class="toggle-switch" id="emailNotifications-toggle"></div>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('tournamentAlerts', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Tournament Alerts</div>
+                    <div class="toggle-desc">Get notified about upcoming tournaments</div>
+                </div>
+                <div class="toggle-switch" id="tournamentAlerts-toggle"></div>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('teamUpdates', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Team Updates</div>
+                    <div class="toggle-desc">Notifications about team activities</div>
+                </div>
+                <div class="toggle-switch" id="teamUpdates-toggle"></div>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('prizeAlerts', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Prize & Earnings</div>
+                    <div class="toggle-desc">Get notified when you receive prizes</div>
+                </div>
+                <div class="toggle-switch" id="prizeAlerts-toggle"></div>
+            </div>
+            
+            <button class="btn-submit" onclick="saveNotificationSettings()" id="saveNotificationBtn">Save Settings</button>
+        </div>
+    </div>
+
+    <!-- PRIVACY MODAL -->
+    <div class="modal" id="privacyModal">
+        <div class="modal-content animate__animated animate__fadeInUp">
+            <div class="modal-header">
+                <div class="modal-title">Privacy Settings</div>
+                <button class="close-btn" onclick="closeModal('privacyModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('profileVisible', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Public Profile</div>
+                    <div class="toggle-desc">Make your profile visible to everyone</div>
+                </div>
+                <div class="toggle-switch active" id="profileVisible-toggle"></div>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('showEarnings', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Show Earnings</div>
+                    <div class="toggle-desc">Display your earnings on public profile</div>
+                </div>
+                <div class="toggle-switch" id="showEarnings-toggle"></div>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('showStatistics', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Show Statistics</div>
+                    <div class="toggle-desc">Allow others to see your match statistics</div>
+                </div>
+                <div class="toggle-switch active" id="showStatistics-toggle"></div>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('allowMessages', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Allow Messages</div>
+                    <div class="toggle-desc">Receive messages from other players</div>
+                </div>
+                <div class="toggle-switch active" id="allowMessages-toggle"></div>
+            </div>
+            
+            <div class="toggle-container" onclick="toggleSetting('showOnlineStatus', this)">
+                <div class="toggle-label">
+                    <div class="toggle-title">Online Status</div>
+                    <div class="toggle-desc">Show when you're online</div>
+                </div>
+                <div class="toggle-switch active" id="showOnlineStatus-toggle"></div>
+            </div>
+            
+            <button class="btn-submit" onclick="savePrivacySettings()" id="savePrivacyBtn">Save Settings</button>
+        </div>
+    </div>
+
+    <!-- DELETE ACCOUNT CONFIRMATION MODAL -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content animate__animated animate__fadeInUp" style="max-width: 400px;">
+            <div class="modal-header">
+                <div class="modal-title" style="color: var(--danger);">Delete Account?</div>
+                <button class="close-btn" onclick="closeModal('deleteModal')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div style="margin-bottom: 20px; color: var(--mist-white); line-height: 1.6;">
+                This action cannot be undone. All your data including achievements, tournament history, and account information will be permanently deleted.
+            </div>
+            <div class="form-group">
+                <label class="form-label" style="color: var(--danger);">Type "DELETE" to confirm</label>
+                <input type="text" class="form-input" id="deleteConfirm" placeholder="DELETE">
+            </div>
+            <button class="btn-submit danger" onclick="confirmDeleteAccount()" id="deleteAccountBtn">
+                <i class="fa-solid fa-trash"></i> Permanently Delete Account
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, auth, app } from './firebase-config.js';
+        import { updatePassword, updateEmail, reauthenticateWithCredential, EmailAuthProvider, deleteUser, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { doc, getDoc, updateDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { 
+            getStorage, 
+            ref, 
+            uploadBytes, 
+            getDownloadURL 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        const storage = getStorage(app);
+
+        let currentUser = null;
+        let currentUserData = null;
+        let userSettings = {
+            notifications: {
+                emailNotifications: false,
+                tournamentAlerts: true,
+                teamUpdates: true,
+                prizeAlerts: true
+            },
+            privacy: {
+                profileVisible: true,
+                showEarnings: false,
+                showStatistics: true,
+                allowMessages: true,
+                showOnlineStatus: true
+            }
+        };
+
+        // Auth State Listener
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadProfileData();
+                await loadUserSettings();
+            } else {
+                showToast('Please login to view your profile', 'warning');
+                // Redirect to login or show demo data
+                currentUser = { uid: 'demo-user' };
+                await loadProfileData();
+            }
+        });
+
+        async function loadProfileData() {
+            const uid = currentUser?.uid || 'demo-user';
+            
+            try {
+                const userDoc = await getDoc(doc(db, "users", uid));
+                const teamDoc = await getDoc(doc(db, "teams", uid));
+                
+                if (userDoc.exists()) {
+                    currentUserData = userDoc.data();
+                } else if (teamDoc.exists()) {
+                    currentUserData = teamDoc.data();
+                } else {
+                    // Create default user document if not exists
+                    currentUserData = {
+                        username: currentUser?.displayName || 'PSL Player',
+                        email: currentUser?.email || '',
+                        role: 'player',
+                        clubPoints: 0,
+                        totalEarnings: 0,
+                        achievements: [],
+                        game: 'RoV',
+                        createdAt: new Date().toISOString(),
+                        uid: uid
+                    };
+                    
+                    // Save to Firestore
+                    await setDoc(doc(db, "users", uid), currentUserData);
+                }
+                
+                renderProfile();
+            } catch (e) {
+                console.error("Error loading profile:", e);
+                showToast('Error loading profile data', 'error');
+            }
+        }
+
+        async function loadUserSettings() {
+            if (!currentUser) return;
+            
+            try {
+                const settingsDoc = await getDoc(doc(db, "userSettings", currentUser.uid));
+                if (settingsDoc.exists()) {
+                    userSettings = settingsDoc.data();
+                    updateToggleUI();
+                } else {
+                    // Create default settings
+                    await setDoc(doc(db, "userSettings", currentUser.uid), userSettings);
+                }
+            } catch (e) {
+                console.error("Error loading settings:", e);
+            }
+        }
+
+        function updateToggleUI() {
+            // Update notification toggles
+            Object.keys(userSettings.notifications).forEach(key => {
+                const toggle = document.getElementById(`${key}-toggle`);
+                if (toggle) {
+                    if (userSettings.notifications[key]) {
+                        toggle.classList.add('active');
+                    } else {
+                        toggle.classList.remove('active');
+                    }
+                }
+            });
+            
+            // Update privacy toggles
+            Object.keys(userSettings.privacy).forEach(key => {
+                const toggle = document.getElementById(`${key}-toggle`);
+                if (toggle) {
+                    if (userSettings.privacy[key]) {
+                        toggle.classList.add('active');
+                    } else {
+                        toggle.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        function renderProfile() {
+            const d = currentUserData || {};
+            
+            document.getElementById('profileName').innerText = d.username || d.teamName || 'Unknown';
+            document.getElementById('profileRole').innerText = (d.role || 'Player').toUpperCase();
+            document.getElementById('profileAvatar').src = d.avatar || d.logo || currentUser?.photoURL || 'https://placehold.co/150';
+            
+            // Stats
+            document.getElementById('statPoints').innerText = (d.clubPoints || 0).toLocaleString();
+            document.getElementById('statEarnings').innerText = (d.totalEarnings || 0).toLocaleString();
+            document.getElementById('statTrophies').innerText = (d.achievements || []).length;
+            document.getElementById('statTournaments').innerText = d.tournamentCount || d.registeredTournaments?.length || 0;
+            
+            // Info
+            document.getElementById('infoUsername').innerText = d.username || d.teamName || '-';
+            document.getElementById('infoEmail').innerText = d.email || currentUser?.email || '-';
+            document.getElementById('infoPhone').innerText = d.phone || '-';
+            document.getElementById('infoTeam').innerText = d.teamName || d.clubName || '-';
+            document.getElementById('infoGame').innerText = d.game || '-';
+            document.getElementById('infoJoined').innerText = d.createdAt ? new Date(d.createdAt).toLocaleDateString('th-TH') : '-';
+            
+            // Badges
+            const badges = document.getElementById('profileBadges');
+            let badgeHTML = '';
+            if (d.verified || currentUser?.emailVerified) badgeHTML += '<span class="badge verified"><i class="fa-solid fa-check-circle"></i> Verified</span>';
+            if (d.pro) badgeHTML += '<span class="badge pro"><i class="fa-solid fa-star"></i> Pro</span>';
+            if (d.role === 'admin') badgeHTML += '<span class="badge admin"><i class="fa-solid fa-shield"></i> Admin</span>';
+            if (badgeHTML === '') badgeHTML = '<span class="badge verified"><i class="fa-solid fa-user"></i> Member</span>';
+            badges.innerHTML = badgeHTML;
+            
+            // Achievements
+            renderAchievements(d.achievements || []);
+            
+            // Tournaments
+            renderTournaments(d.registeredTournaments || []);
+        }
+
+        function renderAchievements(achievements) {
+            const list = document.getElementById('achievementsList');
+            
+            if (achievements.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-trophy"></i>
+                        <div class="empty-title">NO ACHIEVEMENTS YET</div>
+                        <div>Your achievements will appear here</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = achievements.map(a => `
+                <div class="achievement-item">
+                    <div class="achievement-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="achievement-info">
+                        <div class="achievement-title">${a.title || a.tournament || 'Unknown'}</div>
+                        <div class="achievement-date">${a.date || '-'}</div>
+                    </div>
+                    <div class="achievement-rank">${a.rank || '-'}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderTournaments(tournaments) {
+            const list = document.getElementById('tournamentsList');
+            
+            if (tournaments.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-calendar-xmark"></i>
+                        <div class="empty-title">NO TOURNAMENTS</div>
+                        <div>You haven't registered for any tournaments yet</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            list.innerHTML = tournaments.map(t => `
+                <div class="tournament-item" onclick="window.location.href='tournament-detail.html?id=${t.id}'">
+                    <img src="${t.image || 'https://placehold.co/60'}" class="tournament-img">
+                    <div class="tournament-info">
+                        <div class="tournament-name">${t.name || 'Unknown Tournament'}</div>
+                        <div class="tournament-meta">
+                            <span><i class="fa-solid fa-calendar"></i> ${t.date || '-'}</span>
+                            <span><i class="fa-solid fa-gamepad"></i> ${t.game || '-'}</span>
+                        </div>
+                    </div>
+                    <span class="tournament-status ${t.status === 'registered' ? 'registered' : 'pending'}">${t.status || 'Registered'}</span>
+                </div>
+            `).join('');
+        }
+
+        // Tab Switching
+        window.switchTab = (tab, btn) => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.getElementById(tab + 'Tab').style.display = 'block';
+        };
+
+        // Modal Functions
+        window.openModal = (id) => {
+            document.getElementById(id).style.display = 'flex';
+        };
+
+        window.closeModal = (id) => {
+            document.getElementById(id).style.display = 'none';
+        };
+
+        window.openEditModal = () => {
+            if (!currentUserData) return;
+            
+            document.getElementById('editName').value = currentUserData.username || currentUserData.teamName || '';
+            document.getElementById('editEmail').value = currentUserData.email || currentUser?.email || '';
+            document.getElementById('editPhone').value = currentUserData.phone || '';
+            document.getElementById('editGame').value = currentUserData.game || 'RoV';
+            openModal('editModal');
+        };
+
+        // Save Profile with Database Connection
+        window.saveProfile = async () => {
+            const btn = document.getElementById('saveProfileBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Saving...';
+            btn.disabled = true;
+
+            try {
+                const updates = {
+                    username: document.getElementById('editName').value.trim(),
+                    phone: document.getElementById('editPhone').value.trim(),
+                    game: document.getElementById('editGame').value,
+                    updatedAt: new Date().toISOString()
+                };
+                
+                const newEmail = document.getElementById('editEmail').value.trim();
+                const currentEmail = currentUser?.email || currentUserData?.email;
+                
+                // Update Firestore
+                await updateDoc(doc(db, "users", currentUser.uid), updates);
+                
+                // Update Email if changed
+                if (newEmail !== currentEmail && currentUser) {
+                    try {
+                        await updateEmail(currentUser, newEmail);
+                        updates.email = newEmail;
+                        await updateDoc(doc(db, "users", currentUser.uid), { email: newEmail });
+                        showToast('Email updated successfully', 'success');
+                    } catch (authError) {
+                        if (authError.code === 'auth/requires-recent-login') {
+                            showToast('Please re-login to change email', 'warning');
+                        } else {
+                            throw authError;
+                        }
+                    }
+                }
+                
+                currentUserData = { ...currentUserData, ...updates };
+                renderProfile();
+                closeModal('editModal');
+                showToast('Profile updated successfully!', 'success');
+                
+            } catch (e) {
+                console.error("Error saving profile:", e);
+                showToast('Error: ' + e.message, 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // Change Password Functionality
+        window.openPasswordModal = () => {
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            openModal('passwordModal');
+        };
+
+        window.changePassword = async () => {
+            const btn = document.getElementById('changePasswordBtn');
+            const originalText = btn.innerHTML;
+            
+            const currentPass = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            // Validation
+            if (!currentPass || !newPass || !confirmPass) {
+                showToast('Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (newPass.length < 6) {
+                showToast('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            if (newPass !== confirmPass) {
+                showToast('New passwords do not match', 'error');
+                return;
+            }
+            
+            if (!currentUser || currentUser.uid === 'demo-user') {
+                showToast('Please login to change password', 'error');
+                return;
+            }
+            
+            btn.innerHTML = '<span class="spinner"></span> Updating...';
+            btn.disabled = true;
+            
+            try {
+                // Re-authenticate user
+                const credential = EmailAuthProvider.credential(currentUser.email, currentPass);
+                await reauthenticateWithCredential(currentUser, credential);
+                
+                // Update password
+                await updatePassword(currentUser, newPass);
+                
+                // Log activity
+                await setDoc(doc(db, "activityLogs", `${currentUser.uid}_${Date.now()}`), {
+                    type: 'password_change',
+                    userId: currentUser.uid,
+                    timestamp: serverTimestamp(),
+                    ip: 'client-side'
+                });
+                
+                closeModal('passwordModal');
+                showToast('Password changed successfully!', 'success');
+                
+            } catch (error) {
+                console.error("Error changing password:", error);
+                if (error.code === 'auth/wrong-password') {
+                    showToast('Current password is incorrect', 'error');
+                } else if (error.code === 'auth/weak-password') {
+                    showToast('New password is too weak', 'error');
+                } else if (error.code === 'auth/requires-recent-login') {
+                    showToast('Please logout and login again before changing password', 'warning');
+                } else {
+                    showToast('Error: ' + error.message, 'error');
+                }
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // Notification Settings
+        window.openNotificationModal = () => {
+            updateToggleUI();
+            openModal('notificationModal');
+        };
+
+        window.toggleSetting = (setting, container) => {
+            const toggle = container.querySelector('.toggle-switch');
+            const isActive = toggle.classList.contains('active');
+            
+            if (isActive) {
+                toggle.classList.remove('active');
+            } else {
+                toggle.classList.add('active');
+            }
+            
+            // Update local state
+            if (userSettings.notifications.hasOwnProperty(setting)) {
+                userSettings.notifications[setting] = !isActive;
+            } else if (userSettings.privacy.hasOwnProperty(setting)) {
+                userSettings.privacy[setting] = !isActive;
+            }
+        };
+
+        window.saveNotificationSettings = async () => {
+            const btn = document.getElementById('saveNotificationBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Saving...';
+            btn.disabled = true;
+            
+            try {
+                await updateDoc(doc(db, "userSettings", currentUser.uid), {
+                    notifications: userSettings.notifications,
+                    updatedAt: serverTimestamp()
+                });
+                
+                closeModal('notificationModal');
+                showToast('Notification settings saved!', 'success');
+            } catch (e) {
+                console.error("Error saving notifications:", e);
+                showToast('Error saving settings', 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // Privacy Settings
+        window.openPrivacyModal = () => {
+            updateToggleUI();
+            openModal('privacyModal');
+        };
+
+        window.savePrivacySettings = async () => {
+            const btn = document.getElementById('savePrivacyBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Saving...';
+            btn.disabled = true;
+            
+            try {
+                await updateDoc(doc(db, "userSettings", currentUser.uid), {
+                    privacy: userSettings.privacy,
+                    updatedAt: serverTimestamp()
+                });
+                
+                closeModal('privacyModal');
+                showToast('Privacy settings saved!', 'success');
+            } catch (e) {
+                console.error("Error saving privacy:", e);
+                showToast('Error saving settings', 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        };
+
+        // Delete Account
+        window.deleteAccount = () => {
+            openModal('deleteModal');
+        };
+
+        window.confirmDeleteAccount = async () => {
+            const confirmText = document.getElementById('deleteConfirm').value;
+            const btn = document.getElementById('deleteAccountBtn');
+            
+            if (confirmText !== 'DELETE') {
+                showToast('Please type DELETE to confirm', 'error');
+                return;
+            }
+            
+            if (!currentUser || currentUser.uid === 'demo-user') {
+                showToast('Please login to delete account', 'error');
+                return;
+            }
+            
+            btn.innerHTML = '<span class="spinner"></span> Deleting...';
+            btn.disabled = true;
+            
+            try {
+                // Delete user data from Firestore
+                await deleteDoc(doc(db, "users", currentUser.uid));
+                await deleteDoc(doc(db, "userSettings", currentUser.uid));
+                
+                // Delete user authentication
+                await deleteUser(currentUser);
+                
+                showToast('Account deleted successfully', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error("Error deleting account:", error);
+                if (error.code === 'auth/requires-recent-login') {
+                    showToast('Please re-login before deleting account', 'warning');
+                } else {
+                    showToast('Error deleting account: ' + error.message, 'error');
+                }
+                btn.innerHTML = '<i class="fa-solid fa-trash"></i> Permanently Delete Account';
+                btn.disabled = false;
+            }
+        };
+
+        // Avatar Upload
+        document.getElementById('avatarInput')?.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file || !currentUser) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showToast('Please select an image file', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('Image must be less than 5MB', 'error');
+                return;
+            }
+            
+            try {
+                showToast('Uploading avatar...', 'warning');
+                
+                // Upload to Firebase Storage
+                const storageRef = ref(storage, `avatars/${currentUser.uid}_${Date.now()}`);
+                await uploadBytes(storageRef, file);
+                const downloadURL = await getDownloadURL(storageRef);
+                
+                // Update Firestore
+                await updateDoc(doc(db, "users", currentUser.uid), {
+                    avatar: downloadURL,
+                    updatedAt: new Date().toISOString()
+                });
+                
+                currentUserData.avatar = downloadURL;
+                renderProfile();
+                showToast('Avatar updated successfully!', 'success');
+                
+            } catch (error) {
+                console.error("Error uploading avatar:", error);
+                showToast('Error uploading avatar', 'error');
+            }
+        });
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = 'fa-info-circle';
+            let title = 'Info';
+            
+            if (type === 'success') {
+                icon = 'fa-check-circle';
+                title = 'Success';
+            } else if (type === 'error') {
+                icon = 'fa-exclamation-circle';
+                title = 'Error';
+            } else if (type === 'warning') {
+                icon = 'fa-exclamation-triangle';
+                title = 'Warning';
+            }
+            
+            toast.innerHTML = `
+                <div class="toast-icon"><i class="fa-solid ${icon}"></i></div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100%) scale(0.8)';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 5000);
+        }
+        
+        // Make showToast available globally
+        window.showToast = showToast;
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(m => {
+            m.addEventListener('click', (e) => {
+                if(e.target === m) m.style.display = 'none';
+            });
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            }
+        });
+    </script>
+</body>
+</html>

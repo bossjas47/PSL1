@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOURNAMENT LINEUPS | PSL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        /* LIQUID GLASS THEME */
+        :root {
+            --pure-black: #000000;
+            --deep-black: #0a0a0a;
+            --soft-black: #111111;
+            --charcoal: #1a1a1a;
+            --graphite: #2a2a2a;
+            
+            --pure-white: #ffffff;
+            --soft-white: rgba(255, 255, 255, 0.9);
+            --mist-white: rgba(255, 255, 255, 0.6);
+            --frost-white: rgba(255, 255, 255, 0.1);
+            --ghost-white: rgba(255, 255, 255, 0.05);
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            
+            --liquid-glow: rgba(255, 255, 255, 0.3);
+            --liquid-sheen: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', 'Kanit', sans-serif;
+            
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+            
+            --success: #10b981;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--deep-black);
+            font-family: var(--font-body);
+            color: var(--soft-white);
+            padding-bottom: 100px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: ambientMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes ambientMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, 2%) scale(1.1); }
+        }
+
+        /* HERO SECTION - Liquid Glass */
+        .hero-section {
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.02) 100%);
+            padding: 50px 20px 80px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 2.5rem; 
+            color: var(--pure-white);
+            position: relative; 
+            z-index: 1;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 30px rgba(255,255,255,0.2);
+        }
+        
+        .hero-title span { 
+            color: var(--mist-white);
+            font-weight: 300;
+        }
+        
+        .hero-sub { 
+            color: var(--mist-white); 
+            font-size: 1rem; 
+            margin-top: 12px; 
+            position: relative; 
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        /* STATS BAR - Liquid Glass */
+        .stats-bar {
+            display: flex; 
+            justify-content: center; 
+            gap: 50px;
+            margin-top: 30px; 
+            position: relative; 
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item { 
+            text-align: center; 
+            min-width: 100px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 20px 25px;
+            border-radius: var(--border-radius-md);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            border-color: var(--glass-highlight);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .stat-num { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 2.2rem; 
+            color: var(--pure-white);
+            line-height: 1;
+            text-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+        
+        .stat-label { 
+            font-size: 0.7rem; 
+            color: var(--mist-white); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            margin-top: 8px;
+            font-weight: 600;
+            font-family: var(--font-display);
+        }
+
+        /* Liquid Glass Navbar */
+        .navbar { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 16px 24px; 
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        
+        .brand { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.6rem;
+            color: var(--pure-white);
+            letter-spacing: 2px;
+        } 
+        
+        .brand span { 
+            color: var(--mist-white);
+            font-weight: 400;
+        }
+        
+        .back-btn { 
+            text-decoration: none; 
+            color: var(--mist-white); 
+            font-weight: 600; 
+            font-size: 0.85rem; 
+            padding: 10px 20px;
+            border-radius: var(--border-radius-sm);
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .back-btn:hover { 
+            background: var(--glass-bg);
+            border-color: var(--glass-highlight);
+            color: var(--pure-white);
+            transform: translateY(-2px);
+        }
+
+        .container { 
+            max-width: 900px; 
+            margin: -50px auto 0; 
+            padding: 0 20px; 
+            position: relative; 
+            z-index: 10; 
+        }
+
+        /* FILTER TABS - Liquid Glass */
+        .filter-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 24px; 
+            border-radius: var(--border-radius-lg);
+            border: 1px solid var(--glass-border);
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .filter-label { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 0.75rem; 
+            color: var(--mist-white); 
+            margin-bottom: 15px; 
+            display: block;
+            text-transform: uppercase; 
+            letter-spacing: 2px;
+        }
+        
+        .filter-tabs { 
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto; 
+            padding-bottom: 5px;
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        
+        .filter-tabs::-webkit-scrollbar { display: none; }
+        
+        .filter-btn { 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            padding: 12px 24px; 
+            border-radius: 30px; 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            color: var(--mist-white); 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            white-space: nowrap; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .filter-btn:hover { 
+            background: var(--glass-bg);
+            border-color: var(--glass-highlight);
+            color: var(--soft-white);
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active { 
+            background: var(--pure-white);
+            color: var(--pure-black); 
+            border-color: var(--pure-white);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.15);
+        }
+
+        /* TOUR LIST */
+        .tour-list { display: flex; flex-direction: column; gap: 20px; }
+
+        /* TOUR CARD - Liquid Glass */
+        .t-card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); 
+            border: 1px solid var(--glass-border); 
+            padding: 0; 
+            display: flex; 
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer; 
+            position: relative; 
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .t-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--liquid-sheen);
+            transition: left 0.7s;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .t-card:hover::before {
+            left: 100%;
+        }
+        
+        .t-card:hover { 
+            transform: translateY(-8px);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
+        }
+        
+        .t-card-header {
+            display: flex; 
+            padding: 24px; 
+            gap: 20px; 
+            align-items: flex-start;
+        }
+        
+        .t-img-wrap { position: relative; flex-shrink: 0; }
+        
+        .t-img { 
+            width: 90px; 
+            height: 90px; 
+            border-radius: var(--border-radius-md); 
+            object-fit: cover; 
+            background: var(--charcoal);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .t-game-badge {
+            position: absolute; 
+            bottom: -8px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            background: var(--pure-white);
+            color: var(--pure-black); 
+            padding: 4px 14px; 
+            border-radius: 20px;
+            font-size: 0.7rem; 
+            font-weight: 800; 
+            font-family: var(--font-display);
+            border: 1px solid var(--glass-border); 
+            white-space: nowrap;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .t-info { flex: 1; min-width: 0; }
+        
+        .t-name { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.3rem; 
+            line-height: 1.2; 
+            margin-bottom: 15px; 
+            color: var(--pure-white);
+            letter-spacing: 0.5px;
+        }
+        
+        /* HIGHLIGHTS GRID */
+        .t-highlights {
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-item { display: flex; flex-direction: column; gap: 4px; }
+        
+        .highlight-label { 
+            font-size: 0.7rem; 
+            color: var(--mist-white); 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex; 
+            align-items: center; 
+            gap: 6px;
+            font-family: var(--font-display);
+        }
+        
+        .highlight-label i { font-size: 0.9rem; color: var(--pure-white); }
+        
+        .highlight-value { 
+            font-weight: 700; 
+            font-size: 1rem; 
+            color: var(--pure-white);
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis;
+        }
+        
+        .highlight-value.prize { 
+            color: var(--pure-white); 
+            font-family: var(--font-display); 
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        
+        .t-meta-footer {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding-top: 15px; 
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .t-teams { 
+            font-size: 0.85rem; 
+            color: var(--mist-white); 
+            display: flex; 
+            align-items: center; 
+            gap: 6px;
+        }
+        
+        .t-teams i { color: var(--pure-white); }
+        
+        .t-teams strong { 
+            color: var(--pure-white); 
+            margin-right: 3px;
+            font-family: var(--font-display);
+        }
+        
+        .t-status-wrap { display: flex; align-items: center; gap: 10px; }
+        
+        .t-status {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 3px;
+        }
+        
+        .status-dot {
+            width: 8px; 
+            height: 8px; 
+            border-radius: 50%;
+            background: var(--glass-border); 
+            position: relative;
+        }
+        
+        .status-dot.active { 
+            background: var(--success); 
+            box-shadow: 0 0 10px var(--success); 
+        }
+        
+        .status-dot.upcoming { 
+            background: var(--pure-white); 
+            box-shadow: 0 0 10px rgba(255,255,255,0.5); 
+        }
+        
+        .status-text { 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            color: var(--mist-white); 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-display);
+        }
+        
+        .icon-arrow { 
+            color: var(--mist-white); 
+            font-size: 1.2rem; 
+            transition: all 0.3s ease;
+            width: 40px; 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+        
+        .t-card:hover .icon-arrow { 
+            color: var(--pure-white); 
+            background: var(--ghost-white);
+            transform: translateX(5px);
+        }
+
+        /* PROGRESS BAR */
+        .t-progress-wrap {
+            padding: 0 24px 24px;
+        }
+        
+        .progress-header {
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 0.7rem;
+            color: var(--mist-white); 
+            margin-bottom: 8px; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-display);
+        }
+        
+        .progress-bar {
+            height: 6px; 
+            background: var(--ghost-white); 
+            border-radius: 10px; 
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .progress-fill {
+            height: 100%; 
+            background: linear-gradient(90deg, var(--pure-white), var(--mist-white));
+            border-radius: 10px; 
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        
+        .progress-fill.full { 
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        /* LOADING SKELETON */
+        .skeleton-card {
+            background: var(--glass-bg);
+            border-radius: var(--border-radius-lg); 
+            height: 180px;
+            border: 1px solid var(--glass-border);
+            background: linear-gradient(90deg, var(--ghost-white) 25%, rgba(255,255,255,0.08) 50%, var(--ghost-white) 75%);
+            background-size: 200% 100%; 
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center; 
+            padding: 60px 20px; 
+            color: var(--mist-white);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg); 
+            border: 1px dashed var(--glass-border);
+        }
+        
+        .empty-state i { 
+            font-size: 3rem; 
+            margin-bottom: 15px; 
+            color: var(--frost-white); 
+        }
+        
+        .empty-title { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 1.3rem; 
+            color: var(--pure-white); 
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 640px) {
+            .hero-title { font-size: 1.8rem; }
+            .stats-bar { gap: 15px; }
+            .stat-item { padding: 15px 20px; min-width: 80px; }
+            .stat-num { font-size: 1.8rem; }
+            .t-card-header { padding: 18px; gap: 15px; }
+            .t-img { width: 70px; height: 70px; }
+            .t-name { font-size: 1.1rem; }
+            .t-highlights { grid-template-columns: 1fr; gap: 10px; }
+            .highlight-value { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">PSL <span>LINEUPS</span></div>
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> BACK</a>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <div class="hero-section">
+        <div class="hero-title">TOURNAMENT <span>LINEUPS</span></div>
+        <div class="hero-sub">Select tournament to view team details and participants</div>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-num" id="statTotalTours">0</div>
+                <div class="stat-label">TOURNAMENTS</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="statTotalPrize">0</div>
+                <div class="stat-label">TOTAL PRIZE (THB)</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="statTotalTeams">0</div>
+                <div class="stat-label">TEAMS JOINED</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <!-- FILTER -->
+        <div class="filter-container animate__animated animate__fadeInUp">
+            <div class="filter-label"><i class="fa-solid fa-filter" style="margin-right: 5px;"></i> SELECT GAME</div>
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="filterGame('all', this)" data-filter="all">
+                    <i class="fa-solid fa-border-all"></i> ALL GAMES
+                </button>
+                <button class="filter-btn" onclick="filterGame('ROV', this)" data-filter="ROV">
+                    <i class="fa-solid fa-gamepad"></i> ROV
+                </button>
+                <button class="filter-btn" onclick="filterGame('VALORANT', this)" data-filter="VALORANT">
+                    <i class="fa-solid fa-crosshairs"></i> VALORANT
+                </button>
+                <button class="filter-btn" onclick="filterGame('PUBG', this)" data-filter="PUBG">
+                    <i class="fa-solid fa-parachute-box"></i> PUBG MOBILE
+                </button>
+                <button class="filter-btn" onclick="filterGame('FC25', this)" data-filter="FC25">
+                    <i class="fa-solid fa-futbol"></i> FC 25
+                </button>
+                <button class="filter-btn" onclick="filterGame('MLBB', this)" data-filter="MLBB">
+                    <i class="fa-solid fa-dragon"></i> MLBB
+                </button>
+            </div>
+        </div>
+
+        <!-- TOURNAMENT LIST -->
+        <div id="tourList">
+            <!-- Loading Skeleton -->
+            <div class="skeleton-card" style="margin-bottom: 15px;"></div>
+            <div class="skeleton-card" style="margin-bottom: 15px;"></div>
+            <div class="skeleton-card" style="margin-bottom: 15px;"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        
+        let allTournaments = [];
+        let currentFilter = 'ALL';
+
+        async function loadTours() {
+            const list = document.getElementById('tourList');
+            try {
+                console.log("Loading tournaments...");
+                const snapshot = await getDocs(collection(db, "tournaments"));
+                
+                allTournaments = [];
+                let totalTeams = 0;
+                let totalPrize = 0;
+                
+                console.log("Found docs:", snapshot.size);
+                
+                if(snapshot.empty) {
+                    list.innerHTML = `
+                        <div class="empty-state animate__animated animate__fadeIn">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                            <div class="empty-title">NO TOURNAMENTS FOUND</div>
+                            <div style="color: var(--mist-white);">There are no active tournaments at the moment</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const t = doc.data();
+                    t.id = doc.id;
+                    allTournaments.push(t);
+                    totalTeams += parseInt(t.currentTeams || 0);
+                    
+                    // Calculate total prize
+                    let prizeVal = parseInt((t.prize || "0").toString().replace(/[^0-9]/g, ''));
+                    totalPrize += isNaN(prizeVal) ? 0 : prizeVal;
+                    
+                    console.log("Loaded:", t.title, "Game:", t.game);
+                });
+
+                // Update stats
+                document.getElementById('statTotalTours').innerText = allTournaments.length;
+                document.getElementById('statTotalTeams').innerText = totalTeams.toLocaleString();
+                document.getElementById('statTotalPrize').innerText = totalPrize.toLocaleString();
+
+                renderTournaments();
+
+            } catch(e) { 
+                console.error("Error:", e); 
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-triangle-exclamation" style="color: #ef4444;"></i>
+                        <div class="empty-title">ERROR LOADING DATA</div>
+                        <div style="color: var(--mist-white);">Please try again later</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderTournaments() {
+            const list = document.getElementById('tourList');
+            list.innerHTML = '';
+            
+            console.log("Rendering with filter:", currentFilter);
+            console.log("Total tournaments:", allTournaments.length);
+            
+            const filtered = currentFilter === 'ALL' 
+                ? allTournaments 
+                : allTournaments.filter(t => {
+                    const gameName = (t.game || '').toUpperCase();
+                    const filterName = currentFilter.toUpperCase();
+                    console.log("Checking:", gameName, "vs", filterName, "Match:", gameName.includes(filterName));
+                    return gameName.includes(filterName);
+                });
+            
+            console.log("Filtered count:", filtered.length);
+            
+            if(filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state animate__animated animate__fadeIn">
+                        <i class="fa-solid fa-filter-circle-xmark"></i>
+                        <div class="empty-title">NO RESULTS</div>
+                        <div style="color: var(--mist-white);">No tournaments found for this game</div>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach((t, index) => {
+                const img = t.img || 'https://placehold.co/100/111/fff?text=PSL';
+                const game = t.game || 'GAME';
+                const current = parseInt(t.currentTeams || 0);
+                const max = parseInt(t.maxTeams || 32);
+                const progress = Math.min((current / max) * 100, 100);
+                const isFull = current >= max;
+                
+                // Determine status
+                let statusClass = 'active';
+                let statusText = 'OPEN';
+                if (t.status === 'closed' || isFull) {
+                    statusClass = '';
+                    statusText = 'CLOSED';
+                } else if (t.status === 'upcoming') {
+                    statusClass = 'upcoming';
+                    statusText = 'UPCOMING';
+                }
+
+                // Format date
+                const dateStr = t.date || t.startDate || 'TBA';
+                const prizeStr = t.prize || 'TBA';
+
+                list.innerHTML += `
+                    <div class="t-card animate__animated animate__fadeInUp" onclick="location.href='tour-lineups.html?id=${t.id}'" style="animation-delay: ${index * 0.1}s">
+                        <div class="t-card-header">
+                            <div class="t-img-wrap">
+                                <img src="${img}" class="t-img" onerror="this.src='https://placehold.co/100/111/fff?text=PSL'">
+                                <div class="t-game-badge">${game}</div>
+                            </div>
+                            <div class="t-info">
+                                <div class="t-name">${t.title}</div>
+                                
+                                <!-- เงินรางวัล & วันแข่งขัน -->
+                                <div class="t-highlights">
+                                    <div class="highlight-item">
+                                        <span class="highlight-label">
+                                            <i class="fa-solid fa-sack-dollar"></i> เงินรางวัล
+                                        </span>
+                                        <span class="highlight-value prize">${prizeStr}</span>
+                                    </div>
+                                    <div class="highlight-item">
+                                        <span class="highlight-label">
+                                            <i class="fa-regular fa-calendar-check"></i> วันแข่งขัน
+                                        </span>
+                                        <span class="highlight-value">${dateStr}</span>
+                                    </div>
+                                </div>
+
+                                <div class="t-meta-footer">
+                                    <div class="t-teams">
+                                        <i class="fa-solid fa-users"></i>
+                                        <span>ทีมที่เข้าร่วม <strong>${current}</strong> / ${max}</span>
+                                    </div>
+                                    <div class="t-status-wrap">
+                                        <div class="t-status">
+                                            <div class="status-dot ${statusClass}"></div>
+                                            <div class="status-text">${statusText}</div>
+                                        </div>
+                                        <div class="icon-arrow">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="t-progress-wrap">
+                            <div class="progress-header">
+                                <span>Registration Progress</span>
+                                <span style="color: ${isFull ? 'var(--success)' : 'var(--pure-white)'}; font-weight: 700;">
+                                    ${isFull ? 'FULL' : Math.round(progress) + '%'}
+                                </span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill ${isFull ? 'full' : ''}" style="width: ${progress}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.filterGame = (game, btn) => {
+            currentFilter = game.toUpperCase();
+            
+            console.log("Filter changed to:", currentFilter);
+            
+            // Update UI
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Re-render
+            renderTournaments();
+        };
+
+        // โหลดข้อมูลเมื่อเปิดหน้า
+        loadTours();
+    </script>
+</body>
+</html>

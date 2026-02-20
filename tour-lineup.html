@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAM LINEUP | PSL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        /* LIQUID GLASS THEME */
+        :root {
+            --pure-black: #000000;
+            --deep-black: #0a0a0a;
+            --soft-black: #111111;
+            --charcoal: #1a1a1a;
+            --graphite: #2a2a2a;
+            
+            --pure-white: #ffffff;
+            --soft-white: rgba(255, 255, 255, 0.9);
+            --mist-white: rgba(255, 255, 255, 0.6);
+            --frost-white: rgba(255, 255, 255, 0.1);
+            --ghost-white: rgba(255, 255, 255, 0.05);
+            
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            
+            --liquid-glow: rgba(255, 255, 255, 0.3);
+            --liquid-sheen: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', 'Kanit', sans-serif;
+            
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+            
+            --success: #10b981;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            background: var(--deep-black); 
+            font-family: var(--font-body);
+            color: var(--soft-white);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: ambientMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes ambientMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, 2%) scale(1.1); }
+        }
+
+        /* Liquid Glass Navbar */
+        .navbar { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            padding: 16px 24px; 
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        
+        .brand { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.6rem;
+            color: var(--pure-white);
+            letter-spacing: 2px;
+        } 
+        
+        .brand span { 
+            color: var(--mist-white);
+            font-weight: 400;
+        }
+        
+        .nav-links { display: flex; gap: 8px; }
+        
+        .nav-btn { 
+            padding: 10px 18px; 
+            border-radius: var(--border-radius-sm); 
+            border: 1px solid var(--glass-border); 
+            background: var(--ghost-white);
+            color: var(--soft-white);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover { 
+            background: var(--glass-bg);
+            border-color: var(--glass-highlight);
+            color: var(--pure-white);
+            transform: translateY(-2px);
+        }
+
+        /* HERO SECTION */
+        .hero { 
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.02) 100%);
+            padding: 50px 20px; 
+            text-align: center; 
+            position: relative; 
+            overflow: hidden;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 2rem; 
+            color: var(--pure-white);
+            position: relative; 
+            z-index: 1;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(255,255,255,0.2);
+        }
+        
+        .hero-sub { 
+            color: var(--mist-white); 
+            font-size: 1rem; 
+            margin-top: 12px; 
+            position: relative; 
+            z-index: 1;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+
+        /* TEAM INFO - Liquid Glass */
+        .team-info-card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); 
+            border: 1px solid var(--glass-border); 
+            padding: 30px; 
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .team-logo { 
+            width: 100px; 
+            height: 100px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 3px solid var(--glass-border);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+        
+        .team-details { flex: 1; }
+        
+        .team-name { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            color: var(--pure-white);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .team-tag { 
+            font-size: 1rem; 
+            color: var(--mist-white);
+            letter-spacing: 2px;
+            font-family: var(--font-display);
+        }
+        
+        .team-meta { 
+            display: flex; 
+            gap: 15px; 
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-badge { 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            font-family: var(--font-display);
+            background: var(--ghost-white);
+            color: var(--mist-white);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .meta-badge.verified { 
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        /* LINEUP CARD - Liquid Glass */
+        .lineup-card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); 
+            border: 1px solid var(--glass-border); 
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .lineup-header { 
+            padding: 20px 24px; 
+            border-bottom: 1px solid var(--glass-border); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        
+        .lineup-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.1rem; 
+            color: var(--pure-white);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .lineup-title i { color: var(--pure-white); }
+        
+        .player-count { 
+            font-size: 0.8rem; 
+            color: var(--mist-white);
+            font-family: var(--font-display);
+        }
+        
+        .lineup-list { padding: 10px; }
+        
+        .player-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            padding: 16px; 
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .player-item:hover {
+            background: var(--ghost-white);
+            border-color: var(--glass-border);
+        }
+        
+        .player-avatar { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            background: var(--charcoal);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.2rem; 
+            color: var(--pure-white);
+            border: 1px solid var(--glass-border);
+            flex-shrink: 0;
+        }
+        
+        .player-info { flex: 1; }
+        
+        .player-name { 
+            font-weight: 700; 
+            color: var(--pure-white);
+            margin-bottom: 4px;
+        }
+        
+        .player-uid { 
+            font-size: 0.8rem; 
+            color: var(--mist-white);
+            font-family: monospace;
+        }
+        
+        .player-role { 
+            padding: 6px 14px; 
+            border-radius: 20px; 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            font-family: var(--font-display);
+        }
+        
+        .player-role.captain { 
+            background: var(--pure-white);
+            color: var(--pure-black);
+        }
+        
+        .player-role.member { 
+            background: var(--ghost-white);
+            color: var(--mist-white);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .player-role.sub { 
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* SUBSTITUTES */
+        .subs-section { 
+            margin-top: 10px; 
+            padding-top: 20px; 
+            border-top: 1px dashed var(--glass-border); 
+        }
+        
+        .subs-title { 
+            font-size: 0.8rem; 
+            color: var(--mist-white); 
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center; 
+            padding: 60px 20px; 
+            color: var(--mist-white);
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-sm); 
+            border: 1px dashed var(--glass-border);
+        }
+        
+        .empty-state i { 
+            font-size: 3rem; 
+            margin-bottom: 15px; 
+            color: var(--frost-white); 
+        }
+        
+        .empty-title { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 1.3rem; 
+            color: var(--pure-white); 
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* LOADING */
+        .loading { 
+            text-align: center; 
+            padding: 60px; 
+            color: var(--mist-white);
+        }
+        
+        .loading i { 
+            font-size: 2rem; 
+            margin-bottom: 15px; 
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 1.5rem; }
+            .team-info-card { flex-direction: column; text-align: center; }
+            .team-meta { justify-content: center; }
+            .player-item { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">PSL <span>LINEUP</span></div>
+        <div class="nav-links">
+            <a href="javascript:history.back()" class="nav-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+            <a href="index.html" class="nav-btn"><i class="fa-solid fa-home"></i></a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-title" id="tournamentName">TOURNAMENT LINEUP</div>
+        <div class="hero-sub" id="tournamentGame">Loading...</div>
+    </div>
+
+    <div class="container">
+        <!-- TEAM INFO -->
+        <div class="team-info-card" id="teamInfo">
+            <img src="https://placehold.co/100" class="team-logo" id="teamLogo" onerror="this.src='https://placehold.co/100'">
+            <div class="team-details">
+                <div class="team-name" id="teamName">Loading...</div>
+                <div class="team-tag" id="teamTag">-</div>
+                <div class="team-meta">
+                    <span class="meta-badge verified"><i class="fa-solid fa-check"></i> Registered</span>
+                    <span class="meta-badge" id="teamGame">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LINEUP -->
+        <div class="lineup-card">
+            <div class="lineup-header">
+                <div class="lineup-title"><i class="fa-solid fa-users"></i> Starting Lineup</div>
+                <div class="player-count" id="playerCount">0 Players</div>
+            </div>
+            <div class="lineup-list" id="lineupList">
+                <div class="loading">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <div>Loading lineup...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const tournamentId = urlParams.get('tour');
+        const teamId = urlParams.get('team');
+
+        async function loadData() {
+            if(!tournamentId || !teamId) {
+                document.getElementById('lineupList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div class="empty-title">MISSING PARAMETERS</div>
+                        <div>Tournament ID or Team ID not provided</div>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                // Load tournament
+                const tourSnap = await getDoc(doc(db, "tournaments", tournamentId));
+                if(tourSnap.exists()) {
+                    const tour = tourSnap.data();
+                    document.getElementById('tournamentName').innerText = tour.title || 'TOURNAMENT';
+                    document.getElementById('tournamentGame').innerText = tour.game || '';
+                }
+
+                // Load team
+                const teamSnap = await getDoc(doc(db, "teams", teamId));
+                if(teamSnap.exists()) {
+                    const team = teamSnap.data();
+                    document.getElementById('teamName').innerText = team.teamName || 'Unknown Team';
+                    document.getElementById('teamTag').innerText = team.tag ? `[${team.tag}]` : '';
+                    document.getElementById('teamGame').innerText = team.game || '-';
+                    document.getElementById('teamLogo').src = team.logo || 'https://placehold.co/100';
+                    
+                    // Render lineup
+                    renderLineup(team.roster || []);
+                }
+            } catch(e) { 
+                console.error(e);
+                document.getElementById('lineupList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div class="empty-title">ERROR LOADING</div>
+                        <div>Could not load lineup data</div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderLineup(roster) {
+            const list = document.getElementById('lineupList');
+            
+            if(roster.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-users-slash"></i>
+                        <div class="empty-title">NO LINEUP</div>
+                        <div>This team has not submitted a lineup yet</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            document.getElementById('playerCount').innerText = `${roster.length} Players`;
+            
+            // Separate starters and subs
+            const starters = roster.filter(p => p.role !== 'Sub');
+            const subs = roster.filter(p => p.role === 'Sub');
+            
+            let html = '';
+            
+            // Starters
+            starters.forEach(p => {
+                html += `
+                    <div class="player-item">
+                        <div class="player-avatar"><i class="fa-solid fa-user"></i></div>
+                        <div class="player-info">
+                            <div class="player-name">${p.ign || p.name || 'Unknown'}</div>
+                            ${p.uid ? `<div class="player-uid">UID: ${p.uid}</div>` : ''}
+                        </div>
+                        <div class="player-role ${(p.role || 'member').toLowerCase()}">${p.role || 'Member'}</div>
+                    </div>
+                `;
+            });
+            
+            // Subs
+            if(subs.length > 0) {
+                html += `
+                    <div class="subs-section">
+                        <div class="subs-title">Substitutes</div>
+                    </div>
+                `;
+                subs.forEach(p => {
+                    html += `
+                        <div class="player-item">
+                            <div class="player-avatar"><i class="fa-solid fa-user"></i></div>
+                            <div class="player-info">
+                                <div class="player-name">${p.ign || p.name || 'Unknown'}</div>
+                                ${p.uid ? `<div class="player-uid">UID: ${p.uid}</div>` : ''}
+                            </div>
+                            <div class="player-role sub">Sub</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            list.innerHTML = html;
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

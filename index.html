@@ -1,0 +1,3187 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PSL - PROFESSIONAL SPORT LEAGUE</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            /* Liquid Glass Monochrome Palette */
+            --pure-black: #000000;
+            --deep-black: #0a0a0a;
+            --soft-black: #111111;
+            --charcoal: #1a1a1a;
+            --graphite: #2a2a2a;
+            
+            --pure-white: #ffffff;
+            --soft-white: rgba(255, 255, 255, 0.9);
+            --mist-white: rgba(255, 255, 255, 0.6);
+            --frost-white: rgba(255, 255, 255, 0.1);
+            --ghost-white: rgba(255, 255, 255, 0.05);
+            
+            /* Glass Effects */
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --glass-shadow: rgba(0, 0, 0, 0.4);
+            
+            /* Liquid Accent */
+            --liquid-glow: rgba(255, 255, 255, 0.3);
+            --liquid-sheen: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+            
+            /* Security Colors */
+            --danger-red: #ef4444;
+            --warning-orange: #f59e0b;
+            --success-green: #10b981;
+            --info-blue: #3b82f6;
+            
+            /* Typography */
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', 'Kanit', sans-serif;
+            
+            /* Spacing */
+            --border-radius-sm: 12px;
+            --border-radius-md: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+        }
+        
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body { 
+            background: var(--deep-black);
+            font-family: var(--font-body);
+            color: var(--soft-white);
+            padding-bottom: 110px; 
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Ambient Background Orbs */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.02) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255,255,255,0.02) 0%, transparent 30%);
+            pointer-events: none;
+            z-index: -1;
+            animation: ambientMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes ambientMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-2%, 2%) scale(1.1); }
+        }
+        
+        a { text-decoration: none; color: inherit; transition: all 0.3s ease; }
+        img { display: block; max-width: 100%; }
+
+        /* Liquid Glass Navigation */
+        .navbar { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 15px 20px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        
+        .brand { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.6rem; 
+            color: var(--pure-white);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        
+        .brand::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--pure-white), transparent);
+            opacity: 0.5;
+        }
+        
+        .brand span { 
+            color: var(--mist-white);
+            font-weight: 400;
+        }
+
+        /* Liquid Glass Buttons */
+        .btn-discord { 
+            width: 42px; 
+            height: 42px; 
+            border-radius: var(--border-radius-sm); 
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--soft-white); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.1rem; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-discord::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .btn-discord:hover { 
+            transform: translateY(-2px);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.1);
+        }
+        
+        .btn-discord:hover::before {
+            left: 100%;
+        }
+
+        .wallet-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-right: 10px;
+        }
+        
+        .balance-display {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--pure-white);
+            padding: 10px 16px;
+            border-radius: var(--border-radius-md);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .balance-display i { 
+            color: var(--soft-white); 
+            font-size: 0.9rem; 
+            opacity: 0.8;
+        }
+        
+        .balance-amount { 
+            color: var(--pure-white); 
+            font-weight: 800;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        
+        .btn-topup {
+            background: var(--pure-white);
+            color: var(--pure-black);
+            border: none;
+            padding: 10px 18px;
+            border-radius: var(--border-radius-sm);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-topup::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+        
+        .btn-topup:hover { 
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+        
+        .btn-topup:hover::after {
+            opacity: 1;
+            left: 100%;
+        }
+
+        .profile-wrapper { position: relative; }
+        
+        .profile-btn { 
+            cursor: pointer; 
+            width: 42px; 
+            height: 42px; 
+            border-radius: var(--border-radius-sm); 
+            border: 1px solid var(--glass-border);
+            overflow: hidden; 
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .profile-btn:hover { 
+            transform: scale(1.05);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        
+        .profile-btn img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .profile-dropdown { 
+            display: none; 
+            position: absolute; 
+            top: 55px; 
+            right: 0; 
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            width: 260px; 
+            padding: 16px; 
+            border-radius: var(--border-radius-md); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            border: 1px solid var(--glass-border);
+            z-index: 1001;
+        }
+        
+        .profile-dropdown.active { 
+            display: block; 
+            animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .menu-header { 
+            text-align: center; 
+            padding-bottom: 16px; 
+            border-bottom: 1px solid var(--glass-border); 
+            margin-bottom: 12px; 
+            color: var(--pure-white);
+        }
+        
+        .menu-header span {
+            color: var(--mist-white);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .menu-item { 
+            padding: 12px 16px; 
+            cursor: pointer; 
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
+            transition: all 0.2s ease; 
+            border-radius: var(--border-radius-sm); 
+            color: var(--soft-white); 
+            font-weight: 500; 
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+        
+        .menu-item:hover { 
+            background: var(--glass-bg);
+            color: var(--pure-white);
+            transform: translateX(4px);
+        }
+        
+        .menu-item i { 
+            width: 20px; 
+            text-align: center; 
+            color: var(--mist-white);
+            transition: color 0.2s;
+        }
+        
+        .menu-item:hover i {
+            color: var(--pure-white);
+        }
+        
+        /* Admin Menu Item Special Style */
+        .menu-item.admin {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--pure-white);
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .menu-item.admin:hover {
+            background: var(--pure-white);
+            color: var(--pure-black);
+            border-color: var(--pure-white);
+        }
+        
+        .menu-item.admin:hover i {
+            color: var(--pure-black);
+        }
+
+        /* Hero Section - Liquid Gradient */
+        .hero { 
+            text-align: center; 
+            padding: 60px 20px 45px;
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.02) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .hero-tag { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--soft-white); 
+            padding: 8px 20px; 
+            border-radius: 50px; 
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.75rem; 
+            display: inline-block; 
+            margin-bottom: 24px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .hero h1 { 
+            font-family: var(--font-display); 
+            font-weight: 900; 
+            font-size: 3.5rem; 
+            line-height: 1.1; 
+            color: var(--pure-white); 
+            margin-bottom: 16px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            position: relative;
+        }
+        
+        .hero h1 .blaze {
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+        }
+        
+        .hero h1 .future {
+            color: var(--mist-white);
+            font-weight: 300;
+            letter-spacing: 8px;
+        }
+        
+        .hero p { 
+            color: var(--mist-white); 
+            max-width: 500px; 
+            margin: 0 auto; 
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* Liquid Glass Grid Cards */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 40px; 
+        }
+        
+        .dash-card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg); 
+            padding: 32px 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 180px; 
+            position: relative; 
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        /* Liquid Sheen Effect */
+        .dash-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--liquid-sheen);
+            transition: left 0.7s;
+            pointer-events: none;
+        }
+        
+        .dash-card:hover::before {
+            left: 100%;
+        }
+        
+        .dash-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px rgba(255,255,255,0.05);
+        }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius-md);
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 1.5rem;
+            color: var(--pure-white);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .icon-box::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .dash-card:hover .icon-box { 
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        
+        .dash-card:hover .icon-box::after {
+            opacity: 1;
+        }
+
+        .dash-title { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 0.95rem; 
+            color: var(--pure-white);
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        
+        .dash-sub { 
+            font-size: 0.8rem; 
+            color: var(--mist-white); 
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Card Variants with subtle color hints */
+        .dash-card.manage .icon-box { color: #e0e0e0; }
+        .dash-card.scrims .icon-box { color: #d0d0d0; }
+        .dash-card.tournament {
+            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+        }
+        .dash-card.tournament .icon-box {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+        }
+        .dash-card.lineups .icon-box { color: #c0c0c0; }
+        .dash-card.bracket .icon-box { color: #b0b0b0; }
+        .dash-card.market .icon-box { color: #a0a0a0; }
+
+        /* Roadmap Button - Liquid Glass */
+        .roadmap-btn { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-lg); 
+            padding: 28px 32px; 
+            display: flex; 
+            align-items: center; 
+            gap: 24px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3); 
+            margin-bottom: 48px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .roadmap-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        .roadmap-btn:hover {
+            transform: translateY(-4px);
+            border-color: var(--glass-highlight);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 20px rgba(255,255,255,0.05);
+        }
+        
+        .roadmap-btn:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .rm-icon { 
+            width: 56px; 
+            height: 56px; 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            color: var(--pure-white); 
+            border-radius: var(--border-radius-md); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.4rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .roadmap-btn:hover .rm-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        @media (max-width: 768px) { .stats-grid { grid-template-columns: 1fr; } }
+        
+        .card { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: var(--border-radius-lg); 
+            padding: 28px; 
+            border: 1px solid var(--glass-border); 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: var(--glass-highlight);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        
+        .card-title { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            display: flex; 
+            gap: 12px; 
+            align-items: center; 
+            color: var(--pure-white);
+            letter-spacing: 1px;
+        }
+        
+        /* Liquid Toggle Tabs */
+        .rank-tabs { 
+            display: flex; 
+            gap: 6px; 
+            background: var(--ghost-white);
+            padding: 5px; 
+            border-radius: var(--border-radius-md); 
+            border: 1px solid var(--glass-border);
+        }
+        
+        .r-tab { 
+            flex: 1; 
+            border: none; 
+            background: transparent; 
+            padding: 8px 16px; 
+            border-radius: var(--border-radius-sm); 
+            font-weight: 600; 
+            font-size: 0.7rem; 
+            color: var(--mist-white); 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-family: var(--font-display);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .r-tab.active { 
+            background: rgba(255,255,255,0.1);
+            color: var(--pure-white); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-highlight);
+        }
+        
+        .rank-list { list-style: none; padding: 0; margin: 0; }
+        
+        .rank-item { 
+            display: flex; 
+            align-items: center; 
+            padding: 14px 0; 
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            border-radius: var(--border-radius-sm);
+        }
+        
+        .rank-item:hover {
+            background: var(--ghost-white);
+            margin: 0 -12px;
+            padding-left: 12px;
+            padding-right: 12px;
+            transform: translateX(4px);
+        }
+        
+        .r-num { 
+            width: 36px; 
+            font-weight: 800; 
+            color: var(--mist-white); 
+            text-align: center; 
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+        }
+        
+        .r-num.top { 
+            color: var(--pure-white); 
+            font-size: 1.3rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .r-info { flex: 1; display: flex; align-items: center; gap: 14px; margin-left: 12px; }
+        
+        .r-img { 
+            width: 44px; 
+            height: 44px; 
+            border-radius: var(--border-radius-sm); 
+            object-fit: cover; 
+            border: 1px solid var(--glass-border);
+            background: var(--charcoal);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        .r-pts { 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 1rem; 
+            color: var(--pure-white); 
+            text-align: right; 
+            min-width: 70px;
+            letter-spacing: 1px;
+        }
+        
+        .r-money { color: #10b981; }
+
+        /* Prize Pool Card - Special Glass */
+        .prize-pool-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .prize-pool-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        .prize-pool-card #uiPrize {
+            color: var(--pure-white);
+            font-size: 3.2rem;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+            position: relative;
+        }
+
+        /* Modals - Deep Glass */
+        .modal { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000; 
+            display: none; 
+            justify-content: center; 
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-box { 
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(30px) saturate(200%);
+            width: 90%; 
+            max-width: 450px; 
+            border-radius: var(--border-radius-lg); 
+            padding: 36px; 
+            position: relative; 
+            max-height: 90vh; 
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .input-field { 
+            width: 100%; 
+            padding: 14px 18px; 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            border-radius: var(--border-radius-md); 
+            font-family: var(--font-body); 
+            color: var(--pure-white);
+            outline: none; 
+            margin-bottom: 16px; 
+            transition: all 0.3s ease; 
+            font-size: 0.95rem;
+        }
+        
+        .input-field::placeholder {
+            color: var(--mist-white);
+        }
+        
+        .input-field:focus { 
+            border-color: var(--glass-highlight); 
+            background: rgba(255,255,255,0.08);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.05), 0 0 20px rgba(255,255,255,0.05);
+        }
+        
+        .input-field.error {
+            border-color: var(--danger-red);
+            animation: shake 0.5s ease;
+        }
+        
+        .btn-main { 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--pure-white); 
+            color: var(--pure-black); 
+            border: none; 
+            border-radius: var(--border-radius-md); 
+            font-weight: 700; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            font-family: var(--font-display);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-main:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+        }
+
+        .btn-main:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Account Type Grid */
+        .account-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+        
+        .type-card { 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            border-radius: var(--border-radius-md); 
+            padding: 20px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            position: relative;
+            color: var(--mist-white);
+        }
+        
+        .type-card:hover { 
+            border-color: var(--glass-highlight); 
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.08);
+            color: var(--pure-white);
+        }
+        
+        .type-card.selected { 
+            background: rgba(255,255,255,0.12);
+            border-color: var(--pure-white); 
+            color: var(--pure-white);
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        
+        .type-card i { 
+            font-size: 1.6rem; 
+            margin-bottom: 8px; 
+            display: block;
+            transition: transform 0.3s;
+        }
+        
+        .type-card:hover i {
+            transform: scale(1.1);
+        }
+        
+        .check-icon { 
+            position: absolute; 
+            top: 8px; 
+            right: 8px; 
+            color: var(--pure-white); 
+            font-size: 0.9rem; 
+            display: none;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .type-card.selected .check-icon { display: block; }
+
+        /* Password Input Wrapper */
+        .password-wrapper {
+            position: relative;
+            margin-bottom: 8px;
+        }
+        
+        .password-wrapper .input-field {
+            margin-bottom: 0;
+            padding-right: 50px;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--mist-white);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-password:hover {
+            color: var(--pure-white);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+        
+        .strength-bar {
+            height: 4px;
+            background: var(--ghost-white);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .strength-fill.weak { width: 25%; background: var(--danger-red); }
+        .strength-fill.fair { width: 50%; background: var(--warning-orange); }
+        .strength-fill.good { width: 75%; background: var(--info-blue); }
+        .strength-fill.strong { width: 100%; background: var(--success-green); box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        
+        .strength-text {
+            font-size: 0.75rem;
+            color: var(--mist-white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .strength-text.weak { color: var(--danger-red); }
+        .strength-text.fair { color: var(--warning-orange); }
+        .strength-text.good { color: var(--info-blue); }
+        .strength-text.strong { color: var(--success-green); }
+
+        /* Security Requirements List */
+        .password-requirements {
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 0.8rem;
+        }
+        
+        .req-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            color: var(--mist-white);
+            transition: all 0.3s ease;
+        }
+        
+        .req-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .req-item.met {
+            color: var(--success-green);
+        }
+        
+        .req-item i {
+            font-size: 0.7rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Login Attempts Warning */
+        .security-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger-red);
+            padding: 12px 16px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+        
+        .security-warning.active {
+            display: block;
+        }
+        
+        .security-warning i {
+            margin-right: 8px;
+        }
+
+        /* Lockout Message */
+        .lockout-message {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--warning-orange);
+            padding: 20px;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .lockout-message.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .lockout-message i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .countdown {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* Social Login Buttons */
+        .social-login-divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: var(--mist-white);
+            font-size: 0.8rem;
+        }
+        
+        .social-login-divider::before,
+        .social-login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+            margin: 0 12px;
+        }
+        
+        .social-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .btn-social {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--glass-border);
+            background: var(--ghost-white);
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--soft-white);
+        }
+        
+        .btn-social:hover {
+            transform: translateY(-2px);
+            border-color: var(--glass-highlight);
+            background: rgba(255,255,255,0.08);
+            color: var(--pure-white);
+        }
+        
+        .btn-social.google:hover {
+            border-color: #db4437;
+            color: #db4437;
+        }
+        
+        .btn-social.facebook:hover {
+            border-color: #4267B2;
+            color: #4267B2;
+        }
+        
+        .btn-social i {
+            font-size: 1.2rem;
+        }
+
+        /* Topup Modal */
+        .topup-modal { 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 3000; 
+            display: none; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+        }
+        
+        .topup-box { 
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(30px) saturate(200%);
+            width: 100%; 
+            max-width: 480px; 
+            padding: 36px; 
+            border-radius: var(--border-radius-lg); 
+            position: relative; 
+            max-height: 90vh; 
+            overflow-y: auto;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+        }
+        
+        .topup-header { text-align: center; margin-bottom: 32px; }
+        
+        .topup-title { 
+            font-family: var(--font-display); 
+            font-weight: 800; 
+            font-size: 1.6rem; 
+            color: var(--pure-white); 
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+        
+        .topup-subtitle { color: var(--mist-white); font-size: 0.9rem; font-weight: 300; }
+        
+        .close-modal { 
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            font-size: 1.2rem; 
+            color: var(--mist-white); 
+            cursor: pointer; 
+            width: 40px; 
+            height: 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+            transition: all 0.3s ease; 
+        }
+        
+        .close-modal:hover { 
+            background: var(--glass-bg);
+            color: var(--pure-white);
+            transform: rotate(90deg);
+            border-color: var(--glass-highlight);
+        }
+        
+        .topup-amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+        
+        .amount-btn { 
+            background: var(--ghost-white);
+            border: 1px solid var(--glass-border); 
+            color: var(--soft-white);
+            padding: 18px; 
+            border-radius: var(--border-radius-md); 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            text-align: center; 
+            font-family: var(--font-display); 
+            font-weight: 700; 
+            font-size: 1rem; 
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .amount-btn:hover { 
+            border-color: var(--glass-highlight); 
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-2px);
+            color: var(--pure-white);
+        }
+        
+        .amount-btn.selected { 
+            background: rgba(255,255,255,0.15);
+            border-color: var(--pure-white); 
+            color: var(--pure-white); 
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        
+        .amount-btn .bonus { 
+            font-size: 0.7rem; 
+            color: #10b981; 
+            display: block; 
+            margin-top: 4px; 
+            font-family: var(--font-body);
+            font-weight: 600;
+        }
+        
+        .amount-btn.selected .bonus { color: #6ee7b7; }
+
+        /* Bottom Navigation - Floating Glass */
+        .btm-nav { 
+            position: fixed; 
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-xl); 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 14px 8px;
+            z-index: 999; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .nav-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            color: var(--mist-white); 
+            font-size: 0.65rem; 
+            font-weight: 600; 
+            text-decoration: none; 
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: var(--border-radius-md);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+        }
+        
+        .nav-item i { 
+            font-size: 1.4rem; 
+            margin-bottom: 6px; 
+            transition: all 0.3s ease; 
+        }
+        
+        .nav-item.active { 
+            color: var(--pure-white);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .nav-item.active i { 
+            transform: translateY(-4px);
+            text-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+        
+        .nav-item:hover:not(.active) {
+            color: var(--soft-white);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--deep-black);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--graphite);
+            border-radius: 4px;
+            border: 1px solid var(--glass-border);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--charcoal);
+        }
+
+        /* Animations */
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.4rem; letter-spacing: 2px; }
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .dash-card { height: 160px; padding: 24px 16px; }
+            .icon-box { width: 52px; height: 52px; font-size: 1.3rem; }
+            .dash-title { font-size: 0.85rem; }
+            .topup-amount-grid { grid-template-columns: repeat(2, 1fr); }
+            .wallet-section { gap: 8px; }
+            .balance-display { padding: 8px 12px; font-size: 0.8rem; }
+            .btn-topup { padding: 8px 12px; font-size: 0.7rem; }
+            .btm-nav {
+                width: calc(100% - 24px);
+                bottom: 12px;
+            }
+            .nav-item {
+                padding: 6px 12px;
+            }
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
+            .modal-box {
+                padding: 24px;
+            }
+        }
+
+        /* Backend Warning Banner */
+        .backend-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--warning-orange);
+            padding: 12px 16px;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 16px;
+            font-size: 0.8rem;
+            display: none;
+        }
+        
+        .backend-warning.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">PSL <span>LEAGUE</span></div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div class="wallet-section" id="walletSection" style="display: none;">
+                <div class="balance-display">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>฿<span class="balance-amount" id="balanceAmount">0</span></span>
+                </div>
+                <button class="btn-topup" onclick="openTopupModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    TOP UP
+                </button>
+            </div>
+            
+            <a href="#" id="discordLinkBtn" target="_blank" class="btn-discord">
+                <i class="fa-brands fa-discord"></i>
+            </a>
+            
+            <div id="navAuth">
+                <button onclick="openAuthModal()" style="padding:12px 28px; background:var(--pure-white); color:var(--pure-black); border:none; border-radius:var(--border-radius-sm); font-weight:700; cursor:pointer; font-family:var(--font-display); letter-spacing:1px; font-size:0.8rem; transition:all 0.3s;">LOGIN</button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-tag">SEASON 2026</div>
+        <h1>
+            <span class="blaze">BLAZE</span> <span class="future">THE FUTURE</span>
+        </h1>
+        <p>The official platform for professional esports tournaments.</p>
+    </header>
+
+    <div class="container">
+        <div class="grid">
+            <a href="manager.html" class="dash-card manage animate__animated animate__fadeInUp">
+                <div class="icon-box">
+                    <i class="fa-solid fa-users-gear"></i>
+                </div>
+                <div class="dash-title">MY DASHBOARD</div>
+                <div class="dash-sub">Manage Club</div>
+            </a>
+            
+            <a href="scrims.html" class="dash-card scrims animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                <div class="icon-box">
+                    <i class="fa-solid fa-handshake-simple"></i>
+                </div>
+                <div class="dash-title">FIND SCRIMS</div>
+                <div class="dash-sub">Practice Match</div>
+            </a>
+            
+            <a href="tournaments.html" class="dash-card tournament animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                <div class="icon-box">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div class="dash-title">TOURNAMENTS</div>
+                <div class="dash-sub">Join Battle</div>
+            </a>
+            
+            <a href="lineup-hub.html" class="dash-card lineups animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                <div class="icon-box">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                </div>
+                <div class="dash-title">LINEUPS</div>
+                <div class="dash-sub">Participants</div>
+            </a>
+            
+            <a href="bracket.html" class="dash-card bracket animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                <div class="icon-box">
+                    <i class="fa-solid fa-sitemap"></i>
+                </div>
+                <div class="dash-title">BRACKET</div>
+                <div class="dash-sub">Standings</div>
+            </a>
+            
+            <a href="market.html" class="dash-card market animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
+                <div class="icon-box">
+                    <i class="fa-solid fa-people-arrows"></i>
+                </div>
+                <div class="dash-title">MARKET</div>
+                <div class="dash-sub">Transfer</div>
+            </a>
+        </div>
+
+        <a href="roadmap.html" class="roadmap-btn animate__animated animate__fadeInUp">
+            <div class="rm-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div style="flex:1">
+                <div class="dash-title" style="font-size:1.2rem;">ROADMAP</div>
+                <div class="dash-sub">Season Timeline & Events</div>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color:var(--mist-white);"></i>
+        </a>
+
+        <div class="stats-grid">
+            <div class="card">
+                <div class="card-header-row">
+                    <div class="card-title" id="rankTitle">
+                        <i class="fa-solid fa-ranking-star" style="color:var(--pure-white)"></i> CLUB RANKING
+                    </div>
+                    <div class="rank-tabs">
+                        <button class="r-tab active" id="tabClub" onclick="switchRank('club')">CLUBS</button>
+                        <button class="r-tab" id="tabMoney" onclick="switchRank('money')">EARNINGS</button>
+                    </div>
+                </div>
+                <ul class="rank-list" id="rankList"><li style="text-align:center; padding:20px; color:var(--mist-white);">Loading...</li></ul>
+            </div>
+
+            <div class="card prize-pool-card" style="display:flex; flex-direction:column; justify-content:center; text-align:center;">
+                <div style="font-size:0.8rem; font-weight:600; color:var(--mist-white); letter-spacing:3px; margin-bottom:20px; text-transform:uppercase;">Total Prize Pool</div>
+                <div style="font-family:var(--font-display); font-weight:800; font-size:3.2rem; color:var(--pure-white); line-height:1;" id="uiPrize">0</div>
+                <div style="height:1px; background:var(--glass-border); margin:40px 0;"></div>
+                <div style="display:flex; justify-content:space-around;">
+                    <div>
+                        <div style="font-weight:800; font-size:2rem; color:var(--pure-white); font-family:var(--font-display);" id="uiTeams">0</div>
+                        <div style="font-size:0.75rem; color:var(--mist-white); text-transform:uppercase; letter-spacing:2px; margin-top:4px;">Teams</div>
+                    </div>
+                    <div>
+                        <div style="font-weight:800; font-size:2rem; color:var(--pure-white); font-family:var(--font-display);" id="uiMatches">0</div>
+                        <div style="font-size:0.75rem; color:var(--mist-white); text-transform:uppercase; letter-spacing:2px; margin-top:4px;">Matches</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-box animate__animated animate__zoomIn">
+            <div style="text-align:center; margin-bottom:28px;">
+                <h2 id="authTitle" style="font-family:var(--font-display); font-weight:800; font-size:1.8rem; color:var(--pure-white); letter-spacing:2px;">LOGIN</h2>
+                <p style="color:var(--mist-white); font-size:0.9rem; margin-top:8px;" id="authSubtitle">เข้าสู่ระบบเพื่อใช้งาน</p>
+            </div>
+
+            <!-- Lockout Message -->
+            <div id="lockoutMessage" class="lockout-message">
+                <i class="fa-solid fa-lock"></i>
+                <div>คุณพยายามเข้าสู่ระบบผิดพลาดหลายครั้ง</div>
+                <div style="font-size:0.85rem; margin-top:8px;">กรุณารออีก <span class="countdown" id="lockoutCountdown">15:00</span> นาที</div>
+            </div>
+
+            <!-- Social Login -->
+            <div id="socialLoginSection">
+                <div class="social-buttons">
+                    <button class="btn-social google" onclick="handleGoogleLogin()">
+                        <i class="fa-brands fa-google"></i>
+                        Google
+                    </button>
+                    <button class="btn-social facebook" onclick="handleFacebookLogin()">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        Facebook
+                    </button>
+                </div>
+                
+                <div class="social-login-divider">หรือ</div>
+            </div>
+
+            <!-- Security Warning -->
+            <div id="securityWarning" class="security-warning">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span id="warningText">เหลืออีก 3 ครั้งในการพยายามเข้าสู่ระบบ</span>
+            </div>
+
+            <div id="accountTypeSection" style="display:none;">
+                <div style="display:flex; align-items:center; margin:24px 0; color:var(--mist-white); font-size:0.85rem;">
+                    <span style="padding:0 12px;">เลือกประเภทบัญชี</span>
+                </div>
+                <div class="account-type-grid">
+                    <div class="type-card selected" onclick="selectAccountType('user', this)" data-type="user">
+                        <i class="fa-solid fa-user"></i>
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="type-name" style="font-size:0.85rem; font-weight:600;">USER</div>
+                    </div>
+                    <div class="type-card" onclick="selectAccountType('player', this)" data-type="player">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="type-name" style="font-size:0.85rem; font-weight:600;">PLAYER</div>
+                    </div>
+                    <div class="type-card" onclick="selectAccountType('team', this)" data-type="team">
+                        <i class="fa-solid fa-users"></i>
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="type-name" style="font-size:0.85rem; font-weight:600;">TEAM</div>
+                    </div>
+                    <div class="type-card" onclick="selectAccountType('club', this)" data-type="club">
+                        <i class="fa-solid fa-building"></i>
+                        <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="type-name" style="font-size:0.85rem; font-weight:600;">CLUB</div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div id="authInputs">
+                    <input type="text" id="username" class="input-field" placeholder="Username / ID" required autocomplete="username">
+                    
+                    <!-- Password Field with Toggle -->
+                    <div class="password-wrapper">
+                        <input type="password" id="password" class="input-field" placeholder="Password" required autocomplete="current-password" oninput="checkPasswordStrength(this.value)">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">
+                            <i class="fa-solid fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Password Strength Indicator (Register Mode Only) -->
+                    <div id="passwordStrength" class="password-strength" style="display: none;">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText">
+                            <span>ความแข็งแกร่งของรหัสผ่าน</span>
+                            <span id="strengthLabel">ไม่มี</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Password Requirements (Register Mode Only) -->
+                    <div id="passwordRequirements" class="password-requirements" style="display: none;">
+                        <div class="req-item" id="req-length">
+                            <i class="fa-solid fa-circle"></i>
+                            <span>อย่างน้อย 8 ตัวอักษร</span>
+                        </div>
+                        <div class="req-item" id="req-upper">
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ตัวพิมพ์ใหญ่อย่างน้อย 1 ตัว</span>
+                        </div>
+                        <div class="req-item" id="req-lower">
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ตัวพิมพ์เล็กอย่างน้อย 1 ตัว</span>
+                        </div>
+                        <div class="req-item" id="req-number">
+                            <i class="fa-solid fa-circle"></i>
+                            <span>ตัวเลขอย่างน้อย 1 ตัว</span>
+                        </div>
+                        <div class="req-item" id="req-special">
+                            <i class="fa-solid fa-circle"></i>
+                            <span>อักขระพิเศษ (!@#$%^&*)</span>
+                        </div>
+                    </div>
+                    
+                    <div id="dynamicFields"></div>
+                </div>
+                <button type="submit" id="authBtn" class="btn-main" style="margin-top:20px;">LOGIN</button>
+            </form>
+            
+            <div style="text-align:center; margin-top:24px; font-size:0.9rem; color:var(--mist-white);">
+                <span id="toggleText">ยังไม่มีบัญชี?</span>
+                <a href="#" id="toggleLink" onclick="toggleAuthMode()" style="color:var(--pure-white); font-weight:700; margin-left:8px; border-bottom:1px solid var(--glass-border);">สมัครสมาชิก</a>
+            </div>
+            
+            <i class="fa-solid fa-xmark" style="position:absolute; top:24px; right:24px; font-size:1.3rem; cursor:pointer; color:var(--mist-white); transition:all 0.3s;" onclick="closeAuthModal()"></i>
+        </div>
+    </div>
+
+    <!-- Social Account Type Selection Modal (For first time social login) -->
+    <div id="socialAccountModal" class="modal">
+        <div class="modal-box animate__animated animate__zoomIn">
+            <div style="text-align:center; margin-bottom:28px;">
+                <h2 style="font-family:var(--font-display); font-weight:800; font-size:1.5rem; color:var(--pure-white); letter-spacing:2px;">เลือกประเภทบัญชี</h2>
+                <p style="color:var(--mist-white); font-size:0.9rem; margin-top:8px;">กรุณาเลือกประเภทบัญชีสำหรับการใช้งาน</p>
+            </div>
+
+            <div class="account-type-grid">
+                <div class="type-card" onclick="selectSocialAccountType('user', this)" data-type="user">
+                    <i class="fa-solid fa-user"></i>
+                    <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="type-name" style="font-size:0.85rem; font-weight:600;">USER</div>
+                </div>
+                <div class="type-card" onclick="selectSocialAccountType('player', this)" data-type="player">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="type-name" style="font-size:0.85rem; font-weight:600;">PLAYER</div>
+                </div>
+                <div class="type-card" onclick="selectSocialAccountType('team', this)" data-type="team">
+                    <i class="fa-solid fa-users"></i>
+                    <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="type-name" style="font-size:0.85rem; font-weight:600;">TEAM</div>
+                </div>
+                <div class="type-card" onclick="selectSocialAccountType('club', this)" data-type="club">
+                    <i class="fa-solid fa-building"></i>
+                    <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="type-name" style="font-size:0.85rem; font-weight:600;">CLUB</div>
+                </div>
+            </div>
+
+            <div id="socialDynamicFields" style="margin-top:16px;"></div>
+
+            <button class="btn-main" onclick="confirmSocialAccountType()" style="margin-top:24px;">ยืนยัน</button>
+            
+            <i class="fa-solid fa-xmark" style="position:absolute; top:24px; right:24px; font-size:1.3rem; cursor:pointer; color:var(--mist-white); transition:all 0.3s;" onclick="closeSocialAccountModal()"></i>
+        </div>
+    </div>
+
+    <div id="topupModal" class="topup-modal">
+        <div class="topup-box animate__animated animate__zoomIn">
+            <button class="close-modal" onclick="closeTopupModal()"><i class="fa-solid fa-xmark"></i></button>
+            
+            <!-- Backend Warning -->
+            <div id="backendWarning" class="backend-warning">
+                <i class="fa-solid fa-triangle-exclamation" style="margin-right:8px;"></i>
+                <strong>คำเตือนความปลอดภัย:</strong> ระบบกำลังทำงานในโหมดไม่ปลอดภัย (ไม่มี Backend) - API Key อาจถูกเปิดเผย กรุณาตั้งค่า Firebase Functions ตามคู่มือในโค้ด
+            </div>
+            
+            <div class="topup-header">
+                <div class="topup-title"><i class="fa-solid fa-wallet" style="color: var(--pure-white); margin-right:8px;"></i> TOP UP</div>
+                <div class="topup-subtitle">เติมเงินเข้ากระเป๋าเพื่อใช้สมัครแข่ง</div>
+            </div>
+
+            <div id="topupStep1">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 12px; color: var(--soft-white); letter-spacing:1px;">
+                        <i class="fa-solid fa-coins" style="margin-right:6px;"></i> เลือกจำนวนเงิน
+                    </label>
+                    <div class="topup-amount-grid">
+                        <button class="amount-btn" onclick="selectTopupAmount(100, this)">฿100</button>
+                        <button class="amount-btn" onclick="selectTopupAmount(300, this)">
+                            ฿300
+                            <span class="bonus">+10 โบนัส</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectTopupAmount(500, this)">
+                            ฿500
+                            <span class="bonus">+25 โบนัส</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectTopupAmount(1000, this)">
+                            ฿1,000
+                            <span class="bonus">+60 โบนัส</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectTopupAmount(2000, this)">
+                            ฿2,000
+                            <span class="bonus">+150 โบนัส</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectTopupAmount(5000, this)">
+                            ฿5,000
+                            <span class="bonus">+500 โบนัส</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="custom-amount">
+                    <label style="display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; color: var(--soft-white); letter-spacing:1px;">หรือระบุจำนวนเงินเอง</label>
+                    <input type="number" id="customTopupAmount" class="input-field" placeholder="ระบุจำนวนเงิน (บาท)" min="50" onchange="clearAmountSelection()">
+                </div>
+
+                <button class="btn-main" onclick="goToTopupPayment()" style="background: var(--pure-white); color: var(--pure-black); margin-top:8px;">ถัดไป: ชำระเงิน</button>
+            </div>
+
+            <div id="topupStep2" style="display:none;">
+                <div style="text-align:center; margin-bottom:24px; padding:20px; background:var(--ghost-white); border-radius:var(--border-radius-md); border:1px solid var(--glass-border);">
+                    <div style="font-size:0.8rem; color:var(--mist-white); margin-bottom:8px; letter-spacing:1px;">ยอดที่ต้องชำระ</div>
+                    <div style="font-family:var(--font-display); font-size:2.8rem; font-weight:800; color:var(--pure-white); text-shadow:0 0 20px rgba(255,255,255,0.2);">
+                        ฿<span id="topupAmountDisplay">0</span>
+                    </div>
+                    <div id="bonusDisplay" style="font-size:0.85rem; color:#10b981; font-weight:600; display:none; margin-top:8px;">
+                        <i class="fa-solid fa-gift"></i> ได้รับโบนัส ฿<span id="bonusAmount">0</span>
+                    </div>
+                </div>
+
+                <div id="topupVerifyStatus" style="display:none;"></div>
+
+                <div class="payment-box" style="background: var(--ghost-white); padding: 24px; border-radius: var(--border-radius-md); border: 1px solid var(--glass-border); margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px; background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border);">
+                        <div style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; background: linear-gradient(135deg, #333, #111); border:1px solid var(--glass-border);">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-size:0.7rem; color:var(--mist-white); margin-bottom:2px;">KBANK (กสิกรไทย)</div>
+                            <div style="font-weight:700; color:var(--pure-white); font-size:1.1rem; font-family:var(--font-display);">193-1-13233-0</div>
+                            <div style="font-size:0.8rem; color:var(--soft-white); font-weight:500;">ณัฐภูมินทร์ จูบ้ง</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 14px; border-radius: var(--border-radius-sm); border: 1px solid var(--glass-border);">
+                        <div style="width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem; background: linear-gradient(135deg, #ff8b00, #ff6b00); border:1px solid rgba(255,255,255,0.1);">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-size:0.7rem; color:var(--mist-white); margin-bottom:2px;">TRUE MONEY</div>
+                            <div style="font-weight:700; color:var(--pure-white); font-size:1.1rem; font-family:var(--font-display);">062-970-8835</div>
+                        </div>
+                    </div>
+
+                    <div style="border: 2px dashed var(--glass-border); padding: 28px; text-align: center; border-radius: var(--border-radius-md); cursor: pointer; background: rgba(0,0,0,0.2); transition:all 0.3s;" onclick="document.getElementById('topupSlipInput').click()" onmouseover="this.style.borderColor='var(--glass-highlight)'; this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.borderColor='var(--glass-border)'; this.style.background='rgba(0,0,0,0.2)'">
+                        <i class="fa-solid fa-cloud-arrow-up" style="font-size:1.8rem; color:var(--mist-white); margin-bottom:8px;"></i>
+                        <div style="font-size:0.9rem; font-weight:600; margin-top:8px; color:var(--soft-white);">อัปโหลดสลิปโอนเงิน</div>
+                        <div style="font-size:0.75rem; color:var(--mist-white); margin-top:4px;">คลิกเพื่อเลือกไฟล์</div>
+                        <div style="font-size:0.75rem; color:#ef4444; margin-top:8px; font-weight:600;">* ชื่อบัญชีผู้รับต้องเป็น "ณัฐภูมินทร์ จูบ้ง" เท่านั้น</div>
+                    </div>
+                    <input type="file" id="topupSlipInput" accept="image/*" style="display:none;" onchange="previewTopupSlip()">
+                    <img id="topupSlipPreview" style="max-width: 100%; height: 160px; object-fit: contain; margin-top: 16px; display: none; border-radius: var(--border-radius-sm); border:1px solid var(--glass-border);">
+                </div>
+
+                <div style="display:flex; gap:12px;">
+                    <button class="btn-main" style="background:transparent; color:var(--soft-white); border:1px solid var(--glass-border);" onclick="backToTopupStep1()">ย้อนกลับ</button>
+                    <button class="btn-main" onclick="confirmTopup()" id="btnConfirmTopup" disabled style="opacity: 0.4; cursor:not-allowed;">ยืนยันการเติมเงิน</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="btm-nav">
+        <a href="#" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="scrims.html" class="nav-item"><i class="fa-solid fa-handshake-simple"></i><span>Scrims</span></a>
+        <a href="tournaments.html" class="nav-item"><i class="fa-solid fa-trophy"></i><span>Tourney</span></a>
+        <a href="manager.html" class="nav-item"><i class="fa-solid fa-users-gear"></i><span>Manage</span></a>
+    </div>
+
+    <script type="module">
+        // ── ใช้ firebase-config.js กลาง (auth มี LOCAL persistence ข้ามหน้าอัตโนมัติ) ──
+        import { db, auth } from './firebase-config.js';
+        import {
+            createUserWithEmailAndPassword, signInWithEmailAndPassword,
+            onAuthStateChanged, signOut,
+            GoogleAuthProvider, FacebookAuthProvider, signInWithPopup
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import {
+            doc, setDoc, getDoc, collection, query, where, getDocs, addDoc, updateDoc, orderBy, limit, increment
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // โหลด Discord Link จาก Firebase (ไม่ hardcode)
+        async function initDiscordButton() {
+            try {
+                const snap = await getDoc(doc(db, "system", "settings"));
+                if (snap.exists() && snap.data().discordLink) {
+                    const el = document.getElementById('discordLinkBtn');
+                    if (el) el.href = snap.data().discordLink;
+                }
+            } catch(e) { /* silent */ }
+        }
+        initDiscordButton();
+
+
+
+        let isRegistering = false;
+        let selectedAccountType = 'user';
+        let allTeams = []; 
+        let currentUser = null;
+        let userData = null;
+        let userBalance = 0;
+        let selectedTopupAmount = 0;
+        let topupBonus = 0;
+        let verifiedTopupSlipData = null;
+        
+        // Backend Configuration
+        const USE_BACKEND = false; // Backend ผ่าน Firebase Functions (ยังไม่ deploy)
+        
+        // ตัวแปรเก็บ API Key ที่ดึงมาจาก Firebase
+        let easyslipApiKey = null;
+        let apiKeyLastFetch = 0;
+        const API_KEY_CACHE_DURATION = 5 * 60 * 1000; // Cache 5 นาที
+        
+        // Security Variables
+        let loginAttempts = 0;
+        const MAX_LOGIN_ATTEMPTS = 5;
+        const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
+        let lockoutTimer = null;
+        
+        // Social login temp storage
+        let pendingSocialUser = null;
+        let pendingSocialAccountType = 'user';
+
+        // ดึง EasySlip API Key จาก Firebase Firestore
+        async function getEasySlipApiKey() {
+            const now = Date.now();
+            
+            // ถ้ามี API Key ใน Memory และยังไม่หมดอายุ Cache
+            if (easyslipApiKey && (now - apiKeyLastFetch) < API_KEY_CACHE_DURATION) {
+                return easyslipApiKey;
+            }
+            
+            try {
+                const configDoc = await getDoc(doc(db, "system", "config"));
+                if (configDoc.exists()) {
+                    const data = configDoc.data();
+                    if (data.easyslipApiKey) {
+                        easyslipApiKey = data.easyslipApiKey;
+                        apiKeyLastFetch = now;
+                        return easyslipApiKey;
+                    }
+                }
+                console.warn("⚠️ ไม่พบ EasySlip API Key ใน Firebase");
+                return null;
+            } catch (error) {
+                console.error("Error fetching API Key:", error);
+                return easyslipApiKey; // Return cached key if available
+            }
+        }
+
+        // เพิ่มฟังก์ชันตรวจสอบสลิปซ้ำ
+        async function checkDuplicateSlip(transRef, amount, senderName) {
+            if (!transRef) return { isDuplicate: false, reason: 'no_trans_ref' };
+            
+            try {
+                // ตรวจสอบใน transactions collection ว่ามีสลิปนี้แล้วหรือไม่
+                const q = query(
+                    collection(db, "transactions"), 
+                    where("paymentReference", "==", transRef),
+                    where("type", "==", "topup")
+                );
+                const snapshot = await getDocs(q);
+                
+                if (!snapshot.empty) {
+                    // พบสลิปซ้ำ
+                    const existingData = snapshot.docs[0].data();
+                    return { 
+                        isDuplicate: true, 
+                        reason: 'duplicate_trans_ref',
+                        existingTimestamp: existingData.timestamp,
+                        existingUser: existingData.username
+                    };
+                }
+                
+                // ตรวจสอบเพิ่มเติม: ตรวจสอบว่ามีการเติมเงินด้วยจำนวนเดียวกัน ชื่อผู้ส่งเดียวกัน ในช่วงเวลาใกล้เคียงกันหรือไม่ (ป้องกันสลิป copy)
+                const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+                const q2 = query(
+                    collection(db, "transactions"),
+                    where("amount", "==", parseFloat(amount)),
+                    where("senderName", "==", senderName || 'Unknown'),
+                    where("timestamp", ">", fiveMinutesAgo),
+                    where("type", "==", "topup")
+                );
+                const snapshot2 = await getDocs(q2);
+                
+                if (!snapshot2.empty) {
+                    return {
+                        isDuplicate: true,
+                        reason: 'suspicious_pattern',
+                        message: 'พบรายการคล้ายกันภายใน 5 นาทีที่ผ่านมา'
+                    };
+                }
+                
+                return { isDuplicate: false };
+            } catch (error) {
+                console.error("Error checking duplicate slip:", error);
+                return { isDuplicate: false, error: error.message };
+            }
+        }
+
+        // ฟังก์ชันตรวจสอบความถูกต้องของสลิป (ต้านสลิปปลอม)
+        function validateSlipAuthenticity(slipData) {
+            const errors = [];
+            
+            // 1. ตรวจสอบว่ามีข้อมูลครบถ้วน
+            if (!slipData.transRef && !slipData.transactionId && !slipData.reference) {
+                errors.push('ไม่พบเลขอ้างอิงธุรกรรม (Transaction Ref)');
+            }
+            
+            // 2. ตรวจสอบจำนวนเงิน
+            const amount = parseFloat(slipData.amount?.amount || slipData.amount || 0);
+            if (amount <= 0) {
+                errors.push('จำนวนเงินไม่ถูกต้อง');
+            }
+            
+            // 3. ตรวจสอบเวลาโอน (ต้องไม่เกิน 7 วัน และไม่เป็นอนาคต)
+            const transDate = slipData.transDate || slipData.transTime || slipData.date;
+            if (transDate) {
+                const transTime = new Date(transDate).getTime();
+                const now = Date.now();
+                const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
+                
+                if (transTime > now) {
+                    errors.push('เวลาธุรกรรมเป็นอนาคต (สลิปอาจเป็นของปลอม)');
+                } else if (transTime < sevenDaysAgo) {
+                    errors.push('สลิปเกิน 7 วันแล้ว กรุณาใช้สลิปใหม่');
+                }
+            }
+            
+            // 4. ตรวจสอบข้อมูลผู้รับต้องมี
+            const receiverName = slipData.receiver?.account?.name?.th || 
+                                slipData.receiver?.displayName || 
+                                slipData.receiver?.name;
+            if (!receiverName) {
+                errors.push('ไม่พบข้อมูลผู้รับเงิน');
+            }
+            
+            // 5. ตรวจสอบข้อมูลผู้ส่งต้องมี
+            const senderName = slipData.sender?.account?.name?.th || 
+                              slipData.sender?.displayName || 
+                              slipData.sender?.name;
+            if (!senderName) {
+                errors.push('ไม่พบข้อมูลผู้ส่งเงิน (สลิปอาจไม่สมบูรณ์)');
+            }
+            
+            return {
+                isValid: errors.length === 0,
+                errors: errors
+            };
+        }
+
+        // Check if username exists
+        async function checkUsernameExists(username) {
+            const fakeEmail = `${username}@psl.com`;
+            try {
+                // Query Firestore for existing username
+                const usersRef = collection(db, "users");
+                const q = query(usersRef, where("username", "==", username));
+                const snapshot = await getDocs(q);
+                return !snapshot.empty;
+            } catch (error) {
+                console.error("Error checking username:", error);
+                return false;
+            }
+        }
+
+        function getUsername() {
+            return userData?.username || currentUser?.email?.split('@')[0] || currentUser?.displayName || 'Unknown';
+        }
+
+        function isValidReceiverName(name) {
+            if (!name) return false;
+            const cleanName = name.toString().trim();
+            const validNames = [
+                "ณัฐภูมินทร์ จูบ้ง",
+                "นาย ณัฐภูมินทร์ จ",
+                "Natthaphoomin C",
+                "Mr. Natthaphoomin C",
+                "Natthaphoomin Jubung",
+                "Mr. Natthaphoomin Jubung",
+                "Natthaphoomin",
+                "Jubung"
+            ];
+            
+            for (let validName of validNames) {
+                if (cleanName === validName || cleanName.includes(validName)) return true;
+            }
+            
+            const lowerName = cleanName.toLowerCase().replace(/\s+/g, ' ');
+            if (lowerName.includes('natthaphoomin') || 
+                lowerName.includes('ณัฐภูมินทร์') || 
+                lowerName.includes('jubung') ||
+                lowerName.includes('จูบ้ง')) {
+                return true;
+            }
+            return false;
+        }
+
+        // Toggle Password Visibility
+        window.togglePasswordVisibility = () => {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        };
+
+        // Google Login
+        window.handleGoogleLogin = async () => {
+            // Check lockout
+            const lockoutEnd = localStorage.getItem('lockoutEnd');
+            if (lockoutEnd && Date.now() < parseInt(lockoutEnd)) {
+                alert("บัญชีถูกล็อกชั่วคราว กรุณารอให้ครบกำหนดเวลา");
+                return;
+            }
+
+            const provider = new GoogleAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                await handleSocialLogin(result.user, 'google');
+            } catch (error) {
+                console.error("Google login error:", error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    // User closed popup, do nothing
+                } else {
+                    alert("❌ เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google: " + error.message);
+                }
+            }
+        };
+
+        // Facebook Login
+        window.handleFacebookLogin = async () => {
+            // Check lockout
+            const lockoutEnd = localStorage.getItem('lockoutEnd');
+            if (lockoutEnd && Date.now() < parseInt(lockoutEnd)) {
+                alert("บัญชีถูกล็อกชั่วคราว กรุณารอให้ครบกำหนดเวลา");
+                return;
+            }
+
+            const provider = new FacebookAuthProvider();
+            try {
+                const result = await signInWithPopup(auth, provider);
+                await handleSocialLogin(result.user, 'facebook');
+            } catch (error) {
+                console.error("Facebook login error:", error);
+                if (error.code === 'auth/popup-closed-by-user') {
+                    // User closed popup, do nothing
+                } else {
+                    alert("❌ เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Facebook: " + error.message);
+                }
+            }
+        };
+
+        // Handle Social Login (Google/Facebook)
+        async function handleSocialLogin(user, provider) {
+            pendingSocialUser = user;
+            
+            // Check if user exists in database
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            
+            if (userDoc.exists()) {
+                // Existing user - just login
+                const userData = userDoc.data();
+                alert(`✅ เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับกลับ ${userData.username || user.displayName}`);
+                closeAuthModal();
+            } else {
+                // New user - show account type selection modal
+                document.getElementById('authModal').style.display = 'none';
+                document.getElementById('socialAccountModal').style.display = 'flex';
+                pendingSocialAccountType = 'user';
+                renderSocialDynamicFields('user');
+            }
+        }
+
+        // Select account type for social login
+        window.selectSocialAccountType = (type, element) => {
+            pendingSocialAccountType = type;
+            document.querySelectorAll('#socialAccountModal .type-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            renderSocialDynamicFields(type);
+        };
+
+        // Render dynamic fields for social login
+        function renderSocialDynamicFields(type) {
+            const container = document.getElementById('socialDynamicFields');
+            container.innerHTML = '';
+            
+            if (type === 'club') {
+                container.innerHTML = `
+                    <input type="text" id="socialClubName" class="input-field" placeholder="ชื่อสังกัด (Club Name)" required>
+                    <input type="text" id="socialOrgTag" class="input-field" placeholder="แท็กสั้นๆ (เช่น PSL)" required>
+                `;
+            } else if (type === 'team') {
+                container.innerHTML = `
+                    <input type="text" id="socialTeamName" class="input-field" placeholder="ชื่อทีม (Team Name)" required>
+                    <input type="text" id="socialTeamTag" class="input-field" placeholder="แท็กทีม (Tag)" required>
+                    <select id="socialTeamGame" class="input-field" style="margin-bottom:10px; background:var(--deep-black);">
+                        <option value="">เลือกเกมหลัก</option>
+                        <option value="RoV">RoV</option>
+                        <option value="MLBB">MLBB</option>
+                        <option value="PUBG">PUBG Mobile</option>
+                        <option value="VALORANT">VALORANT</option>
+                        <option value="FC25">FC 25</option>
+                    </select>
+                `;
+            } else if (type === 'player') {
+                container.innerHTML = `
+                    <input type="text" id="socialPlayerIGN" class="input-field" placeholder="In-Game Name (IGN)" required>
+                    <input type="text" id="socialPlayerUID" class="input-field" placeholder="Game UID (ถ้ามี)">
+                    <select id="socialPlayerGame" class="input-field" style="margin-bottom:10px; background:var(--deep-black);">
+                        <option value="">เลือกเกมหลัก</option>
+                        <option value="RoV">RoV</option>
+                        <option value="MLBB">MLBB</option>
+                        <option value="PUBG">PUBG Mobile</option>
+                        <option value="VALORANT">VALORANT</option>
+                        <option value="FC25">FC 25</option>
+                    </select>
+                `;
+            }
+        }
+
+        // Confirm social account type and create user data
+        window.confirmSocialAccountType = async () => {
+            if (!pendingSocialUser) return;
+            
+            const user = pendingSocialUser;
+            let extraData = {};
+            let collectionName = 'users';
+            const type = pendingSocialAccountType;
+            
+            // Validate fields
+            if (type === 'club') {
+                const clubName = document.getElementById('socialClubName')?.value.trim();
+                const orgTag = document.getElementById('socialOrgTag')?.value.trim();
+                if (!clubName || !orgTag) {
+                    alert("กรุณากรอกชื่อสังกัดและแท็ก");
+                    return;
+                }
+                extraData = { clubName, tag: orgTag, type: 'club' };
+                collectionName = 'clubs';
+            } else if (type === 'team') {
+                const teamName = document.getElementById('socialTeamName')?.value.trim();
+                const teamTag = document.getElementById('socialTeamTag')?.value.trim();
+                const game = document.getElementById('socialTeamGame')?.value;
+                if (!teamName || !teamTag) {
+                    alert("กรุณากรอกชื่อทีมและแท็ก");
+                    return;
+                }
+                extraData = { teamName, tag: teamTag, game, type: 'team' };
+                collectionName = 'teams';
+            } else if (type === 'player') {
+                const ign = document.getElementById('socialPlayerIGN')?.value.trim();
+                const uid = document.getElementById('socialPlayerUID')?.value.trim();
+                const game = document.getElementById('socialPlayerGame')?.value;
+                if (!ign) {
+                    alert("กรุณากรอก In-Game Name");
+                    return;
+                }
+                extraData = { ign, gameUid: uid, game, type: 'player' };
+                collectionName = 'players';
+            } else {
+                extraData = { type: 'user' };
+            }
+
+            try {
+                // Create user document in specific collection
+                await setDoc(doc(db, collectionName, user.uid), {
+                    username: user.displayName || user.email?.split('@')[0] || 'User',
+                    email: user.email,
+                    role: type,
+                    photoURL: user.photoURL || null,
+                    provider: user.providerData[0]?.providerId || 'unknown',
+                    createdAt: new Date().toISOString(),
+                    ...extraData
+                });
+
+                // Create general user document
+                await setDoc(doc(db, "users", user.uid), {
+                    username: user.displayName || user.email?.split('@')[0] || 'User',
+                    email: user.email,
+                    role: type,
+                    type: type,
+                    photoURL: user.photoURL || null,
+                    provider: user.providerData[0]?.providerId || 'unknown',
+                    createdAt: new Date().toISOString()
+                });
+
+                // Create wallet
+                await setDoc(doc(db, "wallets", user.uid), {
+                    balance: 0,
+                    userId: user.uid,
+                    username: user.displayName || user.email?.split('@')[0] || 'User',
+                    createdAt: new Date().toISOString()
+                });
+
+                alert(`✅ สมัครสมาชิกเป็น ${type.toUpperCase()} สำเร็จ!`);
+                closeSocialAccountModal();
+                
+            } catch (err) {
+                console.error("Error creating social user:", err);
+                alert("❌ เกิดข้อผิดพลาด: " + err.message);
+            }
+        };
+
+        window.closeSocialAccountModal = () => {
+            document.getElementById('socialAccountModal').style.display = 'none';
+            if (!userData) {
+                // If user hasn't completed registration, sign them out
+                signOut(auth);
+            }
+        };
+
+        window.openAuthModal = () => {
+            // Check lockout before opening
+            const lockoutEnd = localStorage.getItem('lockoutEnd');
+            if (lockoutEnd && Date.now() < parseInt(lockoutEnd)) {
+                document.getElementById('authModal').style.display = 'flex';
+                showLockoutMessage(parseInt(lockoutEnd) - Date.now());
+            } else {
+                document.getElementById('authModal').style.display = 'flex';
+                if (isRegistering) toggleAuthMode();
+            }
+        };
+        
+        window.closeAuthModal = () => {
+            document.getElementById('authModal').style.display = 'none';
+            // Reset form
+            document.getElementById('authForm').reset();
+            document.getElementById('password').classList.remove('error');
+        };
+        
+        window.toggleProfile = () => {
+            const menu = document.getElementById('profileMenu');
+            if (menu) menu.classList.toggle('active');
+        };
+
+        window.openTopupModal = () => {
+            if (!currentUser) {
+                openAuthModal();
+                return;
+            }
+            document.getElementById('topupModal').style.display = 'flex';
+            backToTopupStep1();
+            loadWalletHistory();
+        };
+
+        window.closeTopupModal = () => {
+            document.getElementById('topupModal').style.display = 'none';
+        };
+
+        window.selectTopupAmount = (amount, btnElement) => {
+            selectedTopupAmount = amount;
+            
+            if (amount >= 5000) topupBonus = 500;
+            else if (amount >= 2000) topupBonus = 150;
+            else if (amount >= 1000) topupBonus = 60;
+            else if (amount >= 500) topupBonus = 25;
+            else if (amount >= 300) topupBonus = 10;
+            else topupBonus = 0;
+            
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+            btnElement.classList.add('selected');
+            document.getElementById('customTopupAmount').value = '';
+        };
+
+        window.clearAmountSelection = () => {
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+            selectedTopupAmount = 0;
+            topupBonus = 0;
+        };
+
+        window.goToTopupPayment = () => {
+            const customAmount = parseInt(document.getElementById('customTopupAmount').value) || 0;
+            const finalAmount = customAmount > 0 ? customAmount : selectedTopupAmount;
+            
+            if (finalAmount < 50) {
+                alert("กรุณาเลือกหรือระบุจำนวนเงินอย่างน้อย 50 บาท");
+                return;
+            }
+            
+            selectedTopupAmount = finalAmount;
+            
+            document.getElementById('topupAmountDisplay').innerText = selectedTopupAmount.toLocaleString();
+            
+            if (topupBonus > 0) {
+                document.getElementById('bonusDisplay').style.display = 'block';
+                document.getElementById('bonusAmount').innerText = topupBonus.toLocaleString();
+            } else {
+                document.getElementById('bonusDisplay').style.display = 'none';
+            }
+            
+            document.getElementById('topupStep1').style.display = 'none';
+            document.getElementById('topupStep2').style.display = 'block';
+            
+            verifiedTopupSlipData = null;
+            document.getElementById('topupVerifyStatus').style.display = 'none';
+            document.getElementById('btnConfirmTopup').disabled = true;
+            document.getElementById('btnConfirmTopup').style.opacity = '0.4';
+            document.getElementById('topupSlipInput').value = '';
+            document.getElementById('topupSlipPreview').style.display = 'none';
+        };
+
+        window.backToTopupStep1 = () => {
+            document.getElementById('topupStep1').style.display = 'block';
+            document.getElementById('topupStep2').style.display = 'none';
+        };
+
+        window.previewTopupSlip = async () => {
+            const file = document.getElementById('topupSlipInput').files[0];
+            const img = document.getElementById('topupSlipPreview');
+            const verifyStatus = document.getElementById('topupVerifyStatus');
+            const confirmBtn = document.getElementById('btnConfirmTopup');
+            
+            if(!file) return;
+            
+            // Reset state
+            img.src = URL.createObjectURL(file);
+            img.style.display = 'block';
+            verifiedTopupSlipData = null;
+            confirmBtn.disabled = true;
+            confirmBtn.style.opacity = '0.4';
+            confirmBtn.style.cursor = 'not-allowed';
+            
+            verifyStatus.style.display = 'block';
+            verifyStatus.innerHTML = '<div style="color: var(--mist-white); font-weight: 600; padding: 12px; text-align: center; background:var(--ghost-white); border-radius:var(--border-radius-sm); border:1px solid var(--glass-border);"><i class="fa-solid fa-circle-notch fa-spin" style="margin-right:8px;"></i> กำลังตรวจสอบความปลอดภัย...</div>';
+            
+            try {
+                // ดึง API Key จาก Firebase
+                const apiKey = await getEasySlipApiKey();
+                if (!apiKey) {
+                    throw new Error('ไม่สามารถเชื่อมต่อระบบตรวจสอบสลิปได้ กรุณาลองใหม่อีกครั้ง');
+                }
+                
+                // ส่งตรวจสอบไปยัง EasySlip
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                const response = await fetch('https://developer.easyslip.com/api/v1/verify', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + apiKey
+                    },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    if (response.status === 400 && data.message === "duplicate_slip") {
+                        throw new Error('สลิปนี้ถูกใช้งานในระบบ EasySlip แล้ว (สลิปซ้ำ)');
+                    }
+                    throw new Error(data.message || `เกิดข้อผิดพลาด: ${response.status}`);
+                }
+                
+                if (!data.data) {
+                    throw new Error('ไม่พบข้อมูลในสลิป กรุณาอัปโหลดสลิปที่ชัดเจน');
+                }
+                
+                const slipData = data.data;
+                
+                // ดึงข้อมูลสำคัญ
+                const transRef = slipData.transRef || slipData.transactionId || slipData.reference;
+                const amount = parseFloat(slipData.amount?.amount || slipData.amount || 0);
+                const receiverName = slipData.receiver?.account?.name?.th || 
+                                    slipData.receiver?.displayName || 
+                                    slipData.receiver?.name || '';
+                const senderName = slipData.sender?.account?.name?.th || 
+                                  slipData.sender?.displayName || 
+                                  slipData.sender?.name || '';
+                
+                // 1. ตรวจสอบความถูกต้องของสลิปก่อน (Anti-Fake)
+                verifyStatus.innerHTML = '<div style="color: var(--mist-white); font-weight: 600; padding: 12px; text-align: center; background:var(--ghost-white); border-radius:var(--border-radius-sm); border:1px solid var(--glass-border);"><i class="fa-solid fa-shield-halved" style="margin-right:8px;"></i> กำลังตรวจสอบความถูกต้องของสลิป...</div>';
+                
+                const authenticity = validateSlipAuthenticity(slipData);
+                if (!authenticity.isValid) {
+                    throw new Error(`ตรวจพบข้อผิดพลาด: ${authenticity.errors.join(', ')}`);
+                }
+                
+                // 2. ตรวจสอบสลิปซ้ำ (Anti-Duplicate)
+                verifyStatus.innerHTML = '<div style="color: var(--mist-white); font-weight: 600; padding: 12px; text-align: center; background:var(--ghost-white); border-radius:var(--border-radius-sm); border:1px solid var(--glass-border);"><i class="fa-solid fa-database" style="margin-right:8px;"></i> กำลังตรวจสอบประวัติการใช้งาน...</div>';
+                
+                const duplicateCheck = await checkDuplicateSlip(transRef, amount, senderName);
+                if (duplicateCheck.isDuplicate) {
+                    let errorMsg = 'สลิปนี้ถูกใช้งานแล้ว';
+                    if (duplicateCheck.reason === 'duplicate_trans_ref') {
+                        errorMsg = `สลิปนี้ถูกใช้เติมเงินแล้วเมื่อ ${new Date(duplicateCheck.existingTimestamp).toLocaleString('th-TH')}`;
+                    } else if (duplicateCheck.reason === 'suspicious_pattern') {
+                        errorMsg = `พบรายการคล้ายกันภายใน 5 นาทีที่ผ่านมา (${duplicateCheck.message})`;
+                    }
+                    throw new Error(errorMsg);
+                }
+                
+                // 3. ตรวจสอบชื่อผู้รับ
+                if (!isValidReceiverName(receiverName)) {
+                    throw new Error(`ชื่อบัญชีผู้รับไม่ตรงตามที่กำหนด (พบ: ${receiverName})`);
+                }
+                
+                // 4. ตรวจสอบจำนวนเงิน
+                if (amount !== selectedTopupAmount) {
+                    throw new Error(`ยอดเงินไม่ตรงกับที่เลือก (ต้องการ: ${selectedTopupAmount} บาท, พบในสลิป: ${amount} บาท)`);
+                }
+                
+                // ผ่านทุกการตรวจสอบ
+                verifiedTopupSlipData = {
+                    ...slipData,
+                    transRef: transRef || `MANUAL-${Date.now()}`,
+                    verifiedAt: new Date().toISOString(),
+                    verificationMethod: 'easyslip_api'
+                };
+                
+                verifyStatus.innerHTML = `
+                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 16px; border-radius: var(--border-radius-sm); animation: slideDown 0.3s ease;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                            <i class="fa-solid fa-shield-check" style="font-size:1.2rem;"></i>
+                            <b>ตรวจสอบสำเร็จ - สลิปถูกต้อง</b>
+                        </div>
+                        <div style="font-size:0.85rem; opacity:0.9; line-height:1.5;">
+                            <div><i class="fa-solid fa-user-check" style="width:20px;"></i> ผู้รับ: ${receiverName}</div>
+                            <div><i class="fa-solid fa-baht-sign" style="width:20px;"></i> ยอด: ${amount.toLocaleString()} บาท</div>
+                            <div><i class="fa-solid fa-hashtag" style="width:20px;"></i> เลขอ้างอิง: ${transRef.substring(0, 20)}...</div>
+                            <div><i class="fa-solid fa-clock" style="width:20px;"></i> เวลา: ${new Date(slipData.transDate || Date.now()).toLocaleString('th-TH')}</div>
+                        </div>
+                    </div>
+                `;
+                
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+                confirmBtn.style.cursor = 'pointer';
+                
+            } catch (error) {
+                console.error('Verify error:', error);
+                verifiedTopupSlipData = null;
+                
+                verifyStatus.innerHTML = `
+                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 16px; border-radius: var(--border-radius-sm); animation: shake 0.5s ease;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                            <i class="fa-solid fa-triangle-exclamation" style="font-size:1.2rem;"></i>
+                            <b>ตรวจสอบไม่ผ่าน</b>
+                        </div>
+                        <div style="font-size:0.85rem; opacity:0.9;">
+                            ${error.message}
+                        </div>
+                        <div style="font-size:0.75rem; margin-top:8px; opacity:0.7; border-top:1px solid rgba(239,68,68,0.3); padding-top:8px;">
+                            หากคุณคิดว่านี่เป็นข้อผิดพลาด กรุณาติดต่อแอดมิน
+                        </div>
+                    </div>
+                `;
+                
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.4';
+                confirmBtn.style.cursor = 'not-allowed';
+            }
+        };
+
+        window.confirmTopup = async () => {
+            const btn = document.getElementById('btnConfirmTopup');
+            
+            if (!verifiedTopupSlipData) {
+                alert("กรุณาอัปโหลดสลิปที่ถูกต้องก่อน");
+                return;
+            }
+            
+            // Double-check อีกครั้งว่าไม่ซ้ำ (กรณีมีการ submit พร้อมกัน)
+            const duplicateCheck = await checkDuplicateSlip(
+                verifiedTopupSlipData.transRef,
+                verifiedTopupSlipData.amount?.amount || verifiedTopupSlipData.amount,
+                verifiedTopupSlipData.sender?.account?.name?.th || 'Unknown'
+            );
+            
+            if (duplicateCheck.isDuplicate) {
+                alert("ตรวจพบว่าสลิปนี้ถูกใช้งานไปแล้วในระบบ กรุณาใช้สลิปใหม่");
+                return;
+            }
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังดำเนินการ...';
+            btn.disabled = true;
+
+            try {
+                const totalAmount = selectedTopupAmount + topupBonus;
+                const username = getUsername();
+                const transRef = verifiedTopupSlipData.transRef;
+                
+                await addDoc(collection(db, "transactions"), {
+                    userId: currentUser.uid,
+                    username: username,
+                    type: 'topup',
+                    amount: selectedTopupAmount,
+                    bonus: topupBonus,
+                    totalAmount: totalAmount,
+                    paymentReference: transRef,
+                    receiverName: verifiedTopupSlipData.receiver?.account?.name?.th || 'N/A',
+                    senderName: verifiedTopupSlipData.sender?.account?.name?.th || 'N/A',
+                    senderBank: verifiedTopupSlipData.sendingBankId || 'Unknown',
+                    transDate: verifiedTopupSlipData.transDate || new Date().toISOString(),
+                    slipData: {
+                        transRef: transRef,
+                        amount: verifiedTopupSlipData.amount,
+                        receiverName: verifiedTopupSlipData.receiver?.account?.name?.th,
+                        senderName: verifiedTopupSlipData.sender?.account?.name?.th,
+                        sendingBankId: verifiedTopupSlipData.sendingBankId
+                    },
+                    description: `เติมเงิน ${selectedTopupAmount.toLocaleString()} บาท` + (topupBonus > 0 ? ` (โบนัส ${topupBonus})` : ''),
+                    status: 'completed',
+                    timestamp: new Date().toISOString(),
+                    verifiedAt: verifiedTopupSlipData.verifiedAt || new Date().toISOString(),
+                    ipAddress: 'client-side',
+                    userAgent: navigator.userAgent
+                });
+                
+                const walletRef = doc(db, "wallets", currentUser.uid);
+                const walletDoc = await getDoc(walletRef);
+                
+                if (walletDoc.exists()) {
+                    await updateDoc(walletRef, {
+                        balance: increment(totalAmount),
+                        lastTopup: new Date().toISOString(),
+                        lastTopupAmount: totalAmount
+                    });
+                } else {
+                    await setDoc(walletRef, {
+                        balance: totalAmount,
+                        userId: currentUser.uid,
+                        username: username,
+                        lastTopup: new Date().toISOString(),
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                
+                userBalance += totalAmount;
+                document.getElementById('balanceAmount').innerText = userBalance.toLocaleString();
+                
+                alert(`✅ เติมเงินสำเร็จ! ได้รับ ${totalAmount.toLocaleString()} บาท`);
+                verifiedTopupSlipData = null;
+                closeTopupModal();
+                backToTopupStep1();
+                
+            } catch (error) {
+                console.error("Topup error:", error);
+                
+                if (error.message && error.message.includes('permission-denied')) {
+                    alert("❌ เกิดข้อผิดพลาดด้านความปลอดภัย กรุณารีเฟรชหน้าแล้วลองใหม่");
+                } else {
+                    alert("❌ เกิดข้อผิดพลาด: " + error.message);
+                }
+                
+                btn.disabled = false;
+                btn.innerHTML = 'ยืนยันการเติมเงิน';
+            }
+        };
+
+        async function loadUserBalance() {
+            if (!currentUser) return;
+            try {
+                const walletDoc = await getDoc(doc(db, "wallets", currentUser.uid));
+                userBalance = walletDoc.exists() ? (walletDoc.data().balance || 0) : 0;
+                document.getElementById('balanceAmount').innerText = userBalance.toLocaleString();
+            } catch (e) {
+                console.error("Load balance error:", e);
+            }
+        }
+
+        async function loadWalletHistory() {
+            if (!currentUser) return;
+            try {
+                const q = query(collection(db, "transactions"), where("userId", "==", currentUser.uid), orderBy("timestamp", "desc"), limit(5));
+                const snapshot = await getDocs(q);
+                // ... implementation ...
+            } catch (e) {
+                console.error("Load history error:", e);
+            }
+        }
+
+        window.selectAccountType = (type, element) => {
+            selectedAccountType = type;
+            document.querySelectorAll('.type-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            updateDynamicFields(type);
+        };
+
+        function updateDynamicFields(type) {
+            const container = document.getElementById('dynamicFields');
+            container.innerHTML = '';
+            
+            if (type === 'club') {
+                container.innerHTML = `<input type="text" id="clubName" class="input-field" placeholder="ชื่อสังกัด (Club Name)" required><input type="text" id="orgTag" class="input-field" placeholder="แท็กสั้นๆ (เช่น PSL)" required>`;
+            } else if (type === 'team') {
+                container.innerHTML = `<input type="text" id="teamName" class="input-field" placeholder="ชื่อทีม (Team Name)" required><input type="text" id="teamTag" class="input-field" placeholder="แท็กทีม (Tag)" required><select id="teamGame" class="input-field" style="margin-bottom:10px; background:var(--deep-black);"><option value="">เลือกเกมหลัก</option><option value="RoV">RoV</option><option value="MLBB">MLBB</option><option value="PUBG">PUBG Mobile</option><option value="VALORANT">VALORANT</option><option value="FC25">FC 25</option></select>`;
+            } else if (type === 'player') {
+                container.innerHTML = `<input type="text" id="playerIGN" class="input-field" placeholder="In-Game Name (IGN)" required><input type="text" id="playerUID" class="input-field" placeholder="Game UID (ถ้ามี)"><select id="playerGame" class="input-field" style="margin-bottom:10px; background:var(--deep-black);"><option value="">เลือกเกมหลัก</option><option value="RoV">RoV</option><option value="MLBB">MLBB</option><option value="PUBG">PUBG Mobile</option><option value="VALORANT">VALORANT</option><option value="FC25">FC 25</option></select>`;
+            }
+        }
+
+        window.toggleAuthMode = () => {
+            isRegistering = !isRegistering;
+            const title = document.getElementById('authTitle');
+            const btn = document.getElementById('authBtn');
+            const toggleText = document.getElementById('toggleText');
+            const toggleLink = document.getElementById('toggleLink');
+            const typeSection = document.getElementById('accountTypeSection');
+            const subtitle = document.getElementById('authSubtitle');
+            const strengthDiv = document.getElementById('passwordStrength');
+            const reqDiv = document.getElementById('passwordRequirements');
+            const securityWarn = document.getElementById('securityWarning');
+
+            if (isRegistering) {
+                title.innerText = "REGISTER";
+                btn.innerText = "สมัครสมาชิก";
+                toggleText.innerText = "มีบัญชีอยู่แล้ว?";
+                toggleLink.innerText = "เข้าสู่ระบบ";
+                typeSection.style.display = 'block';
+                subtitle.innerText = "เลือกประเภทบัญชีและกรอกข้อมูล";
+                strengthDiv.style.display = 'block';
+                reqDiv.style.display = 'block';
+                securityWarn.classList.remove('active');
+                selectedAccountType = 'user';
+                document.querySelectorAll('.type-card').forEach(card => {
+                    card.classList.remove('selected');
+                    if (card.dataset.type === 'user') card.classList.add('selected');
+                });
+                updateDynamicFields('user');
+            } else {
+                title.innerText = "LOGIN";
+                btn.innerText = "เข้าสู่ระบบ";
+                toggleText.innerText = "ยังไม่มีบัญชี?";
+                toggleLink.innerText = "สมัครสมาชิก";
+                typeSection.style.display = 'none';
+                subtitle.innerText = "เข้าสู่ระบบเพื่อใช้งาน";
+                strengthDiv.style.display = 'none';
+                reqDiv.style.display = 'none';
+                document.getElementById('dynamicFields').innerHTML = '';
+                updateSecurityWarning();
+            }
+        };
+
+        window.handleAuth = async (e) => {
+            e.preventDefault();
+            
+            // Check lockout
+            const lockoutEnd = localStorage.getItem('lockoutEnd');
+            if (lockoutEnd && Date.now() < parseInt(lockoutEnd)) {
+                alert("บัญชีถูกล็อกชั่วคราว กรุณารอให้ครบกำหนดเวลา");
+                return;
+            }
+            
+            const btn = document.getElementById('authBtn');
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+
+            if (!user || !pass) {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน");
+                return;
+            }
+
+            // Validate username format
+            if (!/^[a-zA-Z0-9_-]+$/.test(user)) {
+                alert("Username ต้องประกอบด้วยตัวอักษรภาษาอังกฤษ ตัวเลข เครื่องหมาย - หรือ _ เท่านั้น");
+                return;
+            }
+
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังดำเนินการ...';
+            btn.disabled = true;
+
+            try {
+                const fakeEmail = `${user}@psl.com`;
+                
+                if (isRegistering) {
+                    // Validate password strength
+                    if (!validatePassword(pass)) {
+                        throw new Error("รหัสผ่านไม่ตรงตามความปลอดภัยที่กำหนด กรุณาตรวจสอบเงื่อนไขด้านบน");
+                    }
+                    
+                    // Check if username exists
+                    const usernameExists = await checkUsernameExists(user);
+                    if (usernameExists) {
+                        throw new Error("Username นี้ถูกใช้งานแล้ว กรุณาใช้ชื่ออื่น");
+                    }
+                    
+                    let extraData = {};
+                    let collectionName = 'users';
+                    
+                    if (selectedAccountType === 'club') {
+                        const clubName = document.getElementById('clubName').value.trim();
+                        const orgTag = document.getElementById('orgTag').value.trim();
+                        if (!clubName || !orgTag) throw new Error("กรุณากรอกชื่อสังกัดและแท็ก");
+                        extraData = { clubName, tag: orgTag, type: 'club' };
+                        collectionName = 'clubs';
+                    } else if (selectedAccountType === 'team') {
+                        const teamName = document.getElementById('teamName').value.trim();
+                        const teamTag = document.getElementById('teamTag').value.trim();
+                        const game = document.getElementById('teamGame').value;
+                        if (!teamName || !teamTag) throw new Error("กรุณากรอกชื่อทีมและแท็ก");
+                        extraData = { teamName, tag: teamTag, game, type: 'team' };
+                        collectionName = 'teams';
+                    } else if (selectedAccountType === 'player') {
+                        const ign = document.getElementById('playerIGN').value.trim();
+                        const uid = document.getElementById('playerUID').value.trim();
+                        const game = document.getElementById('playerGame').value;
+                        if (!ign) throw new Error("กรุณากรอก In-Game Name");
+                        extraData = { ign, gameUid: uid, game, type: 'player' };
+                        collectionName = 'players';
+                    } else {
+                        extraData = { type: 'user' };
+                    }
+
+                    const cred = await createUserWithEmailAndPassword(auth, fakeEmail, pass);
+                    
+                    await setDoc(doc(db, collectionName, cred.user.uid), {
+                        username: user,
+                        email: fakeEmail,
+                        role: selectedAccountType,
+                        createdAt: new Date().toISOString(),
+                        ...extraData
+                    });
+
+                    await setDoc(doc(db, "users", cred.user.uid), {
+                        username: user,
+                        email: fakeEmail,
+                        role: selectedAccountType,
+                        type: selectedAccountType,
+                        createdAt: new Date().toISOString()
+                    });
+
+                    await setDoc(doc(db, "wallets", cred.user.uid), {
+                        balance: 0,
+                        userId: cred.user.uid,
+                        username: user,
+                        createdAt: new Date().toISOString()
+                    });
+
+                    alert(`✅ สมัครสมาชิกเป็น ${selectedAccountType.toUpperCase()} สำเร็จ!`);
+                    window.location.reload();
+                    
+                } else {
+                    // Login Mode
+                    try {
+                        await signInWithEmailAndPassword(auth, fakeEmail, pass);
+                        // Success - reset attempts
+                        loginAttempts = 0;
+                        sessionStorage.removeItem('loginAttempts');
+                        closeAuthModal();
+                    } catch (loginError) {
+                        incrementLoginAttempts();
+                        throw loginError;
+                    }
+                }
+                
+            } catch (err) {
+                let errorMsg = err.message;
+                if (errorMsg.includes("auth/email-already-in-use")) errorMsg = "Username นี้ถูกใช้งานแล้ว";
+                if (errorMsg.includes("auth/invalid-credential")) errorMsg = "Username หรือ Password ไม่ถูกต้อง";
+                if (errorMsg.includes("auth/weak-password")) errorMsg = "Password ต้องมีอย่างน้อย 6 ตัวอักษร";
+                if (errorMsg.includes("auth/too-many-requests")) {
+                    errorMsg = "มีการพยายามเข้าสู่ระบบหลายครั้ง กรุณารอสักครู่";
+                    const lockoutEnd = Date.now() + LOCKOUT_DURATION;
+                    localStorage.setItem('lockoutEnd', lockoutEnd.toString());
+                    showLockoutMessage(LOCKOUT_DURATION);
+                }
+                
+                // Add shake effect to password field
+                const passField = document.getElementById('password');
+                passField.classList.add('error');
+                setTimeout(() => passField.classList.remove('error'), 500);
+                
+                alert("❌ " + errorMsg);
+            } finally {
+                btn.innerHTML = isRegistering ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
+                btn.disabled = false;
+            }
+        };
+
+        window.logout = () => { 
+            if(confirm("ออกจากระบบ?")) signOut(auth).then(() => location.reload()); 
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            const nav = document.getElementById('navAuth');
+            
+            if (user) {
+                currentUser = user;
+                userData = { 
+                    username: user.email ? user.email.split('@')[0] : "User",
+                    role: 'user'
+                };
+                
+                let tempName = userData.username;
+                let tempImg = user.photoURL || `https://placehold.co/50/111/fff?text=${tempName.charAt(0)}`;
+                let userRole = 'user';
+                let isAdmin = false;
+                
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        const data = userDoc.data();
+                        userData = { ...userData, ...data };
+                        userRole = data.role || 'user';
+                        isAdmin = data.role === 'admin';
+                        tempName = data.username || tempName;
+                        if (data.clubName) tempName = data.clubName;
+                        if (data.teamName) tempName = data.teamName;
+                        if (data.ign) tempName = data.ign;
+                        if (data.photoURL) tempImg = data.photoURL;
+                    }
+                } catch(e) { 
+                    console.log("Error loading user data:", e); 
+                }
+
+                document.getElementById('walletSection').style.display = 'flex';
+                await loadUserBalance();
+                
+                renderMenu(tempName, tempImg, userRole, isAdmin);
+            } else {
+                currentUser = null;
+                userData = null;
+                document.getElementById('walletSection').style.display = 'none';
+                nav.innerHTML = `<button onclick="openAuthModal()" style="padding:12px 28px; background:var(--pure-white); color:var(--pure-black); border:none; border-radius:var(--border-radius-sm); font-weight:700; cursor:pointer; font-family:var(--font-display); letter-spacing:1px; font-size:0.8rem; transition:all 0.3s;">LOGIN</button>`;
+            }
+        });
+
+        function renderMenu(name, img, role, isAdmin = false) {
+            const nav = document.getElementById('navAuth');
+            let manageLink = 'manager.html';
+            if (role === 'club') manageLink = 'manager.html?type=club';
+            else if (role === 'team') manageLink = 'manager.html?type=team';
+            
+            // Build menu items
+            let menuItems = `
+                <div class="menu-item" onclick="location.href='profile.html'"><i class="fa-solid fa-address-card"></i> โปรไฟล์</div>
+                <div class="menu-item" onclick="location.href='${manageLink}'"><i class="fa-solid fa-users-gear"></i> จัดการทีม/สังกัด</div>
+            `;
+            
+            // Add Admin Panel button if user is admin
+            if (isAdmin) {
+                menuItems += `
+                    <div class="menu-item admin" onclick="location.href='admin.html'">
+                        <i class="fa-solid fa-user-shield"></i> 
+                        <span>Admin Panel</span>
+                        <i class="fa-solid fa-crown" style="margin-left:auto; color:var(--pure-white); font-size:0.7rem;"></i>
+                    </div>
+                `;
+            }
+            
+            menuItems += `<div class="menu-item" onclick="logout()" style="color:#ef4444;"><i class="fa-solid fa-right-from-bracket"></i> ออกจากระบบ</div>`;
+            
+            nav.innerHTML = `
+                <div class="profile-wrapper">
+                    <div class="profile-btn" onclick="toggleProfile()">
+                        <img src="${img}" onerror="this.src='https://placehold.co/50/111/fff'">
+                    </div>
+                    <div class="profile-dropdown" id="profileMenu">
+                        <div class="menu-header">
+                            <b style="font-size:1.1rem; letter-spacing:1px;">${name}</b><br>
+                            <span style="font-size:0.75rem; text-transform:uppercase;">${role}${isAdmin ? ' • Admin' : ''}</span>
+                        </div>
+                        ${menuItems}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function fetchContent() {
+            try {
+                const tourSnap = await getDocs(collection(db, "tournaments"));
+                let totalPrize = 0;
+                tourSnap.forEach(doc => {
+                    const t = doc.data();
+                    let val = parseInt((t.prize || "0").toString().replace(/[^0-9]/g, ''));
+                    totalPrize += isNaN(val) ? 0 : val;
+                });
+                if(totalPrize === 0 && tourSnap.empty) totalPrize = 15000;
+
+                const [teamSnap, clubSnap] = await Promise.all([getDocs(collection(db, "teams")), getDocs(collection(db, "clubs"))]);
+                allTeams = [];
+                
+                teamSnap.forEach(doc => {
+                    const d = doc.data();
+                    allTeams.push({ 
+                        id: doc.id, 
+                        ...d, 
+                        points: d.clubPoints || 0,
+                        money: d.totalEarnings || 0,
+                        role: 'team'
+                    });
+                });
+                
+                clubSnap.forEach(doc => {
+                    const d = doc.data();
+                    allTeams.push({ 
+                        id: doc.id, 
+                        ...d, 
+                        points: d.clubPoints || 0,
+                        money: d.totalEarnings || 0,
+                        role: 'club',
+                        teamName: d.clubName || d.teamName
+                    });
+                });
+
+                document.getElementById('uiPrize').innerText = totalPrize.toLocaleString();
+                document.getElementById('uiTeams').innerText = allTeams.length;
+                document.getElementById('uiMatches').innerText = "150+";
+
+                window.switchRank('club');
+
+            } catch (e) { console.error(e); }
+        }
+
+        window.switchRank = (type) => {
+            const list = document.getElementById('rankList');
+            const title = document.getElementById('rankTitle');
+            
+            document.getElementById('tabClub').classList.remove('active');
+            document.getElementById('tabMoney').classList.remove('active');
+            
+            let sortedList = [];
+            list.innerHTML = '';
+
+            if(type === 'club') {
+                document.getElementById('tabClub').classList.add('active');
+                title.innerHTML = '<i class="fa-solid fa-ranking-star" style="color:var(--pure-white); text-shadow:0 0 10px rgba(255,255,255,0.3);"></i> CLUB RANKING';
+                sortedList = allTeams.filter(t => t.role === 'club' || t.type === 'club').sort((a,b) => b.points - a.points);
+            } else {
+                document.getElementById('tabMoney').classList.add('active');
+                title.innerHTML = '<i class="fa-solid fa-trophy" style="color:var(--pure-white);"></i> PRIZE LEADERBOARD';
+                sortedList = allTeams.sort((a,b) => b.money - a.money);
+            }
+
+            if(sortedList.length === 0) {
+                list.innerHTML = '<li style="text-align:center; padding:20px; color:var(--mist-white);">ไม่มีข้อมูล</li>';
+                return;
+            }
+
+            sortedList.slice(0, 10).forEach((t, i) => {
+                const valueDisplay = type === 'club' ? t.points : `<span style="color: #10b981;">฿${t.money.toLocaleString()}</span>`;
+                const img = t.logo || t.avatar || 'https://placehold.co/50/111/fff';
+
+                list.innerHTML += `
+                    <li class="rank-item animate__animated animate__fadeInRight" style="animation-delay:${i*0.05}s">
+                        <div class="r-num ${i<3?'top':''}">${i+1}</div>
+                        <div class="r-info">
+                            <img src="${img}" class="r-img">
+                            <div>
+                                <a href="team.html?id=${t.id}" style="font-weight:600; color:var(--pure-white); display:block; text-decoration:none; letter-spacing:0.5px;">
+                                    ${t.teamName || t.username || 'Unknown'}
+                                </a>
+                                <span style="font-size:0.75rem; color:var(--mist-white); text-transform:uppercase; letter-spacing:1px;">${t.role || t.type || 'Team'}</span>
+                            </div>
+                        </div>
+                        <div class="r-pts">${valueDisplay}</div>
+                    </li>
+                `;
+            });
+        };
+
+        document.addEventListener('click', (e) => {
+            const profileWrapper = document.querySelector('.profile-wrapper');
+            const menu = document.getElementById('profileMenu');
+            if (profileWrapper && !profileWrapper.contains(e.target) && menu) {
+                menu.classList.remove('active');
+            }
+            if (e.target.id === 'topupModal') {
+                closeTopupModal();
+            }
+            if (e.target.id === 'authModal') {
+                closeAuthModal();
+            }
+            if (e.target.id === 'socialAccountModal') {
+                closeSocialAccountModal();
+            }
+        });
+
+        // Initialize Security Check on Load
+        function initSecurity() {
+            const lockoutEnd = localStorage.getItem('lockoutEnd');
+            if (lockoutEnd) {
+                const now = Date.now();
+                if (now < parseInt(lockoutEnd)) {
+                    showLockoutMessage(parseInt(lockoutEnd) - now);
+                } else {
+                    clearLockout();
+                }
+            }
+            
+            // Load login attempts from session
+            const savedAttempts = sessionStorage.getItem('loginAttempts');
+            if (savedAttempts) {
+                loginAttempts = parseInt(savedAttempts);
+                updateSecurityWarning();
+            }
+            
+            // แสดงคำเตือนถ้าไม่มี Backend
+            if (!USE_BACKEND) {
+                const warning = document.getElementById('backendWarning');
+                if (warning) warning.classList.add('active');
+            }
+        }
+
+        function showLockoutMessage(remainingTime) {
+            const lockoutDiv = document.getElementById('lockoutMessage');
+            const socialSection = document.getElementById('socialLoginSection');
+            const authForm = document.getElementById('authForm');
+            const toggleLink = document.getElementById('toggleLink');
+            
+            lockoutDiv.classList.add('active');
+            if (socialSection) socialSection.style.display = 'none';
+            authForm.style.display = 'none';
+            toggleLink.style.pointerEvents = 'none';
+            toggleLink.style.opacity = '0.4';
+            
+            updateCountdown(remainingTime);
+            
+            lockoutTimer = setInterval(() => {
+                remainingTime -= 1000;
+                if (remainingTime <= 0) {
+                    clearInterval(lockoutTimer);
+                    clearLockout();
+                } else {
+                    updateCountdown(remainingTime);
+                }
+            }, 1000);
+        }
+
+        function updateCountdown(remainingTime) {
+            const minutes = Math.floor(remainingTime / 60000);
+            const seconds = Math.floor((remainingTime % 60000) / 1000);
+            document.getElementById('lockoutCountdown').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function clearLockout() {
+            localStorage.removeItem('lockoutEnd');
+            sessionStorage.removeItem('loginAttempts');
+            loginAttempts = 0;
+            
+            const lockoutDiv = document.getElementById('lockoutMessage');
+            const socialSection = document.getElementById('socialLoginSection');
+            const authForm = document.getElementById('authForm');
+            const toggleLink = document.getElementById('toggleLink');
+            
+            lockoutDiv.classList.remove('active');
+            if (socialSection) socialSection.style.display = 'block';
+            authForm.style.display = 'block';
+            toggleLink.style.pointerEvents = 'auto';
+            toggleLink.style.opacity = '1';
+            
+            if (lockoutTimer) clearInterval(lockoutTimer);
+        }
+
+        function incrementLoginAttempts() {
+            loginAttempts++;
+            sessionStorage.setItem('loginAttempts', loginAttempts);
+            updateSecurityWarning();
+            
+            if (loginAttempts >= MAX_LOGIN_ATTEMPTS) {
+                const lockoutEnd = Date.now() + LOCKOUT_DURATION;
+                localStorage.setItem('lockoutEnd', lockoutEnd.toString());
+                showLockoutMessage(LOCKOUT_DURATION);
+            }
+        }
+
+        function updateSecurityWarning() {
+            const warning = document.getElementById('securityWarning');
+            const warningText = document.getElementById('warningText');
+            const remaining = MAX_LOGIN_ATTEMPTS - loginAttempts;
+            
+            if (isRegistering) {
+                warning.classList.remove('active');
+                return;
+            }
+            
+            if (remaining <= 3 && remaining > 0) {
+                warning.classList.add('active');
+                warningText.textContent = `เหลืออีก ${remaining} ครั้งในการพยายามเข้าสู่ระบบ ก่อนถูกล็อก 15 นาที`;
+            } else if (remaining <= 0) {
+                warning.classList.add('active');
+                warningText.textContent = 'บัญชีถูกล็อกชั่วคราว กรุณารอ 15 นาที';
+            } else {
+                warning.classList.remove('active');
+            }
+        }
+
+        // Password Security Functions
+        function checkPasswordStrength(password) {
+            if (!isRegistering) return;
+            
+            const requirements = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+            };
+            
+            // Update requirement indicators
+            updateReqIndicator('req-length', requirements.length);
+            updateReqIndicator('req-upper', requirements.upper);
+            updateReqIndicator('req-lower', requirements.lower);
+            updateReqIndicator('req-number', requirements.number);
+            updateReqIndicator('req-special', requirements.special);
+            
+            // Calculate strength
+            const metCount = Object.values(requirements).filter(Boolean).length;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthLabel = document.getElementById('strengthLabel');
+            const strengthText = document.getElementById('strengthText');
+            
+            strengthFill.className = 'strength-fill';
+            strengthText.className = 'strength-text';
+            
+            if (password.length === 0) {
+                strengthFill.style.width = '0%';
+                strengthLabel.textContent = 'ไม่มี';
+            } else if (metCount <= 2) {
+                strengthFill.classList.add('weak');
+                strengthText.classList.add('weak');
+                strengthLabel.textContent = 'อ่อน';
+            } else if (metCount === 3) {
+                strengthFill.classList.add('fair');
+                strengthText.classList.add('fair');
+                strengthLabel.textContent = 'ปานกลาง';
+            } else if (metCount === 4) {
+                strengthFill.classList.add('good');
+                strengthText.classList.add('good');
+                strengthLabel.textContent = 'ดี';
+            } else if (metCount === 5) {
+                strengthFill.classList.add('strong');
+                strengthText.classList.add('strong');
+                strengthLabel.textContent = 'แข็งแกร่ง';
+            }
+        }
+
+        function updateReqIndicator(id, met) {
+            const el = document.getElementById(id);
+            if (met) {
+                el.classList.add('met');
+                el.querySelector('i').className = 'fa-solid fa-check-circle';
+            } else {
+                el.classList.remove('met');
+                el.querySelector('i').className = 'fa-solid fa-circle';
+            }
+        }
+
+        function validatePassword(password) {
+            const requirements = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+            };
+            
+            return Object.values(requirements).every(Boolean);
+        }
+
+        // Initialize security on load
+        initSecurity();
+        fetchContent();
+
+        // ============================================================
+        // EXPORT FUNCTIONS TO WINDOW OBJECT (แก้ปัญหาเรียกใช้ไม่ได้)
+        // ============================================================
+        window.checkPasswordStrength = checkPasswordStrength;
+        window.togglePasswordVisibility = togglePasswordVisibility;
+        window.selectAccountType = selectAccountType;
+        window.handleAuth = handleAuth;
+        window.toggleAuthMode = toggleAuthMode;
+        window.openAuthModal = openAuthModal;
+        window.closeAuthModal = closeAuthModal;
+        window.handleGoogleLogin = handleGoogleLogin;
+        window.handleFacebookLogin = handleFacebookLogin;
+        window.selectSocialAccountType = selectSocialAccountType;
+        window.confirmSocialAccountType = confirmSocialAccountType;
+        window.closeSocialAccountModal = closeSocialAccountModal;
+        window.logout = logout;
+        window.switchRank = switchRank;
+        window.toggleProfile = toggleProfile;
+        window.openTopupModal = openTopupModal;
+        window.closeTopupModal = closeTopupModal;
+        window.selectTopupAmount = selectTopupAmount;
+        window.clearAmountSelection = clearAmountSelection;
+        window.goToTopupPayment = goToTopupPayment;
+        window.backToTopupStep1 = backToTopupStep1;
+        window.previewTopupSlip = previewTopupSlip;
+        window.confirmTopup = confirmTopup;
+    </script>
+</body>
+</html>
