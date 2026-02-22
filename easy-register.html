@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>ลงทะเบียนแข่งขัน | PSL</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-cloud: #f0f4f8;
+            --bg-mist: #e6eef7;
+            --drop-shadow: rgba(100, 130, 180, 0.15);
+            --text-deep: #1a2b4a;
+            --text-ocean: #2c4a6e;
+            --text-mist: #5a7a9c;
+            --accent-blue: #4a90e2;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --accent-red: #ef4444;
+            --radius-lg: 32px;
+            --radius-md: 24px;
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Space Grotesk', 'Kanit', sans-serif;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { 
+            background: linear-gradient(180deg, var(--bg-cloud) 0%, var(--bg-mist) 100%);
+            font-family: var(--font-body);
+            color: var(--text-ocean);
+            min-height: 100vh;
+        }
+        
+        .navbar { 
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(30px);
+            padding: 16px 24px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            display: flex; 
+            align-items: center;
+            box-shadow: 0 15px 50px var(--drop-shadow);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            margin: 0 12px;
+            margin-top: 12px;
+        }
+        
+        .brand { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--text-deep); display: flex; align-items: center; gap: 12px; }
+        .brand-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent-blue), #357abd); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }
+        
+        .progress-bar { display: flex; justify-content: center; gap: 8px; margin: 20px auto; max-width: 400px; }
+        .progress-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(200, 220, 240, 0.5); transition: all 0.3s ease; }
+        .progress-dot.active { background: var(--accent-blue); width: 32px; border-radius: 6px; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        
+        .glass-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 50px var(--drop-shadow);
+        }
+        
+        .section-title { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; color: var(--text-deep); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .section-title i { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent-blue), #357abd); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1rem; }
+        
+        .tournament-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .tournament-card { background: rgba(255,255,255,0.7); border: 2px solid rgba(255,255,255,0.9); border-radius: var(--radius-md); padding: 20px; cursor: pointer; transition: all 0.3s ease; position: relative; }
+        .tournament-card:hover:not(.disabled) { transform: translateY(-4px); border-color: var(--accent-blue); }
+        .tournament-card.selected { border-color: var(--accent-blue); background: rgba(74, 144, 226, 0.08); }
+        .tournament-card.selected::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: 12px; right: 12px; width: 28px; height: 28px; background: var(--accent-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; }
+        .tournament-card.disabled { opacity: 0.5; cursor: not-allowed; }
+        .tournament-game-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; background: rgba(74, 144, 226, 0.15); color: var(--accent-blue); }
+        .tournament-name { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--text-deep); margin-bottom: 8px; }
+        .tournament-meta { font-size: 0.85rem; color: var(--text-mist); }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--text-deep); }
+        .form-input { width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.7); border: 2px solid rgba(255,255,255,0.9); border-radius: var(--radius-md); font-family: var(--font-body); color: var(--text-deep); font-size: 1rem; transition: all 0.3s ease; }
+        .form-input:focus { outline: none; border-color: var(--accent-blue); background: rgba(255,255,255,0.95); }
+        
+        .player-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+        .player-card { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9); border-radius: var(--radius-md); padding: 16px; position: relative; }
+        .player-number { position: absolute; top: -10px; left: 16px; background: linear-gradient(135deg, var(--accent-blue), #357abd); color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; }
+        .player-role { position: absolute; top: 12px; right: 12px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; }
+        .role-captain { background: linear-gradient(135deg, var(--accent-orange), #f59e0b); color: white; }
+        .role-sub { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+        
+        .btn { padding: 14px 28px; border-radius: var(--radius-md); font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: 1px; }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-blue), #357abd); color: white; box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3); }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-secondary { background: rgba(255,255,255,0.7); color: var(--text-ocean); border: 2px solid rgba(255,255,255,0.9); }
+        .btn-group { display: flex; gap: 12px; margin-top: 24px; }
+        .btn-group .btn { flex: 1; }
+        
+        .payment-amount { text-align: center; padding: 24px; background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(16, 185, 129, 0.1)); border-radius: var(--radius-md); margin-bottom: 24px; border: 2px dashed rgba(74, 144, 226, 0.3); }
+        .amount-label { font-size: 0.85rem; color: var(--text-mist); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .amount-value { font-family: var(--font-display); font-weight: 800; font-size: 2.5rem; background: linear-gradient(135deg, var(--accent-blue), var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        
+        .bank-info { background: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.9); border-radius: var(--radius-md); padding: 16px; margin-bottom: 24px; }
+        .bank-item { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; background: rgba(255,255,255,0.8); padding: 16px; border-radius: 12px; }
+        .bank-item:last-child { margin-bottom: 0; }
+        .bank-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; background: linear-gradient(135deg, #4a90e2, #357abd); flex-shrink: 0; }
+        .bank-icon.truewallet { background: linear-gradient(135deg, #ff8b00, #ff6b00); }
+        .bank-details { flex: 1; min-width: 0; }
+        .bank-name { font-size: 0.75rem; color: var(--text-mist); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .bank-account { font-weight: 700; color: var(--text-deep); font-size: 1.2rem; font-family: var(--font-display); letter-spacing: 1px; word-break: break-all; }
+        .bank-holder { font-size: 0.85rem; color: var(--text-ocean); margin-top: 4px; font-weight: 500; }
+        .copy-btn { padding: 8px 16px; background: rgba(74, 144, 226, 0.1); border: 1px solid rgba(74, 144, 226, 0.3); border-radius: 8px; color: var(--accent-blue); font-size: 0.8rem; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+        .copy-btn:hover { background: var(--accent-blue); color: white; }
+        .copy-btn.copied { background: var(--accent-green); border-color: var(--accent-green); color: white; }
+        
+        .upload-area { border: 3px dashed rgba(200, 220, 240, 0.6); border-radius: var(--radius-md); padding: 40px 32px; text-align: center; cursor: pointer; transition: all 0.4s ease; background: rgba(255,255,255,0.4); position: relative; }
+        .upload-area:hover { border-color: var(--accent-blue); background: rgba(74, 144, 226, 0.05); }
+        .upload-area.dragover { border-color: var(--accent-green); background: rgba(16, 185, 129, 0.1); }
+        .upload-area.has-file { border-color: var(--accent-green); border-style: solid; background: rgba(16, 185, 129, 0.08); }
+        .upload-icon { width: 64px; height: 64px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; color: var(--accent-blue); }
+        .upload-text { font-size: 1rem; font-weight: 600; color: var(--text-deep); margin-bottom: 8px; }
+        .upload-hint { font-size: 0.85rem; color: var(--text-mist); }
+        .upload-preview { max-width: 100%; max-height: 300px; border-radius: 16px; margin-top: 16px; box-shadow: 0 8px 25px var(--drop-shadow); }
+        
+        .verify-status { margin: 16px 0; padding: 16px; border-radius: 12px; display: none; }
+        .verify-status.show { display: block; animation: slideDown 0.3s ease; }
+        .verify-loading { background: rgba(74, 144, 226, 0.1); color: var(--accent-blue); text-align: center; }
+        .verify-success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #059669; }
+        .verify-error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
+        .verify-warning { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #d97706; }
+        
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .success-screen { position: fixed; inset: 0; background: linear-gradient(180deg, var(--bg-cloud) 0%, var(--bg-mist) 100%); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; }
+        .success-screen.active { display: flex; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .success-icon { width: 120px; height: 120px; background: linear-gradient(135deg, var(--accent-green), #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4); }
+        .success-title { font-family: var(--font-display); font-weight: 800; font-size: 2rem; color: var(--text-deep); margin-bottom: 12px; }
+        .team-info-box { background: rgba(255,255,255,0.8); border-radius: var(--radius-md); padding: 24px; width: 100%; max-width: 400px; margin-bottom: 24px; text-align: left; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(200, 220, 240, 0.4); }
+        .info-row:last-child { border-bottom: none; }
+        .divider { height: 1px; background: rgba(200, 220, 240, 0.5); margin: 24px 0; }
+        .step-content { display: none; }
+        .step-content.active { display: block; animation: slideIn 0.4s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--accent-red); padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; display: none; }
+        .error-box.show { display: block; }
+        
+        @media (max-width: 768px) {
+            .navbar { margin: 0 8px; margin-top: 8px; padding: 12px 16px; }
+            .brand { font-size: 1.2rem; }
+            .container { padding: 16px; }
+            .glass-card { padding: 20px; }
+            .player-grid { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">
+            <div class="brand-icon"><i class="fa-solid fa-trophy"></i></div>
+            PSL <span style="color: var(--text-mist); font-weight: 400;">REGISTER</span>
+        </div>
+    </nav>
+
+    <div class="progress-bar">
+        <div class="progress-dot active" id="dot1"></div>
+        <div class="progress-dot" id="dot2"></div>
+        <div class="progress-dot" id="dot3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Step 1 -->
+        <div class="step-content active" id="step1">
+            <div class="glass-card">
+                <h2 class="section-title"><i class="fa-solid fa-gamepad"></i> เลือกทัวร์นาเมนต์</h2>
+                <div class="tournament-grid" id="tournamentGrid">
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-mist);">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; margin-bottom: 12px; display: block;"></i>
+                        กำลังโหลด...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-content" id="step2">
+            <div class="glass-card">
+                <h2 class="section-title"><i class="fa-solid fa-users"></i> ข้อมูลทีม</h2>
+                
+                <div class="form-group">
+                    <label class="form-label">ชื่อทีม <span style="color: var(--accent-red);">*</span></label>
+                    <input type="text" class="form-input" id="teamName" placeholder="ระบุชื่อทีม" maxlength="50">
+                </div>
+
+                <div class="divider"></div>
+
+                <h3 style="font-size: 1rem; margin-bottom: 16px; color: var(--text-deep);">
+                    <i class="fa-solid fa-star" style="color: var(--accent-orange); margin-right: 8px;"></i>
+                    ผู้เล่นตัวจริง <span style="color: var(--accent-red);">*</span>
+                </h3>
+                <div class="player-grid" id="mainPlayers"></div>
+
+                <div class="divider"></div>
+
+                <h3 style="font-size: 1rem; margin-bottom: 16px; color: var(--text-deep);">
+                    <i class="fa-solid fa-user-plus" style="color: var(--accent-purple); margin-right: 8px;"></i>
+                    ผู้เล่นสำรอง <span style="color: var(--text-mist); font-size: 0.8rem;">(ไม่บังคับ)</span>
+                </h3>
+                <div class="player-grid" id="subPlayers"></div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()"><i class="fa-solid fa-arrow-left"></i> กลับ</button>
+                <button class="btn btn-primary" id="btnStep2" onclick="validateAndNext()">ถัดไป <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-content" id="step3">
+            <div class="glass-card">
+                <h2 class="section-title"><i class="fa-solid fa-credit-card"></i> ชำระเงิน</h2>
+                
+                <div class="payment-amount">
+                    <div class="amount-label">ค่าสมัคร</div>
+                    <div class="amount-value" id="paymentAmount">฿0</div>
+                </div>
+                
+                <div class="bank-info" id="bankInfoContainer">
+                    <div class="bank-item">
+                        <div class="bank-icon"><i class="fa-solid fa-building-columns"></i></div>
+                        <div class="bank-details">
+                            <div class="bank-name">ธนาคาร</div>
+                            <div class="bank-account" id="bankAccountDisplay">กำลังโหลด...</div>
+                            <div class="bank-holder" id="bankHolderDisplay">-</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard('bankAccountDisplay', this)"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                    </div>
+                    <div class="bank-item">
+                        <div class="bank-icon truewallet"><i class="fa-solid fa-wallet"></i></div>
+                        <div class="bank-details">
+                            <div class="bank-name">TrueMoney Wallet</div>
+                            <div class="bank-account" id="trueWalletDisplay">กำลังโหลด...</div>
+                            <div class="bank-holder" id="trueWalletHolder">-</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard('trueWalletDisplay', this)"><i class="fa-regular fa-copy"></i> คัดลอก</button>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3 style="font-size: 1rem; margin-bottom: 16px; color: var(--text-deep);">
+                    <i class="fa-solid fa-receipt"></i> อัปโหลดสลิป <span style="color: var(--accent-red);">*</span>
+                </h3>
+                
+                <div class="error-box" id="submitError"></div>
+                <div class="verify-status" id="verifyStatus"></div>
+                
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                    <div class="upload-text">คลิกหรือลากไฟล์มาวางที่นี่</div>
+                    <div class="upload-hint">รองรับ JPG, PNG (สูงสุด 5MB)</div>
+                    <img class="upload-preview" id="slipPreview" style="display: none;">
+                </div>
+                <input type="file" id="slipInput" accept="image/*" style="display: none;">
+                
+                <div style="margin-top: 12px; font-size: 0.85rem; color: var(--text-mist); text-align: center;">
+                    <i class="fa-solid fa-shield-halved"></i> ระบบตรวจสอบสลิปอัตโนมัติ
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="prevStep()"><i class="fa-solid fa-arrow-left"></i> กลับ</button>
+                <button class="btn btn-primary" id="btnSubmit" onclick="submitRegistration()" disabled><i class="fa-solid fa-check"></i> ยืนยันการสมัคร</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+        <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+        <h1 class="success-title">สมัครสำเร็จ!</h1>
+        <div class="team-info-box" id="successDetails"></div>
+        <button class="btn btn-primary" onclick="location.reload()" style="max-width: 300px;"><i class="fa-solid fa-plus"></i> สมัครทีมใหม่</button>
+    </div>
+
+    <script type="module">
+        // ใช้ firebase-config.js แทนการประกาศ config เอง
+        import { db, getAppConfig } from './firebase-config.js';
+        import { 
+            collection, query, where, getDocs, addDoc, 
+            serverTimestamp, doc, updateDoc, increment 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const GAME_CONFIG = {
+            'RoV': { main: 5, sub: 3 }, 'MLBB': { main: 5, sub: 3 },
+            'Free Fire': { main: 4, sub: 3 }, 'PUBG': { main: 4, sub: 3 },
+            'Valorant': { main: 5, sub: 3 }, 'FC25': { main: 1, sub: 3 },
+            'default': { main: 5, sub: 3 }
+        };
+
+        // ค่าเริ่มต้น (Fallback)
+        let bankConfig = {
+            bankName: 'Kasikorn Bank (กสิกรไทย)',
+            bankAccount: '193-1-13233-0',
+            bankHolder: 'นาย ณัฐภูมินทร์ จูบ้ง',
+            trueWallet: '062-970-8835',
+            trueWalletHolder: 'นาย ณัฐภูมินทร์ จูบ้ง',
+            validReceiverNames: ['นาย ณัฐภูมินทร์ จูบ้ง', 'ณัฐภูมินทร์ จูบ้ง'],
+            easyslipApiKey: null
+        };
+
+        let currentStep = 1;
+        let selectedTournament = null;
+        let tournaments = [];
+        let verifiedSlipData = null;
+        let isSubmitting = false;
+
+        async function loadTournaments() {
+            const grid = document.getElementById('tournamentGrid');
+            try {
+                let q = query(collection(db, 'tournaments'), where('status', 'in', ['open', 'ongoing']));
+                let snapshot = await getDocs(q);
+                
+                if (snapshot.empty) {
+                    q = query(collection(db, 'tournaments'));
+                    snapshot = await getDocs(q);
+                }
+                
+                tournaments = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.status !== 'finished' && data.status !== 'cancelled') {
+                        tournaments.push({
+                            id: doc.id,
+                            ...data,
+                            currentTeams: parseInt(data.currentTeams) || 0,
+                            maxTeams: parseInt(data.maxTeams) || 32
+                        });
+                    }
+                });
+
+                if (tournaments.length === 0) {
+                    grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-mist);"><i class="fa-solid fa-calendar-xmark" style="font-size: 3rem; margin-bottom: 16px;"></i><p>ไม่มีทัวร์นาเมนต์ที่เปิดรับสมัคร</p></div>`;
+                } else {
+                    renderTournaments();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--accent-red);"><p>ไม่สามารถโหลดข้อมูลได้</p></div>`;
+            }
+        }
+
+        function renderTournaments() {
+            const grid = document.getElementById('tournamentGrid');
+            grid.innerHTML = tournaments.map(t => {
+                const isFull = t.currentTeams >= t.maxTeams;
+                const fee = t.fee || 'Free';
+                return `
+                    <div class="tournament-card ${isFull ? 'disabled' : ''}" data-id="${t.id}">
+                        <span class="tournament-game-badge"><i class="fa-solid fa-gamepad"></i> ${t.game || 'Game'}</span>
+                        <h3 class="tournament-name">${t.title || 'ไม่มีชื่อ'}</h3>
+                        <div class="tournament-meta">
+                            <div><i class="fa-solid fa-users"></i> ${t.currentTeams}/${t.maxTeams} ทีม ${isFull ? '<span style="color: var(--accent-red);">(เต็ม)</span>' : ''}</div>
+                            <div style="margin-top: 4px;"><i class="fa-solid fa-money-bill"></i> ${fee}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.querySelectorAll('.tournament-card:not(.disabled)').forEach(card => {
+                card.addEventListener('click', function() {
+                    selectTournament(this.getAttribute('data-id'));
+                });
+            });
+        }
+
+        async function loadBankConfig() {
+            try {
+                // ใช้ getAppConfig() จาก firebase-config.js
+                const data = await getAppConfig();
+                if (data && Object.keys(data).length > 0) {
+                    if (data.bankName) bankConfig.bankName = data.bankName;
+                    if (data.bankAccount) bankConfig.bankAccount = data.bankAccount;
+                    if (data.bankHolder) bankConfig.bankHolder = data.bankHolder;
+                    if (data.trueWallet) bankConfig.trueWallet = data.trueWallet;
+                    if (data.trueWalletHolder) bankConfig.trueWalletHolder = data.trueWalletHolder;
+                    if (data.validReceiverNames) bankConfig.validReceiverNames = data.validReceiverNames;
+                    if (data.easyslipApiKey) bankConfig.easyslipApiKey = data.easyslipApiKey;
+                }
+            } catch (error) {
+                console.log('Using default bank config');
+            }
+            updateBankDisplay();
+        }
+
+        function updateBankDisplay() {
+            if (selectedTournament) {
+                const fee = selectedTournament.fee || 'Free';
+                document.getElementById('paymentAmount').textContent = fee === 'Free' ? '฿0' : fee;
+            }
+            
+            document.getElementById('bankAccountDisplay').textContent = bankConfig.bankAccount;
+            document.getElementById('bankHolderDisplay').textContent = bankConfig.bankHolder;
+            document.getElementById('trueWalletDisplay').textContent = bankConfig.trueWallet;
+            document.getElementById('trueWalletHolder').textContent = bankConfig.trueWalletHolder || bankConfig.bankHolder;
+            
+            // อัปเดตชื่อธนาคาร
+            const bankNameEl = document.querySelector('.bank-name');
+            if (bankNameEl) bankNameEl.textContent = bankConfig.bankName;
+        }
+
+        window.copyToClipboard = function(elementId, btn) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> คัดลอกแล้ว';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = original;
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        };
+
+        function selectTournament(id) {
+            selectedTournament = tournaments.find(t => t.id === id);
+            if (!selectedTournament) return;
+
+            document.querySelectorAll('.tournament-card').forEach(c => c.classList.remove('selected'));
+            document.querySelector(`[data-id="${id}"]`).classList.add('selected');
+
+            generatePlayerForms();
+            loadBankConfig();
+            
+            setTimeout(() => {
+                nextStep();
+            }, 300);
+        }
+
+        function generatePlayerForms() {
+            const game = selectedTournament?.game || 'default';
+            const config = GAME_CONFIG[game] || GAME_CONFIG.default;
+
+            const mainContainer = document.getElementById('mainPlayers');
+            mainContainer.innerHTML = '';
+            for (let i = 1; i <= config.main; i++) {
+                mainContainer.appendChild(createPlayerCard(i, i === 1 ? 'captain' : 'main'));
+            }
+
+            const subContainer = document.getElementById('subPlayers');
+            subContainer.innerHTML = '';
+            for (let i = 1; i <= config.sub; i++) {
+                subContainer.appendChild(createPlayerCard(config.main + i, 'sub', true));
+            }
+        }
+
+        function createPlayerCard(num, role, isOptional = false) {
+            const div = document.createElement('div');
+            div.className = 'player-card';
+            const roleClass = role === 'captain' ? 'role-captain' : (role === 'sub' ? 'role-sub' : '');
+            const roleText = role === 'captain' ? 'กัปตัน' : (role === 'sub' ? 'สำรอง' : 'ตัวจริง');
+            
+            div.innerHTML = `
+                <div class="player-number">${num}</div>
+                ${roleClass ? `<span class="player-role ${roleClass}">${roleText}</span>` : ''}
+                <div style="margin-top: 8px;">
+                    <input type="text" class="form-input player-ign" data-player="${num}" placeholder="ชื่อในเกม ${isOptional ? '' : '*'}" style="margin-bottom: 8px;">
+                    <input type="text" class="form-input player-uid" data-player="${num}" placeholder="UID / ID ${isOptional ? '' : '*'}">
+                </div>
+            `;
+            return div;
+        }
+
+        window.validateAndNext = function() {
+            const teamName = document.getElementById('teamName').value.trim();
+            if (!teamName) {
+                alert('กรุณาระบุชื่อทีม');
+                return;
+            }
+
+            const game = selectedTournament?.game || 'default';
+            const config = GAME_CONFIG[game] || GAME_CONFIG.default;
+
+            for (let i = 1; i <= config.main; i++) {
+                const ign = document.querySelector(`.player-ign[data-player="${i}"]`)?.value.trim();
+                const uid = document.querySelector(`.player-uid[data-player="${i}"]`)?.value.trim();
+                if (!ign || !uid) {
+                    alert(`กรุณากรอกข้อมูลผู้เล่นตัวจริงคนที่ ${i} ให้ครบถ้วน`);
+                    return;
+                }
+            }
+            
+            nextStep();
+        };
+
+        window.nextStep = function() {
+            if (currentStep < 3) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+                
+                if (currentStep === 3) {
+                    updateBankDisplay();
+                }
+            }
+        };
+
+        window.prevStep = function() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        };
+
+        function updateProgress() {
+            document.querySelectorAll('.progress-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index + 1 === currentStep);
+            });
+        }
+
+        // Slip Upload
+        const uploadArea = document.getElementById('uploadArea');
+        const slipInput = document.getElementById('slipInput');
+
+        uploadArea.addEventListener('click', () => slipInput.click());
+        
+        slipInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) handleFile(e.target.files[0]);
+        });
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.add('dragover'));
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('dragover'));
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        });
+
+        async function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showVerifyError('กรุณาอัปโหลดไฟล์รูปภาพเท่านั้น');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                showVerifyError('ไฟล์มีขนาดใหญ่เกินไป (สูงสุด 5MB)');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('slipPreview').src = e.target.result;
+                document.getElementById('slipPreview').style.display = 'block';
+                uploadArea.classList.add('has-file');
+            };
+            reader.readAsDataURL(file);
+
+            await verifySlip(file);
+        }
+
+        async function verifySlip(file) {
+            const statusDiv = document.getElementById('verifyStatus');
+            const submitBtn = document.getElementById('btnSubmit');
+            const errorBox = document.getElementById('submitError');
+            
+            statusDiv.className = 'verify-status verify-loading show';
+            statusDiv.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> กำลังตรวจสอบสลิป...';
+            submitBtn.disabled = true;
+            verifiedSlipData = null;
+            errorBox.classList.remove('show');
+
+            try {
+                if (!bankConfig.easyslipApiKey) {
+                    console.log('No EasySlip API Key - manual mode');
+                    
+                    const reader = new FileReader();
+                    const imageData = await new Promise((resolve) => {
+                        reader.onload = (e) => resolve(e.target.result);
+                        reader.readAsDataURL(file);
+                    });
+                    
+                    verifiedSlipData = {
+                        transRef: 'MANUAL-' + Date.now(),
+                        amount: selectedTournament?.fee?.replace(/[^0-9]/g, '') || '0',
+                        sender: 'Manual Upload',
+                        receiver: bankConfig.bankHolder,
+                        transDate: new Date().toISOString(),
+                        verifiedAt: new Date().toISOString(),
+                        verificationMethod: 'manual',
+                        imageData: imageData
+                    };
+                    
+                    statusDiv.className = 'verify-status verify-warning show';
+                    statusDiv.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <b>โหมดทดสอบ</b>
+                        </div>
+                        <div style="font-size:0.85rem;">
+                            ไม่พบ EasySlip API Key ระบบจะบันทึกสลิปโดยไม่ตรวจสอบอัตโนมัติ
+                        </div>
+                    `;
+                    submitBtn.disabled = false;
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('https://developer.easyslip.com/api/v1/verify', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + bankConfig.easyslipApiKey },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.status === 400 && data.message === "duplicate_slip") {
+                    throw new Error('สลิปนี้ถูกใช้งานแล้วในระบบ EasySlip');
+                }
+
+                if (!response.ok) throw new Error(data.message || 'ตรวจสอบไม่สำเร็จ');
+                if (!data.data) throw new Error('ไม่พบข้อมูลในสลิป');
+
+                const slipData = data.data;
+                const receiverName = slipData.receiver?.account?.name?.th || slipData.receiver?.displayName || '';
+                
+                if (!isValidReceiver(receiverName)) {
+                    throw new Error(`ชื่อบัญชีผู้รับไม่ถูกต้อง (พบ: ${receiverName})`);
+                }
+
+                const fee = selectedTournament?.fee || 'Free';
+                if (fee !== 'Free') {
+                    const expected = parseInt(fee.replace(/[^0-9]/g, '')) || 0;
+                    const actual = parseFloat(slipData.amount?.amount || slipData.amount || 0);
+                    if (actual !== expected) {
+                        throw new Error(`ยอดเงินไม่ตรง (ต้องการ: ${expected} บาท, พบ: ${actual} บาท)`);
+                    }
+                }
+
+                const transRef = slipData.transRef || slipData.transactionId || slipData.reference || 'REF-' + Date.now();
+                
+                const dupCheck = await checkDuplicateSlip(transRef);
+                if (dupCheck.isDuplicate) {
+                    throw new Error('สลิปนี้ถูกใช้สมัครแข่งขันแล้ว');
+                }
+
+                verifiedSlipData = {
+                    transRef: String(transRef),
+                    amount: String(slipData.amount?.amount || slipData.amount || '0'),
+                    sender: String(slipData.sender?.account?.name?.th || slipData.sender?.displayName || 'Unknown'),
+                    receiver: String(receiverName),
+                    transDate: slipData.transDate || slipData.transTime || new Date().toISOString(),
+                    verifiedAt: new Date().toISOString(),
+                    verificationMethod: 'easyslip_api'
+                };
+
+                statusDiv.className = 'verify-status verify-success show';
+                statusDiv.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                        <i class="fa-solid fa-shield-check"></i>
+                        <b>ตรวจสอบสำเร็จ</b>
+                    </div>
+                    <div style="font-size:0.85rem;">
+                        ผู้รับ: ${receiverName}<br>
+                        ยอด: ${verifiedSlipData.amount} บาท
+                    </div>
+                `;
+                submitBtn.disabled = false;
+
+            } catch (error) {
+                console.error('Verify error:', error);
+                statusDiv.className = 'verify-status verify-error show';
+                statusDiv.innerHTML = `
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <b>ตรวจสอบไม่ผ่าน</b>
+                    </div>
+                    <div style="font-size:0.85rem;">${error.message}</div>
+                `;
+                submitBtn.disabled = true;
+            }
+        }
+
+        function isValidReceiver(name) {
+            if (!name || !bankConfig.validReceiverNames?.length) return true;
+            const cleanName = name.trim().toLowerCase();
+            return bankConfig.validReceiverNames.some(valid => {
+                const cleanValid = valid.trim().toLowerCase();
+                return cleanName === cleanValid || cleanName.includes(cleanValid) || cleanValid.includes(cleanName);
+            });
+        }
+
+        async function checkDuplicateSlip(transRef) {
+            if (!transRef) return { isDuplicate: false };
+            try {
+                const q = query(collection(db, "registrations"), where("paymentReference", "==", transRef));
+                const snapshot = await getDocs(q);
+                return { isDuplicate: !snapshot.empty };
+            } catch (error) {
+                return { isDuplicate: false };
+            }
+        }
+
+        window.submitRegistration = async function() {
+            if (isSubmitting) return;
+            
+            if (!verifiedSlipData) {
+                alert('กรุณาอัปโหลดสลิปและรอการตรวจสอบ');
+                return;
+            }
+            
+            // ตรวจสอบไม่ให้มี undefined
+            for (const [key, value] of Object.entries(verifiedSlipData)) {
+                if (value === undefined) {
+                    verifiedSlipData[key] = null;
+                }
+            }
+            
+            const btn = document.getElementById('btnSubmit');
+            isSubmitting = true;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> กำลังบันทึก...';
+
+            try {
+                const teamName = document.getElementById('teamName').value.trim();
+                const game = selectedTournament?.game || 'default';
+                const config = GAME_CONFIG[game] || GAME_CONFIG.default;
+
+                const mainPlayers = [];
+                for (let i = 1; i <= config.main; i++) {
+                    const ign = document.querySelector(`.player-ign[data-player="${i}"]`).value.trim();
+                    const uid = document.querySelector(`.player-uid[data-player="${i}"]`).value.trim();
+                    mainPlayers.push({ number: i, ign, uid, role: i === 1 ? 'captain' : 'player' });
+                }
+
+                const subPlayers = [];
+                for (let i = 1; i <= config.sub; i++) {
+                    const num = config.main + i;
+                    const ignInput = document.querySelector(`.player-ign[data-player="${num}"]`);
+                    const uidInput = document.querySelector(`.player-uid[data-player="${num}"]`);
+                    if (ignInput && uidInput) {
+                        const ign = ignInput.value.trim();
+                        const uid = uidInput.value.trim();
+                        if (ign || uid) {
+                            subPlayers.push({ number: num, ign: ign || '-', uid: uid || '-', role: 'substitute' });
+                        }
+                    }
+                }
+
+                const teamData = {
+                    teamName: teamName,
+                    tournamentId: selectedTournament.id,
+                    tournamentName: selectedTournament.title,
+                    game: selectedTournament.game,
+                    mainPlayers: mainPlayers,
+                    subPlayers: subPlayers,
+                    totalPlayers: mainPlayers.length + subPlayers.length,
+                    fee: selectedTournament.fee || 'Free',
+                    status: 'pending_verification',
+                    slipData: verifiedSlipData,
+                    paymentReference: verifiedSlipData.transRef,
+                    registeredAt: serverTimestamp(),
+                    createdAt: serverTimestamp()
+                };
+
+                await addDoc(collection(db, 'tournaments', selectedTournament.id, 'teams'), teamData);
+                
+                await updateDoc(doc(db, 'tournaments', selectedTournament.id), {
+                    currentTeams: increment(1)
+                });
+
+                await addDoc(collection(db, 'registrations'), teamData);
+
+                showSuccess(teamData);
+            } catch (error) {
+                console.error('Submit error:', error);
+                document.getElementById('submitError').textContent = 'เกิดข้อผิดพลาด: ' + error.message;
+                document.getElementById('submitError').classList.add('show');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> ยืนยันการสมัคร';
+                isSubmitting = false;
+            }
+        };
+
+        function showSuccess(data) {
+            const details = document.getElementById('successDetails');
+            details.innerHTML = `
+                <div class="info-row"><span style="color: var(--text-mist);">ทัวร์นาเมนต์</span><span style="font-weight: 700; text-align: right;">${data.tournamentName}</span></div>
+                <div class="info-row"><span style="color: var(--text-mist);">ชื่อทีม</span><span style="font-weight: 700;">${data.teamName}</span></div>
+                <div class="info-row"><span style="color: var(--text-mist);">ผู้เล่น</span><span style="font-weight: 700;">${data.totalPlayers} คน</span></div>
+                <div class="info-row"><span style="color: var(--text-mist);">สถานะ</span><span style="font-weight: 700; color: var(--accent-green);">รอตรวจสอบ</span></div>
+            `;
+            document.getElementById('successScreen').classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTournaments();
+            loadBankConfig();
+        });
+    </script>
+</body>
+</html>
